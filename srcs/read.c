@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 04:12:09 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 11:47:38 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/18 13:45:45 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static	int		check_line(char *str, int fd)
 		while (ft_isdigit(words[j][i]))
 			i++;
 		if (words[j][i])
-			end("map error", fd);
+			end(ANSI_RED "map error", fd);
 	}
 	i = 0;
 	while (words[i])
@@ -81,7 +81,7 @@ static	int		*create_row(char *str, int fd)
 
 	row = (int *)malloc(sizeof(int) * (ft_count_words(str, ' ')));
 	if (!(words = ft_strsplit(str, ' ')) || !row)
-		end("malloc fail", fd);
+		end(ANSI_RED "malloc fail", fd);
 	j = 0;
 	while (words[j])
 	{
@@ -109,9 +109,9 @@ t_map			*create_map(int fd)
 	map = (t_map *)malloc(sizeof(t_map));
 	map ? map->board = (int **)malloc(sizeof(int *) * lines) : 0;
 	if (!(list = begin) || !lines)
-		end("map error", fd);
+		end(ANSI_RED "map error", fd);
 	if (!map || !(map->board))
-		end("malloc fail", fd);
+		end(ANSI_RED "malloc fail", fd);
 	map->w = ft_count_words((char *)list->content, ' ');
 	map->h = 0;
 	while (map->h < lines)

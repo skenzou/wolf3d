@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 13:44:33 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/18 15:13:02 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ t_wolf3d		*init_wolf3d(int fd)
 
 	w = (t_wolf3d *)ft_memalloc(sizeof(t_wolf3d));
 	w->map = create_map(fd);
+	if (!(w->mlx_ptr = mlx_init()))
+		exit(1);
+	w->win_ptr = mlx_new_window(w->mlx_ptr, WIN_W, WIN_H, "Wolf3d");
+	!w->win_ptr ? exit(1) : 0;
+	if (!(w->img = (t_image *)ft_memalloc(sizeof(t_image))))
+		exit(1);
+	create_image(w);
 	return (w);
 }
 
@@ -58,5 +65,7 @@ int				main(int argc, char **argv)
 	}
 	w = init_wolf3d(fd);
 	print_map(w);
+	process(w);
+	mlx_loop(w->mlx_ptr);
 	return (0);
 }

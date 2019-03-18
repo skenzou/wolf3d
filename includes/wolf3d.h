@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 13:44:30 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/18 15:21:10 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define SCROLLDOWN		4
 # define SPACE			49
 # define RKEY			15
+# define MINIM_S		24
 # define ANSI_RED		"\x1b[1m\x1b[31m"
 # define ANSI_GREEN		"\x1b[1m\x1b[32m"
 # define ANSI_YELLOW	"\x1b[1m\x1b[33m"
@@ -48,15 +49,22 @@
 # define ANSI_BOLD		"\x1b[1m"
 # define LIGHTRED		0xff0080
 
-typedef struct		s_window
+typedef struct		s_image
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	char			*image_str;
-	void			*image_ptr;
-	int				x;
-	int				y;
-}					t_window;				
+	void		*ptr;
+	char		*data;
+	int			bpp;
+	int			sizeline;
+	int			endian;
+}					t_image;
+
+typedef struct		s_point
+{
+	int x;
+	int y;
+	int color;
+}					t_point;
+
 typedef struct		s_map
 {
 	int				**board;
@@ -66,10 +74,18 @@ typedef struct		s_map
 
 typedef struct		s_wolf3d
 {
+	t_image		*img;
 	t_map		*map;
-
+	void		*mlx_ptr;
+	void		*win_ptr;
 }					t_wolf3d;
 
 t_map				*create_map(int fd);
+
+void				create_image(t_wolf3d *w);
+void				process(t_wolf3d *w);
+int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
+void				draw_minimap(t_wolf3d *w);
+void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 
 #endif
