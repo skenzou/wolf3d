@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 15:21:10 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/18 15:27:09 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,8 @@ void				process(t_wolf3d *w);
 int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
 void				draw_minimap(t_wolf3d *w);
 void				put_line(t_wolf3d *w, t_point p1, t_point p2);
+
+int					handle_mouse(int button, int x, int y, t_wolf3d *w);
+int					handle_key(int keycode, t_wolf3d *w);
 
 #endif
