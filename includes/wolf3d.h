@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 11:57:26 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/18 13:44:30 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,15 @@
 # define ANSI_BOLD		"\x1b[1m"
 # define LIGHTRED		0xff0080
 
+typedef struct		s_window
+{
+	void			*mlx_ptr;
+	void			*win_ptr;
+	char			*image_str;
+	void			*image_ptr;
+	int				x;
+	int				y;
+}					t_window;				
 typedef struct		s_map
 {
 	int				**board;
