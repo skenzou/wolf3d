@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 09:45:15 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:57:26 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <fcntl.h>
 # include <pthread.h>
 # define TNUM			32
-# define ZOOMFACTOR		1.11
 # define WIN_W			1216
 # define WIN_H			900
 # define ESCAPE			53
@@ -39,7 +38,6 @@
 # define SCROLLDOWN		4
 # define SPACE			49
 # define RKEY			15
-# define PALETTERADIUS	100
 # define ANSI_RED		"\x1b[1m\x1b[31m"
 # define ANSI_GREEN		"\x1b[1m\x1b[32m"
 # define ANSI_YELLOW	"\x1b[1m\x1b[33m"
@@ -49,5 +47,20 @@
 # define ANSI_RESET		"\x1b[1m\x1b[0m"
 # define ANSI_BOLD		"\x1b[1m"
 # define LIGHTRED		0xff0080
+
+typedef struct		s_map
+{
+	int				**board;
+	int				w;
+	int				h;
+}					t_map;
+
+typedef struct		s_wolf3d
+{
+	t_map		*map;
+
+}					t_wolf3d;
+
+t_map				*create_map(int fd);
 
 #endif

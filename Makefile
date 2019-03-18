@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/03/18 09:48:13 by midrissi         ###   ########.fr        #
+#    Updated: 2019/03/18 11:38:58 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ LFT_PATH = ./libft/
 INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
-SRC_NAME = main.c
+SRC_NAME = main.c read.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 INC_NAME = wolf3d.h
 
@@ -69,8 +69,8 @@ $(NAME): $(LIBFT_PATH)$(LIBFT_NAME) $(OBJ)
 		@echo
 		@make -C $(LFT_PATH)
 		@make -C $(MLX_PATH)
-		@$(CC) -o $(NAME) $(MLX_LINK) $(FRAM) -L $(LFT_PATH) -lft $^ -o $@
-		@printf "$(_BOLD)$(_RED)./wolf3d is ready for use\n$(_END)$(_CYAN)$(_END)"
+		@$(CC) -o $(NAME) $(MLX_LINK) -L $(LFT_PATH) -lft $^ -o $@
+		@printf "$(_BOLD)$(_RED)./wolf3d is ready for use\n$(_END)"
 		@printf "$(_BOLD)$(_CYAN)\n\nusage: ./wolf3d <map>\n$(_RESET)"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
@@ -78,11 +78,8 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 		@$(CC) $(C_FLAGS) $(INC) $(MLX_INC) -o $@ -c $<
 		@printf "$(_BOLD)$(_BLUE)$(MSG)$(_END) $(_BOLD)$(_CYAN)%-$(LONGEST)s\
 		$(_END)" $(notdir $<)
-		@if test -s srcs/$*.c; then \
-		printf "$(_GREEN) [SUCCES]\n$(_END)";\
-		else \
-		printf "$(_RED) [ERROR]\n$(_END)"; fi
-
+		@if test -s obj/$*.o; then \
+		printf "$(_GREEN) [SUCCES]\n$(_END)"; fi
 
 clean:
 		@make -C $(LFT_PATH) clean
