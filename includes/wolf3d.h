@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/18 15:27:09 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 10:52:15 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define ANSI_RESET		"\x1b[1m\x1b[0m"
 # define ANSI_BOLD		"\x1b[1m"
 # define LIGHTRED		0xff0080
+# define DARKBLUE		0x000099
 
 typedef struct		s_image
 {
@@ -74,6 +75,8 @@ typedef struct		s_map
 
 typedef struct		s_wolf3d
 {
+	int			xpos;
+	int			ypos;
 	t_image		*img;
 	t_map		*map;
 	void		*mlx_ptr;
