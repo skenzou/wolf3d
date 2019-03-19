@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 13:02:34 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/19 12:05:45 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 17:16:38 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,59 @@ static void		draw_square(t_wolf3d *w, t_point start)
 
 static void			draw_vision(t_wolf3d *w, int x_c, int y_c)
 {
-	float	angle;
-	float	i;
-	float	r;
+	double	angle;
+	double	ang_e;
+	double	i;
+	double	r;
 	int		x;
 	int		y;
 
-	angle = M_PI * 4.0 / 3.0;
+	angle = w->ang_s;
+	ang_e = w->ang_s + (60.0 * M_PI / 180);
+	printf("angle = %f\n", angle);
 	r = w->map->w * MINIM_S;
-	while (angle <= M_PI * 5.0 / 3.0)
+	while (angle <= ang_e)
 	{
 		i = -1;
 		while (++i <= r)
 		{
 			x = x_c + i * cos(angle);
 			y = y_c + i * sin(angle);
-			if (x > 0 && y > 0 && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
+			if (x > 0 && y > 0 && x < w->map->w * MINIM_S && y < w->map->h *
+				MINIM_S && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
 				break ;
 			if (x > 0 && x < w->map->w * MINIM_S && y > 0 && y < w->map->h
 				* MINIM_S)
-				put_pixel_img(w, x, y, DARKBLUE);
+				put_pixel_img(w, x, y, 0x880055);
 		}
-		angle += 0.0005;
+		angle += 60.0 / (w->map->w * MINIM_S) / 180;
 	}
 }
 
 int				camera_mov(int x, int y, t_wolf3d *w)
 {
-	(void)x;
-	(void)y;
-	(void)w;
-	return (1);
+	// int		dx;
+	// int		dy;
+	// double	hyp;
+	// double	cos_ang;
+	// double	angle;
+	//
+	// dx = x - w->xpos;
+	// dy = y - w->ypos;
+	// hyp = sqrt(pow(dx, 2) + pow(dy, 2));
+	// cos_ang = fabs(dx / hyp);
+	// angle = acos(cos_ang);
+	// if (dx < 0 && dy < 0)
+	// 	w->ang_s = angle + M_PI;
+	// if (dx > 0 && dy < 0)
+	// 	w->ang_s = -angle;
+	// if (dx < 0 && dy > 0)
+	// 	w->ang_s = -angle - M_PI;
+	// if (dx >= 0 && dy >= 0)
+	// 	w->ang_s = angle;
+	w->ang_s = atan2(y,x);
+	process(w);
+	return (0);
 }
 
 void			draw_circle(t_wolf3d *w, int x_c, int y_c)

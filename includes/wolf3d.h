@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 11:56:51 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 16:53:36 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_wolf3d
 {
 	int			xpos;
 	int			ypos;
+	double 		ang_s;
 	t_image		*img;
 	t_map		*map;
 	void		*mlx_ptr;

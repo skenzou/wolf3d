@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 11:52:48 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 17:06:18 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ t_wolf3d		*init_wolf3d(int fd)
 	!w->win_ptr ? exit(1) : 0;
 	if (!(w->img = (t_image *)ft_memalloc(sizeof(t_image))))
 		exit(1);
-	mlx_key_hook(w->win_ptr, &handle_key, w);
+	//mlx_key_hook(w->win_ptr, &handle_key, w);
 	mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
+	mlx_hook(w->win_ptr, 2, 1L << 0, &handle_key, w);
 	create_image(w);
 	w->ypos = 0;
 	w->xpos = 0;
+	w->ang_s = 60;
 	return (w);
 }
 
