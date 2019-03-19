@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 13:02:34 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/19 10:55:09 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 12:05:45 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,41 @@ static void		draw_square(t_wolf3d *w, t_point start)
 				put_pixel_img(w, y + start.x, x + start.y, start.color);
 		}
 	}
+}
+
+static void			draw_vision(t_wolf3d *w, int x_c, int y_c)
+{
+	float	angle;
+	float	i;
+	float	r;
+	int		x;
+	int		y;
+
+	angle = M_PI * 4.0 / 3.0;
+	r = w->map->w * MINIM_S;
+	while (angle <= M_PI * 5.0 / 3.0)
+	{
+		i = -1;
+		while (++i <= r)
+		{
+			x = x_c + i * cos(angle);
+			y = y_c + i * sin(angle);
+			if (x > 0 && y > 0 && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
+				break ;
+			if (x > 0 && x < w->map->w * MINIM_S && y > 0 && y < w->map->h
+				* MINIM_S)
+				put_pixel_img(w, x, y, DARKBLUE);
+		}
+		angle += 0.0005;
+	}
+}
+
+int				camera_mov(int x, int y, t_wolf3d *w)
+{
+	(void)x;
+	(void)y;
+	(void)w;
+	return (1);
 }
 
 void			draw_circle(t_wolf3d *w, int x_c, int y_c)
@@ -79,6 +114,8 @@ void			draw_minimap(t_wolf3d *w)
 		x_s = 1;
 		y_s += MINIM_S;
 	}
-	draw_circle(w, 1 + w->xpos * MINIM_S + MINIM_S / 2,
-										1 + w->ypos * MINIM_S + MINIM_S / 2);
+	x = 1 + w->xpos * MINIM_S + MINIM_S / 2;
+	y = 1 + w->ypos * MINIM_S + MINIM_S / 2;
+	draw_circle(w, x, y);
+	draw_vision(w, x, y);
 }

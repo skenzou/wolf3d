@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 10:52:15 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/19 11:56:51 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
+int					camera_mov(int x, int y, t_wolf3d *w);
 
 #endif
