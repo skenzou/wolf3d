@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 16:53:36 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:51:33 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <fcntl.h>
 # include <pthread.h>
 # define TNUM			32
-# define WIN_W			1216
+# define WIN_W			1200
 # define WIN_H			900
 # define ESCAPE			53
 # define UPARROW		126
@@ -38,7 +38,9 @@
 # define SCROLLDOWN		4
 # define SPACE			49
 # define RKEY			15
-# define MINIM_S		24
+# define MINIM_S		20
+# define W_S			300
+# define CAM_H			W_S / 2
 # define ANSI_RED		"\x1b[1m\x1b[31m"
 # define ANSI_GREEN		"\x1b[1m\x1b[32m"
 # define ANSI_YELLOW	"\x1b[1m\x1b[33m"
@@ -77,7 +79,7 @@ typedef struct		s_wolf3d
 {
 	int			xpos;
 	int			ypos;
-	double 		ang_s;
+	double		ang_s;
 	t_image		*img;
 	t_map		*map;
 	void		*mlx_ptr;

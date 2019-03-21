@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 13:02:34 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/19 17:16:38 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:01:26 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void			draw_vision(t_wolf3d *w, int x_c, int y_c)
 
 	angle = w->ang_s;
 	ang_e = w->ang_s + (60.0 * M_PI / 180);
-	printf("angle = %f\n", angle);
 	r = w->map->w * MINIM_S;
 	while (angle <= ang_e)
 	{
@@ -55,6 +54,54 @@ static void			draw_vision(t_wolf3d *w, int x_c, int y_c)
 			if (x > 0 && y > 0 && x < w->map->w * MINIM_S && y < w->map->h *
 				MINIM_S && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
 				break ;
+			if (x > 0 && x < w->map->w * MINIM_S && y > 0 && y < w->map->h
+				* MINIM_S)
+				put_pixel_img(w, x, y, 0x880055);
+		}
+		angle += 60.0 / (w->map->w * MINIM_S) / 180;
+	}
+}
+
+static void		draw_wall(t_wolf3d *w, int x, int color)
+{
+	int y = 200;
+	while (y < 500)
+	{
+		put_pixel_img(w, x,y, color);
+		y++;
+	}
+}
+
+static void 	draw_game(t_wolf3d *w, int x_c, int y_c)
+{
+	double	angle;
+	double	ang_e;
+	double	i;
+	double	r;
+	int		x;
+	int		y;
+	int offset = 0;
+
+	angle = w->ang_s;
+	ang_e = w->ang_s + (60.0 * M_PI / 180);
+	r = w->map->w * MINIM_S;
+	while (angle <= ang_e)
+	{
+		i = -1;
+		while (++i <= r)
+		{
+			x = x_c + i * cos(angle);
+			y = y_c + i * sin(angle);
+			if (x > 0 && y > 0 && x < w->map->w * MINIM_S && y < w->map->h *
+				MINIM_S && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
+			{
+				if (offset < 1200 && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
+				{
+					offset += 1;
+					draw_wall(w, offset, offset * 0x11ac11);
+				}
+					break ;
+			}
 			if (x > 0 && x < w->map->w * MINIM_S && y > 0 && y < w->map->h
 				* MINIM_S)
 				put_pixel_img(w, x, y, 0x880055);
@@ -140,4 +187,5 @@ void			draw_minimap(t_wolf3d *w)
 	y = 1 + w->ypos * MINIM_S + MINIM_S / 2;
 	draw_circle(w, x, y);
 	draw_vision(w, x, y);
+	draw_game(w, x, y);
 }
