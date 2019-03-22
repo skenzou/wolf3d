@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/21 18:51:33 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/22 10:41:00 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,33 @@ typedef struct		s_map
 
 typedef struct		s_wolf3d
 {
-	int			xpos;
-	int			ypos;
-	double		ang_s;
-	t_image		*img;
-	t_map		*map;
-	void		*mlx_ptr;
-	void		*win_ptr;
+	int				xpos;
+	int				ypos;
+	double			posx;
+	double			posy;
+	double			xdir;
+	double			ydir;
+	double			xplane;
+	double			yplane;
+	double			sidedistx;
+	double			sidedisty;
+	double			deltadistx;
+	double			deltadisty;
+	double			perpwalldist;
+	double			camerax;
+	double			raydirx;
+	double			raydiry;
+	int				mapx;
+	int				mapy;
+	int				stepx;
+	int				stepy;
+	int				hit;
+	int				side;
+	double			ang_s;
+	t_image			*img;
+	t_map			*map;
+	void			*mlx_ptr;
+	void			*win_ptr;
 }					t_wolf3d;
 
 t_map				*create_map(int fd);
@@ -97,5 +117,6 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
+void				render(t_wolf3d *w);
 
 #endif

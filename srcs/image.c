@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 03:50:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 11:29:56 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/22 12:53:31 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int			put_pixel_img(t_wolf3d *w, int x, int y, int color)
 
 void		process(t_wolf3d *w)
 {
-	draw_minimap(w);
+	create_image(w);
+	render(w);
+	// draw_minimap(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr,
 																		0, 0);
 }

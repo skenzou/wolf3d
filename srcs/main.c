@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/19 17:06:18 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/22 12:53:23 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@ t_wolf3d		*init_wolf3d(int fd)
 	mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
 	mlx_hook(w->win_ptr, 2, 1L << 0, &handle_key, w);
-	create_image(w);
-	w->ypos = 0;
-	w->xpos = 0;
+	w->ypos = 1;
+	w->xpos = 1;
+	w->xdir = -1.0;
+	w->ydir = 0.0;
+	w->xplane = 0.0;
+	w->yplane = 0.66;
+	w->posx = 22.0;
+	w->posy = 11.5;
 	w->ang_s = 60;
 	return (w);
 }
@@ -73,6 +78,7 @@ int				main(int argc, char **argv)
 	w = init_wolf3d(fd);
 	print_map(w);
 	process(w);
+	// render(w);
 	mlx_loop(w->mlx_ptr);
 	return (0);
 }
