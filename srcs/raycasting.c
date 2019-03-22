@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 09:48:05 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/22 13:01:50 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/22 14:21:08 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void		render(t_wolf3d *w)
 		int drawend = lineheight / 2 + WIN_H / 2;
 		if (drawend >= WIN_H) drawend = WIN_H - 1;
 		y = drawstart;
+		// printf("drawstart: %d\n", drawstart);
+		// printf("drawend: %d\n", drawend);
 		while (y < drawend)
 		{
 			// int d = y * 256 - WIN_H * 128 + lineheight * 128;
@@ -89,7 +91,5 @@ void		render(t_wolf3d *w)
 				put_pixel_img(w, x, y, 0xFF0000);
 			y++;
 		}
-		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr,
-																		0, 0);
 	}
 }
