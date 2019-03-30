@@ -50,7 +50,7 @@ LFT_PATH = ./libft/
 INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
-SRC_NAME = main.c read.c image.c minimap.c draw_line.c events.c raycasting.c
+SRC_NAME = main.c read.c image.c minimap.c draw_line.c events.c ray.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 INC_NAME = wolf3d.h
 

@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/22 12:53:23 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/23 21:14:31 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->ydir = 0.0;
 	w->xplane = 0.0;
 	w->yplane = 0.66;
-	w->posx = 22.0;
-	w->posy = 11.5;
+	w->posx = 2;
+	w->posy = 2;
 	w->ang_s = 60;
 	return (w);
 }

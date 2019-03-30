@@ -38,7 +38,7 @@
 # define SCROLLDOWN		4
 # define SPACE			49
 # define RKEY			15
-# define MINIM_S		20
+# define MINIM_S		64
 # define W_S			300
 # define CAM_H			W_S / 2
 # define ANSI_RED		"\x1b[1m\x1b[31m"
@@ -51,6 +51,9 @@
 # define ANSI_BOLD		"\x1b[1m"
 # define LIGHTRED		0xff0080
 # define DARKBLUE		0x000099
+# define FOV			60
+# define H_M 			200
+# define W_M 			320
 
 typedef struct		s_image
 {
@@ -67,6 +70,13 @@ typedef struct		s_point
 	int y;
 	int color;
 }					t_point;
+
+typedef	struct 		s_ray
+{
+	double				x;
+	double				y;
+	double 			angle;
+}					t_ray;
 
 typedef struct		s_map
 {
@@ -118,5 +128,5 @@ int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
 void				render(t_wolf3d *w);
-
+void				ray_cast(t_wolf3d *w);
 #endif

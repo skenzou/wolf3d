@@ -29,7 +29,8 @@ int			put_pixel_img(t_wolf3d *w, int x, int y, int color)
 void		process(t_wolf3d *w)
 {
 	create_image(w);
-	render(w);
+	//render(w);
+	ray_cast(w);
 	// draw_minimap(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr,
 																		0, 0);

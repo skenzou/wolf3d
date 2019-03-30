@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/30 12:52:50 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/30 15:36:41 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ void				draw_mmap(t_wolf3d *w);
 t_map				*create_map(int fd);
 void				process(t_wolf3d *w);
 t_camera			*camera_init(void);
-int 				intersection(t_wolf3d *w, int iteration, int i);
+int 				intersection(t_wolf3d *w, int i, t_vec2f
+					*dir);
 #endif

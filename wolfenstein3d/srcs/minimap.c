@@ -23,28 +23,36 @@ void	projection(t_wolf3d *w, int l)
 	int 		i;
 	int			limit;
 	double		wall_h;
-	double		perpdistwall;
-	double		dist_w;
-	double		dist_c;
-	double		cam_h;
-	double		h_seen;
+	int			perpdistwall;
+	int			dist_w;
+	int			distortion;
+	int			dist_c;
+	int			cam_h;
+	int			h_seen;
 	int 		y;
 	int			hit;
+	t_vec2f		dir;
+	float		angle;
 
-	wall_h = 1000.0;
-	cam_h = 500.0;
-	dist_c = 50.0;
+	wall_h = 1000;
+	cam_h = 500;
+	dist_c = 50;
 	hit = 0;
 	limit = (l == 0) ? WIN_W : WIDTH_MM;
 	i = -1;
+	perpdistwall = WIN_W / 2 / tTan(w->cam->fov / 2);
 	while (++i < limit)
 	{
 		w->cam->rays[i].startPoint = w->cam->position;
 		w->cam->rays[i].startPoint.color = 0xff0000;
 		w->cam->rays[i].endPoint.color = 0xff0000;
-		// angle = (tempangle + w->cam->fov / 2) - (i * (w->cam->fov / limit));
-		//printf("angle_minimap = %f\n", angle);
-		if ((hit = intersection(w, i, l)))
+		if (l == 1)
+			angle = (w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / WIDTH_MM));
+		else
+			angle = (w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / WIN_W));
+		dir.x = tCos(angle);
+		dir.y = tSin(angle);
+		if ((hit = intersection(w, l, &dir)))
 			w->cam->rays[i].endPoint = w->cam->intersection;
 		else
 		{
@@ -53,9 +61,10 @@ void	projection(t_wolf3d *w, int l)
 		}
 		if (l == 0)
 		{
-			perpdistwall = sqrt(pow((w->cam->position.x - w->cam->rays[i].endPoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endPoint.y), 2));
-			dist_w =  perpdistwall * tCos(30.0);
-			h_seen = dist_c * wall_h / dist_w;
+			dist_w = sqrt(pow((w->cam->position.x - w->cam->rays[i].endPoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endPoint.y), 2));
+			//printf("i = %d dist_w = %f and perpdis = %f\n", i, dist_w, perpdistwall);
+			distortion = dist_w * tCos(w->cam->fov / 2 - (i * w->cam->fov / WIN_W));
+			h_seen = dist_c * wall_h / distortion;
 			y = cam_h - (h_seen / 2) - 1;
 			if (hit == 1)
 				while (++y < (cam_h + (h_seen / 2)))
@@ -93,52 +102,16 @@ void			draw_circle(t_wolf3d *w)
 	}
 }
 
-int 	intersection_hor(t_wolf3d *w, int iteration, t_vec2f *dir)
+int 	intersection(t_wolf3d *w, int i, t_vec2f *dir)
 {
-	t_point A;
-	t_point	offset;
-	int 	hit;
-
-	while (hit == 0)
-	{
-		A.y = (dir->y < 0) ? floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE - 1 :
-		ceil(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
-		offset.y = (dir->y < 0) ? -BLOC_SIZE : BLOC_SIZE;
-		A.x = w->cam->position.x + (w->cam->position.y - y) / tTan(w->cam->fov);
-		offset.x = BLOC_SIZE / tTan(w->cam->fov);
-		if (w->map->board[A.y / BLOC_SIZE][A.x / BLOC_SIZE])
-		{
-			w->cam->intersection.x = A.x;
-			w->cam->intersection.y = A.y;
-			return (1);
-		}
-	}
-}
-
-int 	intersection_ver(t_wolf3d *w, int iteration, t_vec2f *dir)
-{
-
-}
-
-int 	intersection(t_wolf3d *w, int iteration, int i)
-{
-	float			angle;
 	int 			mapx;
 	int 			mapy;
 	unsigned int 	length;
-	t_vec2f			dir;
-
-	if (i == 1)
-		angle = (w->cam->angle + (w->cam->fov / 2) - (iteration * w->cam->fov / WIDTH_MM));
-	else
-		angle = (w->cam->angle + (w->cam->fov / 2) - (iteration * w->cam->fov / WIN_W));
-	dir.x = tCos(angle);
-	dir.y = tSin(angle);
 	length = -1;
 	while (++length < w->cam->raylength)
 	{
-		mapx = (int)(w->cam->position.x + (length * dir.x));
-		mapy = (int)(w->cam->position.y + (length * dir.y));
+		mapx = (int)(w->cam->position.x + (length * dir->x));
+		mapy = (int)(w->cam->position.y + (length * dir->y));
 		if ((mapy / BLOC_SIZE < w->map->h && w->map->board[mapy / BLOC_SIZE][mapx / BLOC_SIZE]) || (i == 1 && mapy >= HEIGHT_MM))
 		{
 			w->cam->intersection.x = mapx;
