@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/22 13:06:51 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/30 13:29:23 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 
 	if (keycode == UPARROW)
 	{
-		nextx = w->cam->position.x + Cos(w->cam->angle) * w->cam->speedmove;
-		nexty = w->cam->position.y + Sin(w->cam->angle) * w->cam->speedmove;
+		nextx = w->cam->position.x + tCos(w->cam->angle) * w->cam->speedmove;
+		nexty = w->cam->position.y + tSin(w->cam->angle) * w->cam->speedmove;
 		if (nexty / BLOC_SIZE < w->map->h && w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 		{
 			w->cam->position.x = nextx;
@@ -29,8 +29,8 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 	}
 	if (keycode == DOWNARROW)
 	{
-		nextx = w->cam->position.x - Cos(w->cam->angle) * w->cam->speedmove;
-		nexty = w->cam->position.y - Sin(w->cam->angle) * w->cam->speedmove;
+		nextx = w->cam->position.x - tCos(w->cam->angle) * w->cam->speedmove;
+		nexty = w->cam->position.y - tSin(w->cam->angle) * w->cam->speedmove;
 		if (nexty / BLOC_SIZE < w->map->h && w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 		{
 			w->cam->position.x = nextx;

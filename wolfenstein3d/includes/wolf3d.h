@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/25 16:15:32 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/30 12:52:50 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,12 @@
 # define X_BLOC			20
 # define Y_BLOC			16
 # define BLOC_SIZE		32
-# define WIDTH			(X_BLOC * BLOC_SIZE)
-# define HEIGHT			(Y_BLOC * BLOC_SIZE)
+# define WIDTH_MM			(X_BLOC * BLOC_SIZE)
+# define HEIGHT_MM			(Y_BLOC * BLOC_SIZE)
+# define WIDTH			2300
+# define HEIGHT			1200
+# define WIN_W 			(WIDTH - WIDTH_MM)
+# define WIN_H 			(HEIGHT - HEIGHT_MM)
 
 typedef struct		s_image
 {
@@ -121,11 +125,12 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
-float				Cos(float angle);
-float				Sin(float angle);
+float				tCos(float angle);
+float				tSin(float angle);
+float				tTan(float angle);
 void				draw_mmap(t_wolf3d *w);
 t_map				*create_map(int fd);
 void				process(t_wolf3d *w);
 t_camera			*camera_init(void);
-int 				intersection(t_wolf3d *w, int iteration);
+int 				intersection(t_wolf3d *w, int iteration, int i);
 #endif

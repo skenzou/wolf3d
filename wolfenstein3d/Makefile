@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/03/22 14:21:35 by midrissi         ###   ########.fr        #
+#    Updated: 2019/03/29 19:32:39 by rkamegne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ LFT_PATH = ./libft/
 INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
-SRC_NAME = main.c read.c utils.c minimap.c drawline.c events.c image.c
+SRC_NAME = main.c read.c utils.c minimap.c drawline.c events.c image.c 3d.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 INC_NAME = wolf3d.h
 

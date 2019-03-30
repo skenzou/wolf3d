@@ -5,12 +5,16 @@ float	toRadian(float angle)
 	return (angle * M_PI / 180.0);
 }
 
-float	Cos(float angle)
+float	tCos(float angle)
 {
 	return (cos(toRadian(angle)));
 }
 
-float	Sin(float angle)
+float	tSin(float angle)
 {
 	return (sin(toRadian(angle)));
+}
+float	tTan(float angle)
+{
+	return (tan(toRadian(angle)));
 }
