@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/30 15:36:41 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/30 20:18:55 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,17 @@ typedef struct  	s_vector2f
 }					t_vector2f;
 typedef struct 		s_vec2f
 {
-	float			x;
-	float			y;
+	double			x;
+	double			y;
 }					t_vec2f;
 typedef struct 		s_camera
 {
-	float			radius;
-	float			angle;
-	float			fov;
-	float			raylength;
-	float			speedmove;
-	float			speedangle;
+	double			radius;
+	double			angle;
+	double			fov;
+	double			raylength;
+	double			speedmove;
+	double			speedangle;
 	t_point			position;
 	t_point			intersection;
 	t_vector2f		rays[WIDTH];

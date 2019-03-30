@@ -12,31 +12,34 @@ t_camera	*camera_init(void)
 	cam->speedangle = 10.0f;
 	cam->speedmove = 20.0f;
 	cam->fov = 60.0f;
-	cam->raylength = WIDTH;
+	cam->raylength = WIN_W;
 	cam->position.x = 128;
 	cam->position.y = 128;
 	i = -1;
 	return (cam);
 }
+
 void	projection(t_wolf3d *w, int l)
 {
 	int 		i;
 	int			limit;
 	double		wall_h;
-	int			perpdistwall;
-	int			dist_w;
-	int			distortion;
-	int			dist_c;
-	int			cam_h;
-	int			h_seen;
+	double		perpdistwall;
+	//double		dist_w;
+	double		distortion;
+	double		dist_c;
+	double		cam_h;
+	double		h_seen;
 	int 		y;
 	int			hit;
 	t_vec2f		dir;
-	float		angle;
+	double		angle;
+	t_point		raytravel;
+	double		depth;
 
-	wall_h = 1000;
-	cam_h = 500;
-	dist_c = 50;
+	wall_h = 1000.0;
+	cam_h = 500.0;
+	dist_c = 50.0;
 	hit = 0;
 	limit = (l == 0) ? WIN_W : WIDTH_MM;
 	i = -1;
@@ -61,10 +64,15 @@ void	projection(t_wolf3d *w, int l)
 		}
 		if (l == 0)
 		{
-			dist_w = sqrt(pow((w->cam->position.x - w->cam->rays[i].endPoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endPoint.y), 2));
-			//printf("i = %d dist_w = %f and perpdis = %f\n", i, dist_w, perpdistwall);
-			distortion = dist_w * tCos(w->cam->fov / 2 - (i * w->cam->fov / WIN_W));
+			raytravel.y = w->cam->rays[i].endPoint.y - w->cam->position.y;
+			raytravel.x = w->cam->rays[i].endPoint.x - w->cam->position.x;
+			depth = raytravel.x * dir.x + raytravel.y * dir.y;
+			//
+			// dist_w = sqrt(pow((w->cam->position.x - w->cam->rays[i].endPoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endPoint.y), 2));
+			distortion = depth * tCos(w->cam->fov / 2 - (i * w->cam->fov / WIN_W));
+			// if (distortion)
 			h_seen = dist_c * wall_h / distortion;
+			//printf("h_seen = %f\n", h_seen);
 			y = cam_h - (h_seen / 2) - 1;
 			if (hit == 1)
 				while (++y < (cam_h + (h_seen / 2)))
