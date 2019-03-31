@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 14:26:52 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 17:05:49 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,20 @@ t_wolf3d		*init_wolf3d(int fd)
 
 	w = (t_wolf3d *)ft_memalloc(sizeof(t_wolf3d));
 	w->map = create_map(fd);
-	w->cam = camera_init();
 	if (!(w->mlx_ptr = mlx_init()))
 		exit(1);
 	w->win_ptr = mlx_new_window(w->mlx_ptr, WIDTH, HEIGHT, "Wolf3d");
 	!w->win_ptr ? exit(1) : 0;
 	if (!(w->img = (t_image *)ft_memalloc(sizeof(t_image))))
 		exit(1);
+	w->colors[0] = ORANGE;
+	w->colors[1] = PURPLE;
+	w->colors[2] = BLUE;
+	w->mini_h = BLOC_SIZE * w->map->h;
+	w->mini_w = BLOC_SIZE * w->map->w;
+	w->width = WIDTH - w->mini_w;
+	w->height = HEIGHT - w->mini_h;
+	w->cam = camera_init(w);
 	mlx_key_hook(w->win_ptr, &handle_key, w);
 	//mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
 	//mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);

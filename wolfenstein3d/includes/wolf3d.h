@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 14:19:32 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 17:36:35 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@
 # define SCROLLDOWN		4
 # define SPACE			49
 # define RKEY			15
-# define MINIM_S		64
-# define W_S			300
-# define CAM_H			W_S / 2
 # define ANSI_RED		"\x1b[1m\x1b[31m"
 # define ANSI_GREEN		"\x1b[1m\x1b[32m"
 # define ANSI_YELLOW	"\x1b[1m\x1b[33m"
@@ -55,12 +52,14 @@
 # define X_BLOC			20
 # define Y_BLOC			16
 # define BLOC_SIZE		32
-# define WIDTH_MM		(X_BLOC * BLOC_SIZE)
-# define HEIGHT_MM		(Y_BLOC * BLOC_SIZE)
 # define WIDTH			2300
 # define HEIGHT			1200
-# define WIN_W 			(WIDTH - WIDTH_MM)
-# define WIN_H 			(HEIGHT - HEIGHT_MM)
+# define WALL_H			1000.0
+# define CAM_H			(WALL_H / 2)
+# define CAM_DIST		50.0
+# define ORANGE			0xaf4e11
+# define PURPLE			0x751b91
+# define BLUE			0x081ae0
 
 typedef struct		s_image
 {
@@ -118,21 +117,52 @@ typedef struct		s_wolf3d
 	t_image			*img;
 	void			*mlx_ptr;
 	void			*win_ptr;
+	int				colors[3];
+	int				mini_h;
+	int				mini_w;
+	int				width;
+	int				height;
 }					t_wolf3d;
 
+/*
+** IMAGE.c
+*/
 void				create_image(t_wolf3d *w);
 int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
+void				process(t_wolf3d *w);
+
+/*
+** DRAWLINE.C
+*/
 void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 
+/*
+** EVENTS.C
+*/
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
-float				tcos(float angle);
-float				tsin(float angle);
-float				ttan(float angle);
+
+/*
+** UTILS.C
+*/
+double				tcos(double angle);
+double				tsin(double angle);
+double				ttan(double angle);
+
+/*
+** MINIMAP.C
+*/
 void				draw_mmap(t_wolf3d *w);
+t_camera			*camera_init(t_wolf3d *w);
+
+/*
+** READ.C
+*/
 t_map				*create_map(int fd);
-void				process(t_wolf3d *w);
-t_camera			*camera_init(void);
-int					intersection(t_wolf3d *w, int i, t_vec2f *dir);
+
+/*
+** RAYCASTING.c
+*/
+void				raycasting(t_wolf3d *w, int limit);
 
 #endif
