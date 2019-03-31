@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/29 18:00:41 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/31 14:26:52 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_wolf3d		*init_wolf3d(int fd)
 	w = (t_wolf3d *)ft_memalloc(sizeof(t_wolf3d));
 	w->map = create_map(fd);
 	w->cam = camera_init();
-	//printf("x = %d, y = %d\n", w->cam->position.x, w->cam->position.y);
 	if (!(w->mlx_ptr = mlx_init()))
 		exit(1);
 	w->win_ptr = mlx_new_window(w->mlx_ptr, WIDTH, HEIGHT, "Wolf3d");

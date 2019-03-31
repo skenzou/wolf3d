@@ -1,20 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/31 14:18:44 by midrissi          #+#    #+#             */
+/*   Updated: 2019/03/31 14:35:55 by midrissi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-float	toRadian(float angle)
+static float	toradian(float angle)
 {
 	return (angle * M_PI / 180.0);
 }
 
-float	tCos(float angle)
+float			tcos(float angle)
 {
-	return (cos(toRadian(angle)));
+	return (cos(toradian(angle)));
 }
 
-float	tSin(float angle)
+float			tsin(float angle)
 {
-	return (sin(toRadian(angle)));
+	return (sin(toradian(angle)));
 }
-float	tTan(float angle)
+
+float			ttan(float angle)
 {
-	return (tan(toRadian(angle)));
+	return (tan(toradian(angle)));
 }

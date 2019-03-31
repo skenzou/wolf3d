@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
+/*   Updated: 2019/03/31 14:35:04 by midrissi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 t_camera	*camera_init(void)
 {
-	t_camera	*cam;
+	t_camera		*cam;
 	unsigned int	i;
 
-	if (!(cam = (t_camera*)malloc(sizeof(*cam))))
+	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
 		return (NULL);
 	cam->radius = 5.0f;
-	cam->angle  = 45.0f;
+	cam->angle = 45.0f;
 	cam->speedangle = 10.0f;
 	cam->speedmove = 20.0f;
 	cam->fov = 60.0f;
@@ -19,9 +31,9 @@ t_camera	*camera_init(void)
 	return (cam);
 }
 
-void	projection(t_wolf3d *w, int l)
+void		projection(t_wolf3d *w, int l)
 {
-	int 		i;
+	int			i;
 	int			limit;
 	double		wall_h;
 	double		perpdistwall;
@@ -43,33 +55,33 @@ void	projection(t_wolf3d *w, int l)
 	hit = 0;
 	limit = (l == 0) ? WIN_W : WIDTH_MM;
 	i = -1;
-	perpdistwall = WIN_W / 2 / tTan(w->cam->fov / 2);
+	perpdistwall = WIN_W / 2 / ttan(w->cam->fov / 2);
 	while (++i < limit)
 	{
-		w->cam->rays[i].startPoint = w->cam->position;
-		w->cam->rays[i].startPoint.color = 0xff0000;
-		w->cam->rays[i].endPoint.color = 0xff0000;
+		w->cam->rays[i].startpoint = w->cam->position;
+		w->cam->rays[i].startpoint.color = 0xff0000;
+		w->cam->rays[i].endpoint.color = 0xff0000;
 		if (l == 1)
 			angle = (w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / WIDTH_MM));
 		else
 			angle = (w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / WIN_W));
-		dir.x = tCos(angle);
-		dir.y = tSin(angle);
+		dir.x = tcos(angle);
+		dir.y = tsin(angle);
 		if ((hit = intersection(w, l, &dir)))
-			w->cam->rays[i].endPoint = w->cam->intersection;
+			w->cam->rays[i].endpoint = w->cam->intersection;
 		else
 		{
-			w->cam->rays[i].endPoint.x = w->cam->position.x + w->cam->raylength * tCos((w->cam->angle + w->cam->fov / 2) - (i * (w->cam->fov / limit)));
-			w->cam->rays[i].endPoint.y = w->cam->position.y + w->cam->raylength * tSin((w->cam->angle + w->cam->fov / 2) - (i * (w->cam->fov / limit)));
+			w->cam->rays[i].endpoint.x = w->cam->position.x + w->cam->raylength * tcos((w->cam->angle + w->cam->fov / 2) - (i * (w->cam->fov / limit)));
+			w->cam->rays[i].endpoint.y = w->cam->position.y + w->cam->raylength * tsin((w->cam->angle + w->cam->fov / 2) - (i * (w->cam->fov / limit)));
 		}
 		if (l == 0)
 		{
-			raytravel.y = w->cam->rays[i].endPoint.y - w->cam->position.y;
-			raytravel.x = w->cam->rays[i].endPoint.x - w->cam->position.x;
+			raytravel.y = w->cam->rays[i].endpoint.y - w->cam->position.y;
+			raytravel.x = w->cam->rays[i].endpoint.x - w->cam->position.x;
 			depth = raytravel.x * dir.x + raytravel.y * dir.y;
 			//
-			// dist_w = sqrt(pow((w->cam->position.x - w->cam->rays[i].endPoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endPoint.y), 2));
-			distortion = depth * tCos(w->cam->fov / 2 - (i * w->cam->fov / WIN_W));
+			// dist_w = sqrt(pow((w->cam->position.x - w->cam->rays[i].endpoint.x), 2) + pow((w->cam->position.y - w->cam->rays[i].endpoint.y), 2));
+			distortion = depth * tcos(w->cam->fov / 2 - (i * w->cam->fov / WIN_W));
 			// if (distortion)
 			h_seen = dist_c * wall_h / distortion;
 			//printf("h_seen = %f\n", h_seen);
@@ -94,10 +106,11 @@ void		draw_square(t_wolf3d *w, t_point start)
 			put_pixel_img(w, y + start.x, x + start.y, start.color);
 	}
 }
-void			draw_circle(t_wolf3d *w)
+
+void		draw_circle(t_wolf3d *w)
 {
 	float	angle;
-	int i;
+	int		i;
 
 	angle = 0;
 	while (angle <= 2.0 * M_PI)
@@ -110,17 +123,19 @@ void			draw_circle(t_wolf3d *w)
 	}
 }
 
-int 	intersection(t_wolf3d *w, int i, t_vec2f *dir)
+int			intersection(t_wolf3d *w, int i, t_vec2f *dir)
 {
-	int 			mapx;
-	int 			mapy;
-	unsigned int 	length;
+	int				mapx;
+	int				mapy;
+	unsigned int	length;
+
 	length = -1;
 	while (++length < w->cam->raylength)
 	{
 		mapx = (int)(w->cam->position.x + (length * dir->x));
 		mapy = (int)(w->cam->position.y + (length * dir->y));
-		if ((mapy / BLOC_SIZE < w->map->h && w->map->board[mapy / BLOC_SIZE][mapx / BLOC_SIZE]) || (i == 1 && mapy >= HEIGHT_MM))
+		if ((mapy / BLOC_SIZE < w->map->h && w->map->board[mapy / BLOC_SIZE]
+						[mapx / BLOC_SIZE]) || (i == 1 && mapy >= HEIGHT_MM))
 		{
 			w->cam->intersection.x = mapx;
 			w->cam->intersection.y = mapy;
@@ -128,24 +143,23 @@ int 	intersection(t_wolf3d *w, int i, t_vec2f *dir)
 		}
 	}
 	return (0);
-
 }
 
-void	draw_mmap(t_wolf3d *w)
+void		draw_mmap(t_wolf3d *w)
 {
 	unsigned int i;
 	unsigned int j;
 
 	i = -1;
-	projection(w,1);
-	draw_circle(w); // draw the camera;
+	projection(w, 1);
+	draw_circle(w);
 	while (++i < WIDTH_MM)
-		//printf("start.x = %d start.y = %d end.y = %d end.x = %d\n", w->cam->rays[i].startPoint.x, w->cam->rays[i].startPoint.y, w->cam->rays[i].endPoint.y, w->cam->rays[i].endPoint.x);
-		put_line(w, w->cam->rays[i].startPoint, w->cam->rays[i].endPoint);
+		put_line(w, w->cam->rays[i].startpoint, w->cam->rays[i].endpoint);
 	i = -1;
 	while (++i < (unsigned int)w->map->h && (j = -1))
 		while (++j < (unsigned int)w->map->w)
 			if (w->map->board[i][j])
-				draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i * BLOC_SIZE, .color = 0xffffff});
-	projection(w,0);
+				draw_square(w, (t_point){.x = j * BLOC_SIZE,
+										.y = i * BLOC_SIZE, .color = 0xffffff});
+	projection(w, 0);
 }

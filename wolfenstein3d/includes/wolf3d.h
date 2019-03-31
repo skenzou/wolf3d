@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/30 20:18:55 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/31 14:19:32 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@
 # define X_BLOC			20
 # define Y_BLOC			16
 # define BLOC_SIZE		32
-# define WIDTH_MM			(X_BLOC * BLOC_SIZE)
-# define HEIGHT_MM			(Y_BLOC * BLOC_SIZE)
+# define WIDTH_MM		(X_BLOC * BLOC_SIZE)
+# define HEIGHT_MM		(Y_BLOC * BLOC_SIZE)
 # define WIDTH			2300
 # define HEIGHT			1200
 # define WIN_W 			(WIDTH - WIDTH_MM)
@@ -71,7 +71,6 @@ typedef struct		s_image
 	int			endian;
 }					t_image;
 
-
 typedef struct		s_point
 {
 	int				x;
@@ -79,17 +78,19 @@ typedef struct		s_point
 	int				color;
 }					t_point;
 
-typedef struct  	s_vector2f
+typedef struct		s_vector2f
 {
-		t_point		startPoint;
-		t_point		endPoint;
+	t_point		startpoint;
+	t_point		endpoint;
 }					t_vector2f;
-typedef struct 		s_vec2f
+
+typedef struct		s_vec2f
 {
 	double			x;
 	double			y;
 }					t_vec2f;
-typedef struct 		s_camera
+
+typedef struct		s_camera
 {
 	double			radius;
 	double			angle;
@@ -102,7 +103,7 @@ typedef struct 		s_camera
 	t_vector2f		rays[WIDTH];
 }					t_camera;
 
-typedef	struct 		s_map
+typedef struct		s_map
 {
 	int				**board;
 	int				w;
@@ -125,13 +126,13 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					handle_key(int keycode, t_wolf3d *w);
-float				tCos(float angle);
-float				tSin(float angle);
-float				tTan(float angle);
+float				tcos(float angle);
+float				tsin(float angle);
+float				ttan(float angle);
 void				draw_mmap(t_wolf3d *w);
 t_map				*create_map(int fd);
 void				process(t_wolf3d *w);
 t_camera			*camera_init(void);
-int 				intersection(t_wolf3d *w, int i, t_vec2f
-					*dir);
+int					intersection(t_wolf3d *w, int i, t_vec2f *dir);
+
 #endif
