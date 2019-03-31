@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 18:52:53 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 21:55:34 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@ static inline int		fetch_color(t_wolf3d *w)
 									[w->cam->intersection.x / BLOC_SIZE]) % 3]);
 }
 
+// static inline int		fetch_texture(t_wolf3d *w)
+// {
+// 	return ()
+// }
+
 static inline void		render(t_wolf3d *w, int i, int hit)
 {
 	int		h_seen;
 	t_point	raytravel;
 	double	depth;
 	int		y;
+	int		x;
 
 	raytravel.y = w->cam->rays[i].endpoint.y - w->cam->position.y;
 	raytravel.x = w->cam->rays[i].endpoint.x - w->cam->position.x;
@@ -31,9 +37,14 @@ static inline void		render(t_wolf3d *w, int i, int hit)
 											+ raytravel.y * tsin(w->cam->angle);
 	h_seen = CAM_DIST * WALL_H / depth;
 	y = CAM_H - (h_seen / 2) - 1;
+	x = -1;
+	while (++x < y + 151)
+		put_pixel_img(w, w->width - i + w->mini_w, x, 0x09e4ef);
 	if (hit == 1)
 		while (++y < (CAM_H + (h_seen / 2)))
 			put_pixel_img(w, w->width - i + w->mini_w, y + 150, fetch_color(w));
+	while (++y < w->width)
+		put_pixel_img(w, w->width - i + w->mini_w, y + 150, GREY);
 }
 
 static inline int		intersection(t_wolf3d *w, int i, t_vec2f *dir)

@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/03/31 16:55:17 by midrissi         ###   ########.fr        #
+#    Updated: 2019/03/31 21:15:38 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
 SRC_NAME = main.c read.c utils.c minimap.c drawline.c events.c image.c \
-			raycasting.c
+			raycasting.c init.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 INC_NAME = wolf3d.h
 

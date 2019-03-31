@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 18:51:27 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 22:11:48 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,30 @@ void		process(t_wolf3d *w)
 {
 	if (w->img->ptr)
 		mlx_destroy_image(w->mlx_ptr, w->img->ptr);
-	create_image(w);
+	w->img = create_image(w, NULL);
 	draw_mmap(w);
 	raycasting(w, w->width);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr,
 																		0, 0);
+	if (w->texture)
+		draw_blocs(w);
 }
 
-void		create_image(t_wolf3d *w)
+t_image			*create_image(t_wolf3d *w, char *path)
 {
-	w->img->ptr = mlx_new_image(w->mlx_ptr, WIDTH, HEIGHT);
-	if (!(w->img->ptr))
+	t_image		*img;
+
+	if (!(img = (t_image *)ft_memalloc(sizeof(t_image))))
 		exit(1);
-	w->img->data = mlx_get_data_addr(w->img->ptr,
-			&w->img->bpp, &w->img->sizeline, &w->img->endian);
-	w->img->bpp /= 8;
+	if (path)
+		img->ptr =
+			mlx_xpm_file_to_image(w->mlx_ptr, path, &img->width, &img->height);
+	else
+		img->ptr = mlx_new_image(w->mlx_ptr, WIDTH, HEIGHT);
+	if (!(img->ptr))
+		exit(1);
+	img->data = mlx_get_data_addr(img->ptr,
+			&img->bpp, &img->sizeline, &img->endian);
+	img->bpp /= 8;
+	return (img);
 }

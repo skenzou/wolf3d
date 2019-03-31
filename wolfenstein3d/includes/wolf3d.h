@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 17:36:35 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 22:10:03 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@
 # define ORANGE			0xaf4e11
 # define PURPLE			0x751b91
 # define BLUE			0x081ae0
+# define GREY			0x687272
 
 typedef struct		s_image
 {
@@ -68,6 +69,8 @@ typedef struct		s_image
 	int			bpp;
 	int			sizeline;
 	int			endian;
+	int			height;
+	int			width;
 }					t_image;
 
 typedef struct		s_point
@@ -117,6 +120,8 @@ typedef struct		s_wolf3d
 	t_image			*img;
 	void			*mlx_ptr;
 	void			*win_ptr;
+	char			texture;
+	t_image			*textures[3];
 	int				colors[3];
 	int				mini_h;
 	int				mini_w;
@@ -125,9 +130,14 @@ typedef struct		s_wolf3d
 }					t_wolf3d;
 
 /*
+** INIT.C
+*/
+t_wolf3d			*init_wolf3d(int fd);
+
+/*
 ** IMAGE.c
 */
-void				create_image(t_wolf3d *w);
+t_image				*create_image(t_wolf3d *w, char *path);
 int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
 void				process(t_wolf3d *w);
 
@@ -154,6 +164,7 @@ double				ttan(double angle);
 */
 void				draw_mmap(t_wolf3d *w);
 t_camera			*camera_init(t_wolf3d *w);
+void				draw_blocs(t_wolf3d *w);
 
 /*
 ** READ.C

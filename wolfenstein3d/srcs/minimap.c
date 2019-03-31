@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 19:03:48 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/03/31 22:10:47 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,39 @@ static void		draw_circle(t_wolf3d *w)
 	}
 }
 
-void			draw_mmap(t_wolf3d *w)
+void			draw_blocs(t_wolf3d *w)
 {
 	int i;
 	int j;
 
 	i = -1;
-	raycasting(w, w->mini_w);
-	draw_circle(w);
-	while (++i < w->mini_w)
-		put_line(w, w->cam->rays[i].startpoint, w->cam->rays[i].endpoint);
-	i = -1;
 	while (++i < w->map->h && (j = -1))
 		while (++j < w->map->w)
 			if (w->map->board[i][j])
-				draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i * BLOC_SIZE,
-					.color = w->colors[w->map->board[i][j] % 3]});
+			{
+				if (!w->texture)
+					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
+					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 3]});
+				else
+					mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
+					[w->map->board[i][j] % 3]->ptr,
+												j * BLOC_SIZE, i * BLOC_SIZE);
+			}
+}
+
+void			draw_mmap(t_wolf3d *w)
+{
+	int i;
+
+	i = -1;
+	raycasting(w, w->mini_w);
+	while (++i < w->mini_w)
+		put_line(w, w->cam->rays[i].startpoint, w->cam->rays[i].endpoint);
+	if (!w->texture)
+		draw_blocs(w);
+	draw_circle(w);
+	put_line(w, (t_point){.x = 0, .y = w->mini_h, .color = 0xffffff},
+				(t_point){.x = w->mini_w, .y = w->mini_h});
+	put_line(w, (t_point){.x = w->mini_w, .y = 0, .color = 0xffffff},
+				(t_point){.x = w->mini_w, .y = w->mini_h});
 }
