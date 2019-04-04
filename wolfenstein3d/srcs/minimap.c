@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 22:10:47 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/04 21:42:36 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ t_camera		*camera_init(t_wolf3d *w)
 	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
 		return (NULL);
 	cam->radius = 5.0;
-	cam->angle = 45.0;
+	cam->angle = 0.0;
 	cam->speedangle = 10.0;
 	cam->speedmove = 20.0;
 	cam->fov = 60.0;
 	cam->raylength = w->width;
-	cam->position.x = 128;
-	cam->position.y = 128;
+	cam->position.x = 128.0;
+	cam->position.y = 128.0;
+	cam->position.color = 0xff0000;
 	i = -1;
 	return (cam);
 }
@@ -88,7 +89,10 @@ void			draw_mmap(t_wolf3d *w)
 	i = -1;
 	raycasting(w, w->mini_w);
 	while (++i < w->mini_w)
-		put_line(w, w->cam->rays[i].startpoint, w->cam->rays[i].endpoint);
+		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->
+			position.y, .color = w->cam->position.color}, (t_point){.x = (int)
+				w->cam->rays[i].x, .y = (int)w->cam->rays[i].y, .color =
+				w->cam->rays[i].color});
 	if (!w->texture)
 		draw_blocs(w);
 	draw_circle(w);

@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 22:10:03 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/04 21:41:34 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@
 # define FOV			60
 # define H_M 			200
 # define W_M 			320
-# define X_BLOC			20
-# define Y_BLOC			16
 # define BLOC_SIZE		32
 # define WIDTH			2300
 # define HEIGHT			1200
@@ -80,16 +78,11 @@ typedef struct		s_point
 	int				color;
 }					t_point;
 
-typedef struct		s_vector2f
-{
-	t_point		startpoint;
-	t_point		endpoint;
-}					t_vector2f;
-
 typedef struct		s_vec2f
 {
 	double			x;
 	double			y;
+	int				color;
 }					t_vec2f;
 
 typedef struct		s_camera
@@ -100,9 +93,9 @@ typedef struct		s_camera
 	double			raylength;
 	double			speedmove;
 	double			speedangle;
-	t_point			position;
-	t_point			intersection;
-	t_vector2f		rays[WIDTH];
+	t_vec2f			position;
+	t_vec2f			inter[WIDTH][2];
+	t_vec2f			rays[WIDTH];
 }					t_camera;
 
 typedef struct		s_map

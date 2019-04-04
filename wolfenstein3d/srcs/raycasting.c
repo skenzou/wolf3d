@@ -6,116 +6,110 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/02 19:45:12 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/04 21:41:00 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static inline int		fetch_color(t_wolf3d *w)
-{
-	return (w->colors[(w->map->board[w->cam->intersection.y / BLOC_SIZE]
-									[w->cam->intersection.x / BLOC_SIZE]) % 3]);
-}
+// static inline int		fetch_color(t_wolf3d *w)
+// {
+// 	return (w->colors[(w->map->board[(int)w->cam->intersection.y / BLOC_SIZE]
+// 									[(int)w->cam->intersection.x / BLOC_SIZE]) % 3]);
+// }
 
 
-static inline void		render(t_wolf3d *w, int i, int hit)
+static inline void		render(t_wolf3d *w, int i, double depth)
 {
 	int		h_seen;
-	t_point	raytravel;
-	double	depth;
 	int		y;
 	int		x;
 
-	raytravel.y = w->cam->rays[i].endpoint.y - w->cam->position.y;
-	raytravel.x = w->cam->rays[i].endpoint.x - w->cam->position.x;
-	depth = raytravel.x * tcos(w->cam->angle)
-											+ raytravel.y * tsin(w->cam->angle);
 	h_seen = CAM_DIST * WALL_H / depth;
 	y = CAM_H - (h_seen / 2) - 1;
 	x = -1;
-	while (++x < y + 151)
-		put_pixel_img(w, w->width - i + w->mini_w, x, 0x09e4ef);
-	if (hit == 1)
-		while (++y < (CAM_H + (h_seen / 2)))
-			put_pixel_img(w, w->width - i + w->mini_w, y + 150, fetch_color(w));
-	while (++y < w->width)
-		put_pixel_img(w, w->width - i + w->mini_w, y + 150, GREY);
+	// while (++x < y + 151)
+	// 	put_pixel_img(w, w->width - i + w->mini_w, x, 0x09e4ef);
+	while (++y < (CAM_H + (h_seen / 2)))
+		put_pixel_img(w, w->width - i + w->mini_w, y + 150, 0xff0000);
+	// while (++y < w->width)
+	// 	put_pixel_img(w, w->width - i + w->mini_w, y + 150, GREY);
 }
 
-static inline int		intersection_ver(t_wolf3d *w, t_vec2f *dir)
+static inline void 		inter_hor(t_wolf3d *w, int i, t_vec2f *dir)
 {
-	t_point			a;
-	int				hit;
-	t_point			offset;
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
 
-	hit = 0;
-	if (dir->x < 0)
-	{
-		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE - 1;
-		offset.x = -BLOC_SIZE;
-	}
-	else
-	{
-		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
-		offset.x = BLOC_SIZE;
-	}
-	a.y = w->cam->position.y + (w->cam->position.x - a.x) * dir->x / dir->y;
-	offset.y = BLOC_SIZE * dir->x / dir->y;
-	while (hit == 0 && a.x < w->mini_w && a.y < w->mini_h)
-	{
-		if (a.x / BLOC_SIZE >= 0 && a.y / BLOC_SIZE >= 0 &&
-			w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
-		{
-			// printf("a.x = %d, a.y = %d\n", a.x, a.y);
-			w->cam->intersection_ver.x = a.x;
-			w->cam->intersection_ver.y = a.y;
-			hit = 1;
-		}
-		a.x = a.x + offset.x;
-		a.y = a.y + offset.y;
-	}
-	return (hit);
-}
-
-static inline int		intersection_hor(t_wolf3d *w, t_vec2f *dir)
-{
-	t_point			a;
-	int				hit;
-	t_point			offset;
-
-	hit = 0;
-	if (dir->y > 0)
-	{
+	if (dir->y < 0) // ray is facing up
 		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE - 1;
-		offset.y = -BLOC_SIZE;
-	}
 	else
-	{
 		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
-		offset.y = BLOC_SIZE;
-	}
-	a.x = w->cam->position.x + (w->cam->position.y - a.y) * dir->y / dir->x;
-	offset.x = BLOC_SIZE * dir->y / dir->x;
-	while (hit == 0 && a.x < w->mini_w && a.y < w->mini_h)
+	a.x = w->cam->position.x + (w->cam->position.y - a.y) / dir->y / dir->x;
+	o.x = BLOC_SIZE / dir->y / dir->x;
+	while (a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
 	{
-		if (a.x / BLOC_SIZE >= 0 && a.y / BLOC_SIZE >= 0 &&
-			w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
+		if (w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
 		{
-			// printf("a.x = %d, a.y = %d\n", a.x, a.y);
-			w->cam->intersection_hor.x = a.x;
-			w->cam->intersection_hor.y = a.y;
-			hit = 1;
+			w->cam->inter[i][0] = (t_vec2f){.x = a.x, .y = a.y};
+			break;
 		}
-		a.x += offset.x;
-		a.y += offset.y;
+		a.x += (dir->x < 0) ? -o.x : o.x;
+		a.y += (dir->y < 0) ? -BLOC_SIZE : BLOC_SIZE;
 	}
-	return (hit);
+}
+
+static inline void 		inter_ver(t_wolf3d *w, int i, t_vec2f *dir)
+{
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
+
+	if (dir->x < 0) // ray is facing left
+		a.x = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE - 1;
+	else
+		a.x = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
+	a.y = w->cam->position.y + (w->cam->position.x - a.x) * dir->y / dir->x;
+	o.y = BLOC_SIZE * dir->y / dir->x;
+	while (a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
+	{
+		if (w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
+		{
+			w->cam->inter[i][1] = (t_vec2f){.x = a.x, .y = a.y};
+			break;
+		}
+		a.x += (dir->x < 0) ? -BLOC_SIZE : BLOC_SIZE;
+		a.y += (dir->y < 0) ? -o.y : o.y;
+	}
+}
+
+double					get_distowall(t_wolf3d *w, int i)
+{
+	//t_vec2f		raytravel;
+	double		dist_hor;
+	double		dist_ver;
+
+	// raytravel.x = w->cam->inter[i][0].x - w->cam->position.x;
+	// raytravel.y = w->cam->inter[i][0].y - w->cam->position.y;
+	dist_hor = sqrt(pow((w->cam->inter[i][0].x - w->cam->position.x), 2) + pow(
+		(w->cam->inter[i][0].y - w->cam->position.y), 2));
+	dist_ver = sqrt(pow((w->cam->inter[i][1].x - w->cam->position.x), 2) + pow(
+		(w->cam->inter[i][1].y - w->cam->position.y), 2));
+	printf("d_ver = %f, d_hor = %f\n", dist_ver, dist_hor);
+	if (dist_hor && dist_ver && dist_hor < dist_ver)
+	{
+		w->cam->rays[i] = w->cam->inter[i][0];
+		return (dist_hor);
+	}
+	if (dist_hor && dist_ver && dist_ver < dist_ver)
+	{
+		w->cam->rays[i] = w->cam->inter[i][1];
+		return (dist_ver);
+	}
+	return (0);
 }
 void					raycasting(t_wolf3d *w, int limit)
 {
 	int			i;
-	int			hit;
 	t_vec2f		dir;
 	t_vec2f		forward;
 	t_vec2f		right;
@@ -129,22 +123,14 @@ void					raycasting(t_wolf3d *w, int limit)
 	right.x = forward.y;
 	right.y = -forward.x;
 	halfwidth = ttan(w->cam->fov / 2.0);
-	while (++i < limit && !(hit = 0))
+	while (++i < limit)
 	{
-		w->cam->rays[i].startpoint = w->cam->position;
-		w->cam->rays[i].startpoint.color = 0xff0000;
+		w->cam->rays[i].color = 0xff0000;
 		offset = ((i * 2.0 / (limit - 1.0)) - 1.0) * halfwidth;
 		dir.x = forward.x + offset * right.x;
 		dir.y = forward.y + offset * right.y;
-		if ((hit = intersection(w, &dir)))
-			w->cam->rays[i].endpoint = w->cam->intersection;
-		else
-		{
-			w->cam->rays[i].endpoint.x = w->cam->position.x + w->cam->raylength
-				* dir.x;
-			w->cam->rays[i].endpoint.y = w->cam->position.y + w->cam->raylength
-				* dir.y;
-		}
-		limit == w->width ? render(w, i, hit) : 0;
+		inter_hor(w, i, &dir);
+		inter_ver(w, i, &dir);
+		limit == w->width ? render(w, i, get_distowall(w, i)) : 0;
 	}
 }
