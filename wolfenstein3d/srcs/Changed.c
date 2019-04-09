@@ -28,78 +28,196 @@ static inline int		intersection(t_wolf3d *w, int i, t_vec2f *dir)
 	}
 	return (0);
 }
-static inline int		intersection_hor(t_wolf3d *w, t_vec2f *dir)
+static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 {
-	t_point			a;
-	int				hit;
-	t_point			offset;
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
+	int 	j;
+	double	v;
+	int 	ac;
 
-	// printf("horstar\n");
-	hit = 0;
-	if (dir->y > 0)
+	j = 0;
+	ac = (int)angle;
+	if (ac > 180 && ac < 360)// ray is facing up
 	{
 		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE - 1;
-		offset.y = -BLOC_SIZE;
+		o.y = -BLOC_SIZE;
 	}
 	else
 	{
 		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
-		offset.y = BLOC_SIZE;
+		o.y = BLOC_SIZE;
 	}
-	a.x = w->cam->position.x + (w->cam->position.y - a.y) / ttan(w->cam->fov);
-	offset.x = 64 / ttan(w->cam->fov);
-	while (hit == 0 && a.x / BLOC_SIZE < w->map->w && a.y / BLOC_SIZE < w->map->h)
+	if (ac == 90 || ac == 270)
 	{
-		if (a.x / BLOC_SIZE >= 0 && a.y / BLOC_SIZE >= 0 &&
-			w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
-		{
-			// printf("a.x = %d, a.y = %d\n", a.x, a.y);
-			w->cam->intersection_hor.x = a.x;
-			w->cam->intersection_hor.y = a.y;
-			w->cam->dist_hor = abs(w->cam->position.x - a.x) / tcos(w->cam->angle);
-			hit = 1;
-		}
-		a.x = a.x + offset.x;
-		a.y = a.y + offset.y;
+		v = 1;
+		o.x = 0;
 	}
-	// printf("horend\n");
-	return (hit);
+	else if (ac == 180 || ac == 360)
+	{
+		v = 1;
+		o.y = 0;
+		o.x = BLOC_SIZE;
+	}
+	else
+	{
+		v = ttan(angle);
+		o.x = BLOC_SIZE / v;
+	}
+	a.x = w->cam->position.x + (w->cam->position.y - a.y) / v;
+	while (++j && a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
+	{
+		printf("%d intersection horizontal x = %f y = %f\n", j, a.x, a.y);
+		if (w->map->board[(int)round(a.y / BLOC_SIZE)][(int)round(a.x / BLOC_SIZE)])
+		{
+			w->cam->inter[i][0] = (t_vec2f){.x = a.x, .y = a.y};
+			printf("wall hit horizontal x = %f, y = %f\n", w->cam->inter[i][0].x, w->cam->inter[i][0].y);
+			break;
+		}
+		a.x += ((ac > 180 && ac < 270) || (ac > 270 && ac < 360)) ? -o.x : o.x;
+		a.y += o.y;
+	}
 }
-static inline int		intersection_ver(t_wolf3d *w, t_vec2f *dir)
-{
-	t_point			a;
-	int				hit;
-	t_point			offset;
 
-	// printf("verstart\n");
-	hit = 0;
-	if (dir->x > 0)
+static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
+{
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
+	int j = 1;
+	double	v;
+	int 	ac;
+
+	ac = (int)angle;
+	if (ac > 90 && ac < 270) // ray is facing left
 	{
 		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE - 1;
-		offset.x = BLOC_SIZE;
+		o.x = -BLOC_SIZE;
 	}
 	else
 	{
 		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
-		offset.x = -BLOC_SIZE;
+		o.x = BLOC_SIZE;
 	}
-	a.y = w->cam->position.y + (w->cam->position.x - a.x) * ttan(w->cam->fov);
-	offset.y = 64 / ttan(w->cam->fov);
-	while (hit == 0 && a.x / BLOC_SIZE < w->map->w && a.y / BLOC_SIZE < w->map->h)
+	if (ac == 90 || ac == 270)
 	{
-		//printf("a.x = %d, a.y = %d\n", a.x, a.y);
-		if (a.x / BLOC_SIZE >= 0 && a.y / BLOC_SIZE >= 0 &&
-			w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
-		{
-			//printf("a.x = %d, a.y = %d\n", a.x, a.y);
-			w->cam->intersection_hor.x = a.x;
-			w->cam->intersection_hor.y = a.y;
-			w->cam->dist_ver = abs(w->cam->position.y - a.y) / tsin(w->cam->angle);
-			hit = 1;
-		}
-		a.x = a.x + offset.x;
-		a.y = a.y + offset.y;
+		v = 1;
+		o.x = 0;
+		o.y = BLOC_SIZE;
 	}
-	// printf("verstend\n");
-	return (hit);
+	else if (ac == 180 || ac == 360)
+	{
+		v = 1;
+		o.y = 0;
+	}
+	else
+	{
+		v = ttan(angle);
+		o.y = BLOC_SIZE * v;
+	}
+	a.y = w->cam->position.y + (w->cam->position.x - a.x) * v;
+	while (++j && a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
+	{
+		printf("%d intersection vertical x = %f y = %f\n", j, a.x, a.y);
+		if (w->map->board[(int)round(a.y / BLOC_SIZE)][(int)round(a.x / BLOC_SIZE)])
+		{
+			w->cam->inter[i][1] = (t_vec2f){.x = a.x, .y = a.y};
+			printf("wall hit vertical x = %f, y = %f\n", w->cam->inter[i][1].x, w->cam->inter[i][1].y);
+			break;
+		}
+		a.y += ((ac > 180 && ac < 270) || (ac > 90 && ac < 180)) ? -o.y : o.y;
+		a.x += o.x;
+	}
 }
+// static inline int		fetch_color(t_wolf3d *w)
+// {
+// 	return (w->colors[(w->map->board[(int)w->cam->intersection.y / BLOC_SIZE]
+// 									[(int)w->cam->intersection.x / BLOC_SIZE]) % 3]);
+// }
+
+
+/*static inline void		render(t_wolf3d *w, int i, double depth)
+{
+	int		h_seen;
+	int		y;
+	int		x;
+
+	h_seen = CAM_DIST * WALL_H / depth;
+	y = CAM_H - (h_seen / 2) - 1;
+	x = -1;
+	// while (++x < y + 151)
+	// 	put_pixel_img(w, w->width - i + w->mini_w, x, 0x09e4ef);
+	while (++y < (CAM_H + (h_seen / 2)))
+		put_pixel_img(w, w->width - i + w->mini_w, y + 150, 0xff0000);
+	// while (++y < w->width)
+	// 	put_pixel_img(w, w->width - i + w->mini_w, y + 150, GREY);
+}
+*/
+/*static inline void 		inter_hor(t_wolf3d *w, int i, double angle, double a_c)
+{
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
+	int 	j;
+
+	j = 0;
+	if (a_c >= 180 && a_c <= 360.0)// ray is facing up
+	{
+		printf("facing UP --- angle = %f\n", ttan(angle));
+		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
+		o.y = -BLOC_SIZE;
+	}
+	else
+	{
+		printf("facing DOWN --- angle = %f\n", ttan(angle));
+		a.y = floor(w->cam->position.y / BLOC_SIZE) * BLOC_SIZE - 1;
+		o.y = BLOC_SIZE;
+	}
+	a.x = w->cam->position.x + (w->cam->position.y - a.y) / ttan(angle);
+	o.x = BLOC_SIZE / ttan(angle);
+	while (++j && a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
+	{
+		printf("%d intersection horizontal x = %f y = %f\n", j, a.x, a.y);
+		if (w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
+		{
+			w->cam->inter[i][0] = (t_vec2f){.x = a.x, .y = a.y};
+			printf("wall hit horizontal x = %f, y = %f\n", w->cam->inter[i][0].x, w->cam->inter[i][0].y);
+			break;
+		}
+		a.x += o.x;
+		a.y += o.y;
+	}
+}
+
+static inline void 		inter_ver(t_wolf3d *w, int i, double angle, double a_c)
+{
+	t_vec2f	a; // intersection point
+	t_vec2f	o; // offset
+	int j = 1;
+
+	if (a_c >= 90.0 && a_c <= 270.0) // ray is facing left
+	{
+		printf("facing LEFT --- angle = %f\n", ttan(angle));
+		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE - 1;
+		o.x = -BLOC_SIZE;
+	}
+	else
+	{
+		printf("facing RIGHT --- angle = %f\n", ttan(angle));
+		a.x = floor(w->cam->position.x / BLOC_SIZE) * BLOC_SIZE + BLOC_SIZE;
+		o.x = BLOC_SIZE;
+	}
+	a.y = w->cam->position.y + (w->cam->position.x - a.x) * ttan(angle);
+	o.y = BLOC_SIZE * ttan(angle);
+	while (++j && a.x >= 0 && a.y >= 0 && a.x < w->mini_w && a.y < w->mini_h)
+	{
+		printf("%d intersection vertical x = %f y = %f\n", j, a.x, a.y);
+		if (w->map->board[(int)a.y / BLOC_SIZE][(int)a.x / BLOC_SIZE])
+		{
+			w->cam->inter[i][1] = (t_vec2f){.x = a.x, .y = a.y};
+			printf("wall hit vertical x = %f, y = %f\n", w->cam->inter[i][1].x, w->cam->inter[i][1].y);
+			break;
+		}
+		a.y += o.y;
+		a.x += o.x;
+	}
+}
+*/

@@ -93,8 +93,10 @@ typedef struct		s_camera
 	double			raylength;
 	double			speedmove;
 	double			speedangle;
+	t_vec2f			intersection;
 	t_vec2f			position;
-	t_vec2f			inter[WIDTH][2];
+	t_vec2f			interv[WIDTH];
+	t_vec2f			interh[WIDTH];
 	t_vec2f			rays[WIDTH];
 }					t_camera;
 
