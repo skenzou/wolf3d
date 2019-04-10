@@ -20,7 +20,7 @@ t_camera		*camera_init(t_wolf3d *w)
 	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
 		return (NULL);
 	cam->radius = 5.0;
-	cam->angle = 30.0;
+	cam->angle = 0.0;
 	cam->speedangle = 10.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;
@@ -90,6 +90,7 @@ void			draw_mmap(t_wolf3d *w)
 	raycasting(w, w->mini_w);
 	while (++i < w->mini_w)
 	{
+		//if (i == 231)
 		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->
 			position.y, .color = w->cam->position.color}, (t_point){.x = (int)
 				w->cam->rays[i].x, .y = (int)w->cam->rays[i].y, .color =

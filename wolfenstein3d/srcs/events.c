@@ -17,12 +17,13 @@ static inline void		backward(t_wolf3d *w)
 	int nextx;
 	int nexty;
 
-	nextx = w->cam->position.x - tcos(w->cam->angle) * w->cam->speedmove;
-	nexty = w->cam->position.y - tsin(w->cam->angle) * w->cam->speedmove;
+	nextx = w->cam->position.x + tcos(w->cam->angle) * w->cam->speedmove;
+	nexty = w->cam->position.y + tsin(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 	{
+		printf(" -----Backward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
 		w->cam->position.x = nextx;
 		w->cam->position.y = nexty;
 	}
@@ -33,18 +34,19 @@ static inline void		forward(t_wolf3d *w)
 	int nextx;
 	int nexty;
 
-	nextx = w->cam->position.x + tcos(w->cam->angle) * w->cam->speedmove;
-	nexty = w->cam->position.y + tsin(w->cam->angle) * w->cam->speedmove;
+	nextx = w->cam->position.x - tcos(w->cam->angle) * w->cam->speedmove;
+	nexty = w->cam->position.y - tsin(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 	{
+		printf("------Forward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
 		w->cam->position.x = nextx;
 		w->cam->position.y = nexty;
 	}
 }
 
-static inline void 		leftward(t_wolf3d *w)
+static inline void 		left(t_wolf3d *w)
 {
 	int	nextx;
 	int	nexty;
@@ -60,7 +62,7 @@ static inline void 		leftward(t_wolf3d *w)
 	}
 }
 
-static inline void 		rightward(t_wolf3d *w)
+static inline void 		right(t_wolf3d *w)
 {
 	int	nextx;
 	int	nexty;
@@ -83,9 +85,9 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 	if (keycode == DOWNARROW)
 		backward(w);
 	if (keycode == 0)
-		leftward(w);
+		left(w);
 	if (keycode == 2)
-		rightward(w);
+		right(w);
 	(keycode == LEFTARROW) && (w->cam->angle -= w->cam->speedangle);
 	(keycode == RIGHTARROW) && (w->cam->angle += w->cam->speedangle);
 	(keycode == SPACE) && (w->texture = w->texture == 0 ? 1 : 0);

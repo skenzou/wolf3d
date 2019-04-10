@@ -221,3 +221,21 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle, double a_c)
 	}
 }
 */
+
+/*	t_vec2f		forward;
+	t_vec2f		right;
+	double		halfwidth;
+	double		offset;*/
+
+	i = -1;
+	//printf("angle: %f\n", w->cam->angle);
+/*	forward.x = tcos(w->cam->angle);
+	forward.y = tsin(w->cam->angle);
+	right.x = forward.y;
+	right.y = -forward.x;
+	halfwidth = ttan(w->cam->fov / 2.0);*/
+	while (++i < limit && !(hit = 0))
+	{
+/*		offset = ((i * 2.0 / (limit - 1.0)) - 1.0) * halfwidth;
+		dir.x = forward.x + offset * right.x;
+		dir.y = forward.y + offset * right.y;*/
