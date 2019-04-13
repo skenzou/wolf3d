@@ -15,12 +15,11 @@
 t_camera		*camera_init(t_wolf3d *w)
 {
 	t_camera		*cam;
-	unsigned int	i;
 
 	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
 		return (NULL);
 	cam->radius = 5.0;
-	cam->angle = 0.0;
+	cam->angle = 180.0;
 	cam->speedangle = 10.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;
@@ -28,7 +27,7 @@ t_camera		*camera_init(t_wolf3d *w)
 	cam->position.x = 128.0;
 	cam->position.y = 128.0;
 	cam->position.color = 0xff0000;
-	i = -1;
+	cam->pangle = 0.0;
 	return (cam);
 }
 
@@ -90,7 +89,7 @@ void			draw_mmap(t_wolf3d *w)
 	raycasting(w, w->mini_w);
 	while (++i < w->mini_w)
 	{
-		//if (i == 231)
+/*		printf("coordinates of the point received x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);*/
 		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->
 			position.y, .color = w->cam->position.color}, (t_point){.x = (int)
 				w->cam->rays[i].x, .y = (int)w->cam->rays[i].y, .color =

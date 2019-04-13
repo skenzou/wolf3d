@@ -59,6 +59,7 @@
 # define PURPLE			0x751b91
 # define BLUE			0x081ae0
 # define GREY			0x687272
+# define R_COLOR		0xff0000
 
 typedef struct		s_image
 {
@@ -87,6 +88,7 @@ typedef struct		s_vec2f
 
 typedef struct		s_camera
 {
+	double			pangle;
 	double			radius;
 	double			angle;
 	double			fov;
