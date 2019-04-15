@@ -88,8 +88,8 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 		left(w);
 	if (keycode == 2)
 		right(w);
-	(keycode == LEFTARROW) && (w->cam->angle -= w->cam->speedangle);
-	(keycode == RIGHTARROW) && (w->cam->angle += w->cam->speedangle);
+	(keycode == RIGHTARROW) && (w->cam->angle -= w->cam->speedangle);
+	(keycode == LEFTARROW) && (w->cam->angle += w->cam->speedangle);
 	(keycode == SPACE) && (w->texture = w->texture == 0 ? 1 : 0);
 	(w->cam->angle > 360) && (w->cam->angle = 0);
 	(w->cam->angle < 0) && (w->cam->angle = 360);

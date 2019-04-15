@@ -32,8 +32,7 @@ void		process(t_wolf3d *w)
 		mlx_destroy_image(w->mlx_ptr, w->img->ptr);
 	w->img = create_image(w, NULL);
 	draw_mmap(w);
-	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr,
-																		0, 0);
+	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
 	if (w->texture)
 		draw_blocs(w);
 }

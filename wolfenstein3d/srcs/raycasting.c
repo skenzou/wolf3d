@@ -64,25 +64,25 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 	o.x = (angle < 90 || angle > 270) ? 64 / tangent : -64 / tangent;
 	a.x = (angle != 180.0 && angle < 359.97) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
 	w->cam->position.x + (w->cam->position.y - a.y) / -tangent;
-	a.x = (angle >= 179.97 && angle <= 180) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
-	if (a.x < 0 || a.x >= w->mini_w - 1)
+	a.x = (angle >= 179.965197 && angle <= 180) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
+	if (a.x < 0 || a.x >= w->mini_w)
 		a.x = (a.x < 0) ? 0 : w->mini_w - 1;
-	// printf("START ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", ceil(a.x), a.y, o.x, o.y);
+//	printf(" width = %d START ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", w->mini_w, a.x, a.y, o.x, o.y);
 	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 	{
 		a.x += ((angle >= 90 && angle < 180) || angle >= 270) ? -o.x : o.x;
 		a.y += o.y;
-		//printf("----INSIDE HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
+	//	printf("----INSIDE HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 		if (a.x < 0 || a.x >=  w->mini_w)
 			a.x = (a.x < 0) ? 0 : w->mini_w - 1;
-		if (a.y < 0 || a.y > w->mini_h - 1)
+		if (a.y < 0 || a.y >= w->mini_h)
 			break;
-		//if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
-			//printf("HIT\n");
+/*		if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
+			printf("HIT\n");*/
 	}
 	w->cam->interh[i].x = a.x;
 	w->cam->interh[i].y = a.y;
-	// printf("END ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
+	//printf("END ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 }
 
 static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
@@ -105,16 +105,17 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 	{
 		a.y += ((angle > 90 && angle < 180) || angle > 270) ? -o.y : o.y;
 		a.x += o.x;
-		//printf("----INSIDE VER----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
+	//	printf("----INSIDE VER----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 		if (a.y < 0 || a.y >=  w->mini_h)
 			a.y = (a.y < 0) ? 0 : w->mini_h - 1;
 		if (a.x < 0 || a.x > w->mini_w - 1)
 			break;
-		//if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
-		//	printf("HIT\n");
+	/*	if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
+			printf("HIT\n");*/
 	}
 	w->cam->interv[i].x = a.x;
 	w->cam->interv[i].y = a.y;
+//	printf("---VER----Point of intersections after the loop : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 }
 
 double					get_distowall(t_wolf3d *w, int i)
@@ -136,9 +137,6 @@ double					get_distowall(t_wolf3d *w, int i)
 		w->cam->rays[i] = w->cam->interv[i];
 		w->inter = 1;
 	}
-	//printf("distance = %f\n", dist_hor);
-	//printf("Point of intersections : x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);
-	//return (dist_hor);
 	return ((dist_hor > dist_ver) ? dist_ver : dist_hor);
 }
 
@@ -157,9 +155,8 @@ void					raycasting(t_wolf3d *w)
 			angle += 360;
 		if (angle >= 360)
 			angle -= 360;
-		//if (angle >= 179.2 && angle <= 179.99) //huge problem on 179.2 ...
-		//{
-			//printf("angle == %f\n", angle);
+/*		if (angle >= 179.965197 && angle < 179.98) //huge problem on 179.2 ...
+		{*/
 			inter_ver(w, i, angle);
 			inter_hor(w, i, angle);
 			dist = get_distowall(w, i);

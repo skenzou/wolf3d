@@ -88,11 +88,9 @@ typedef struct		s_vec2f
 
 typedef struct		s_camera
 {
-	double			pangle;
 	double			radius;
 	double			angle;
 	double			fov;
-	double			raylength;
 	double			speedmove;
 	double			speedangle;
 	t_vec2f			intersection;
@@ -161,7 +159,7 @@ double				ttan(double angle);
 ** MINIMAP.C
 */
 void				draw_mmap(t_wolf3d *w);
-t_camera			*camera_init(t_wolf3d *w);
+t_camera			*camera_init();
 void				draw_blocs(t_wolf3d *w);
 
 /*
