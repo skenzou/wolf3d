@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/04 21:42:36 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:27:37 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void			draw_blocs(t_wolf3d *w)
 			{
 				if (!w->texture)
 					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
-					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 3]});
+					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 4]});
 				else
 					mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
-					[w->map->board[i][j] % 3]->ptr,
+					[w->map->board[i][j] % 4]->ptr,
 												j * BLOC_SIZE, i * BLOC_SIZE);
 			}
 }
@@ -86,8 +86,8 @@ void			draw_mmap(t_wolf3d *w)
 	int i;
 
 	i = -1;
-	raycasting(w, w->mini_w);
-	while (++i < w->mini_w)
+	raycasting(w);
+	while (++i < w->width)
 	{
 /*		printf("coordinates of the point received x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);*/
 		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->

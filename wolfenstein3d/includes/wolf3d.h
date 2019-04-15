@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/04 21:41:34 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:27:10 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define FOV			60
 # define H_M 			200
 # define W_M 			320
-# define BLOC_SIZE		32
+# define BLOC_SIZE		64
 # define WIDTH			2300
 # define HEIGHT			1200
 # define WALL_H			1000.0
@@ -118,12 +118,13 @@ typedef struct		s_wolf3d
 	void			*mlx_ptr;
 	void			*win_ptr;
 	char			texture;
-	t_image			*textures[3];
-	int				colors[3];
+	t_image			*textures[5];
+	int				colors[4];
 	int				mini_h;
 	int				mini_w;
 	int				width;
 	int				height;
+	char			inter;
 }					t_wolf3d;
 
 /*
@@ -171,6 +172,6 @@ t_map				*create_map(int fd);
 /*
 ** RAYCASTING.c
 */
-void				raycasting(t_wolf3d *w, int limit);
+void				raycasting(t_wolf3d *w);
 
 #endif

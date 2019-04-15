@@ -6,27 +6,49 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/04 21:41:00 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:32:38 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int 	fetch_color(t_wolf3d *w, int h_seen, int i, int y)
+{
+	int color;
+	int tex_y;
+	int tex_x;
+	int index;
+	int offset;
+
+	index = w->map->board
+		[(int)w->cam->rays[i].y / 64][(int)w->cam->rays[i].x / 64] % 4;
+	if (!w->texture)
+		return (w->colors[index]);
+	tex_y = y * (64. / h_seen) -1;
+	tex_x = w->inter ? (int)w->cam->rays[i].y % 64 : (int)w->cam->rays[i].x % 64;
+	offset = 64 * 4 * tex_y + tex_x * 4;
+	ft_memcpy((void *)&color, w->textures[index]->data + offset, 4);
+	return (color);
+}
 
 static inline void		render(t_wolf3d *w, int i, double depth)
 {
 	int		h_seen;
 	int		y;
 	int		x;
+	int		inc;
 
 	h_seen = CAM_DIST * WALL_H / depth;
 	y = CAM_H - (h_seen / 2) - 1;
 	x = -1;
-	// while (++x < y + 151)
-	// 	put_pixel_img(w, w->width - i + w->mini_w, x, 0x09e4ef);
+	while (++x < y + 151)
+		put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
+	inc = 0;
+	// printf("y: %d\n",y);
 	while (++y < (CAM_H + (h_seen / 2)))
-		put_pixel_img(w, /*w->width*/ i + w->mini_w, y + 150, 0xff0000);
-	// while (++y < w->width)
-	// 	put_pixel_img(w, w->width - i + w->mini_w, y + 150, GREY);
+		put_pixel_img(w, /*w->width*/ i + w->mini_w, y + 150, fetch_color(w, h_seen, i, inc++));
+	while (++y < w->width)
+		put_pixel_img(w, i + w->mini_w, y + 150, GREY);
 }
 
 static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
@@ -36,31 +58,31 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 	double	tangent;
 
 	tangent = ttan(angle) + 0.001;
-	a.y = (angle <= 180) ? w->cam->position.y / 32 *
-	32 - 1 : w->cam->position.y / 32 * 32 + 32;
-	o.y = (angle < 180) ? -32 : 32;
-	o.x = (angle < 90 || angle > 270) ? 32 / tangent : -32 / tangent;
+	a.y = (angle <= 180) ? floor(w->cam->position.y / 64) *
+	64 - 1 : floor(w->cam->position.y / 64) * 64 + 64;
+	o.y = (angle < 180) ? -64 : 64;
+	o.x = (angle < 90 || angle > 270) ? 64 / tangent : -64 / tangent;
 	a.x = (angle != 180.0 && angle < 359.97) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
 	w->cam->position.x + (w->cam->position.y - a.y) / -tangent;
 	a.x = (angle >= 179.97 && angle <= 180) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
 	if (a.x < 0 || a.x >= w->mini_w - 1)
 		a.x = (a.x < 0) ? 0 : w->mini_w - 1;
-	printf("START ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", ceil(a.x), a.y, o.x, o.y);
-	while (w->map->board[(int)a.y / 32][(int)a.x / 32] == 0)
+	// printf("START ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", ceil(a.x), a.y, o.x, o.y);
+	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 	{
-		a.x += ((angle >= 90 && angle < 180) || angle >= 270) ? -o.x : o.x; 
+		a.x += ((angle >= 90 && angle < 180) || angle >= 270) ? -o.x : o.x;
 		a.y += o.y;
 		//printf("----INSIDE HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 		if (a.x < 0 || a.x >=  w->mini_w)
 			a.x = (a.x < 0) ? 0 : w->mini_w - 1;
 		if (a.y < 0 || a.y > w->mini_h - 1)
 			break;
-		//if (w->map->board[(int)a.y / 32][(int)a.x / 32] == 0)
+		//if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 			//printf("HIT\n");
 	}
 	w->cam->interh[i].x = a.x;
 	w->cam->interh[i].y = a.y;
-	printf("END ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
+	// printf("END ---HOR----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
 }
 
 static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
@@ -70,16 +92,16 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 	double	tangent;
 
 	tangent = ttan(angle) + 0.001;
-	a.x = (angle >= 90 && angle < 270) ? w->cam->position.x / 32 *
-	32 - 1 : w->cam->position.x / 32 * 32 + 32;
-	o.x = (angle > 90 && angle < 270) ? -32 : 32;
-	o.y = (angle > 0 &&  angle < 180) ? -32 * tangent : 32 * tangent;
+	a.x = (angle >= 90 && angle < 270) ? floor(w->cam->position.x / 64) *
+	64 - 1 : floor(w->cam->position.x / 64) * 64 + 64;
+	o.x = (angle > 90 && angle < 270) ? -64 : 64;
+	o.y = (angle > 0 &&  angle < 180) ? -64 * tangent : 64 * tangent;
 	a.y = (angle != 270 && angle != 90) ? w->cam->position.y + (w->cam->position.x - a.x) * tangent :
 	w->cam->position.y + (w->cam->position.x - a.x) * -tangent;
 	if (a.y < 0 || a.y >=  w->mini_h)
 		a.y = (a.y < 0) ? 0 : w->mini_h - 1;
 	//printf("---VER----Point of intersections : x = %f, y = %f o.x = %f, o.y = %f\n", a.x, a.y, o.x, o.y);
-	while (w->map->board[(int)a.y / 32][(int)a.x / 32] == 0)
+	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 	{
 		a.y += ((angle > 90 && angle < 180) || angle > 270) ? -o.y : o.y;
 		a.x += o.x;
@@ -88,7 +110,7 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 			a.y = (a.y < 0) ? 0 : w->mini_h - 1;
 		if (a.x < 0 || a.x > w->mini_w - 1)
 			break;
-		//if (w->map->board[(int)a.y / 32][(int)a.x / 32] == 0)
+		//if (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 		//	printf("HIT\n");
 	}
 	w->cam->interv[i].x = a.x;
@@ -105,26 +127,32 @@ double					get_distowall(t_wolf3d *w, int i)
 	dist_ver = sqrt(pow((w->cam->interv[i].x - w->cam->position.x), 2) + pow(
 		(w->cam->interv[i].y - w->cam->position.y), 2));
 	if (dist_hor < dist_ver)
+	{
 		w->cam->rays[i] = w->cam->interh[i];
+		w->inter = 0;
+	}
 	else
+	{
 		w->cam->rays[i] = w->cam->interv[i];
+		w->inter = 1;
+	}
 	//printf("distance = %f\n", dist_hor);
 	//printf("Point of intersections : x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);
 	//return (dist_hor);
 	return ((dist_hor > dist_ver) ? dist_ver : dist_hor);
 }
 
-void					raycasting(t_wolf3d *w, int limit)
+void					raycasting(t_wolf3d *w)
 {
 	int			i;
 	double		angle;
 	double 		dist;
 
 	i = -1;
-	while (++i < limit)
+	while (++i < w->width)
 	{
 		w->cam->rays[i].color = R_COLOR; // ray color (red)
-		angle = w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / limit);
+		angle = w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / w->width);
 		if (angle < 0)
 			angle += 360;
 		if (angle >= 360)
@@ -135,7 +163,7 @@ void					raycasting(t_wolf3d *w, int limit)
 			inter_ver(w, i, angle);
 			inter_hor(w, i, angle);
 			dist = get_distowall(w, i);
-			limit == w->width ? render(w, i, dist) : 0;
+			render(w, i, dist);
 		//}
 	}
 }

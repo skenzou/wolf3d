@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/04 15:20:07 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/15 13:23:20 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static inline void		backward(t_wolf3d *w)
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 	{
-		printf(" -----Backward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
+		// printf(" -----Backward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
 		w->cam->position.x = nextx;
 		w->cam->position.y = nexty;
 	}
@@ -40,7 +40,7 @@ static inline void		forward(t_wolf3d *w)
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
 	{
-		printf("------Forward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
+		// printf("------Forward----Next position of the player : x = %d, y = %d\n", nextx, nexty);
 		w->cam->position.x = nextx;
 		w->cam->position.y = nexty;
 	}
