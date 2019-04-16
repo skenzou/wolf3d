@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/04/16 08:37:28 by midrissi         ###   ########.fr        #
+#    Updated: 2019/04/16 08:58:38 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ $(NAME): $(LIBFT_PATH)$(LIBFT_NAME) $(OBJ)
 		@make -C $(MLX_PATH)
 		@$(CC) -o $(NAME) $(MLX_LINK) -L $(LFT_PATH) -lft $^ -o $@
 		@printf "$(_BOLD)$(_RED)./wolf3d is ready for use\n$(_END)"
-		@printf "$(_BOLD)$(_CYAN)\n\nusage: ./wolf3d <map>\n$(_RESET)"
+		@printf "$(_BOLD)$(_CYAN)\n\nusage: ./wolf3d <map>\n$(_END)"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC_FPATH)
 		@mkdir -p $(OBJ_PATH) 2> /dev/null || true

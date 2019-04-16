@@ -6,11 +6,34 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 08:47:58 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 14:29:03 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+
+void	draw_sky(t_wolf3d *w, int x, int y_end)
+{
+	int y;
+	int offset;
+	int tex_y;
+
+	y = 0;
+	while (y < y_end)
+	{
+		tex_y = y * (512. / y_end) - 1;
+		if (tex_y <= 0)
+			tex_y = 1;
+		// printf("texy: %d\n", tex_y);
+		offset = 512 * 4 * tex_y + (x % 512) * 4;
+		// printf("offset: %d\n", offset);
+		ft_memcpy(w->img->data + 4 * WIDTH * y + (x + w->mini_w) * 4,
+				w->textures[4]->data + offset, 4);
+		y++;
+	}
+}
+
 
 int 	fetch_color(t_wolf3d *w, int h_seen, int i, int y)
 {
@@ -35,14 +58,15 @@ static inline void		render(t_wolf3d *w, int i, double depth)
 {
 	int		h_seen;
 	int		y;
-	int		x;
+	// int		x;
 	int		inc;
 
 	h_seen = CAM_DIST * WALL_H / depth;
 	y = CAM_H - (h_seen / 2) - 1;
-	x = -1;
-	while (++x < y + 151)
-		put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
+	// x = -1;
+	// while (++x < y + 151)
+	// 	put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
+	draw_sky(w, i, y + 151);
 	inc = 0;
 	// printf("y: %d\n",y);
 	while (++y < (CAM_H + (h_seen / 2)))
