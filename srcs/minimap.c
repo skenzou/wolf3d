@@ -19,7 +19,7 @@ t_camera		*camera_init()
 	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
 		return (NULL);
 	cam->radius = 5.0;
-	cam->angle = 180.0;
+	cam->angle = 360.0;
 	cam->speedangle = 10.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;

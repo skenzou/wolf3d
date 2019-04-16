@@ -31,3 +31,29 @@ double			ttan(double angle)
 {
 	return (tan(toradian(angle)));
 }
+
+void		cos_lookuptable(t_wolf3d *w, double	tab[])
+{
+	int			i;
+	double		angle;
+
+	i = -1;
+	while (++i < w->width)
+	{
+		angle = (w->cam->fov / 2) - (i * w->cam->fov / w->width);
+		tab[i] = tcos(angle);
+	}
+}
+
+void		tan_lookuptable(t_wolf3d *w, double tab[])
+{
+	int			i;
+	double		angle;
+
+	i = -1;
+	while (++i < w->width)
+	{
+		angle = w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / w->width);
+		tab[i] = ttan(angle);
+	}
+}
