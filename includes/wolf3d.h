@@ -157,6 +157,8 @@ int					camera_mov(int x, int y, t_wolf3d *w);
 double				tcos(double angle);
 double				tsin(double angle);
 double				ttan(double angle);
+void				cos_lookuptable(t_wolf3d *w, double	tab[]);
+void				tan_lookuptable(t_wolf3d *w, double tab[]);
 
 /*
 ** MINIMAP.C
