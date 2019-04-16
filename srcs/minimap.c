@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/18 13:02:34 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/22 10:38:34 by midrissi         ###   ########.fr       */
+/*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
+/*   Updated: 2019/04/15 18:27:37 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+t_camera		*camera_init(t_wolf3d *w)
+{
+	t_camera		*cam;
+
+	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
+		return (NULL);
+	cam->radius = 5.0;
+	cam->angle = 180.0;
+	cam->speedangle = 10.0;
+	cam->speedmove = 10.0;
+	cam->fov = 60.0;
+	cam->raylength = w->width;
+	cam->position.x = 128.0;
+	cam->position.y = 128.0;
+	cam->position.color = 0xff0000;
+	cam->pangle = 0.0;
+	return (cam);
+}
 
 static void		draw_square(t_wolf3d *w, t_point start)
 {
@@ -18,125 +37,69 @@ static void		draw_square(t_wolf3d *w, t_point start)
 	int		x;
 
 	y = -1;
-	while (++y <= MINIM_S)
+	while (++y <= BLOC_SIZE)
 	{
 		x = -1;
-		while (++x <= MINIM_S)
-		{
-			if (x + start.x == start.x || y + start.y == start.y || x == MINIM_S
-			|| y == MINIM_S)
-				put_pixel_img(w, y + start.x, x + start.y, LIGHTRED);
-			else
-				put_pixel_img(w, y + start.x, x + start.y, start.color);
-		}
+		while (++x <= BLOC_SIZE)
+			put_pixel_img(w, y + start.x, x + start.y, start.color);
 	}
 }
 
-static void			draw_vision(t_wolf3d *w, int x_c, int y_c)
-{
-	double	angle;
-	double	ang_e;
-	double	i;
-	double	r;
-	int		x;
-	int		y;
-
-	angle = w->ang_s;
-	ang_e = w->ang_s + (60.0 * M_PI / 180);
-	r = w->map->w * MINIM_S;
-	while (angle <= ang_e)
-	{
-		i = -1;
-		while (++i <= r)
-		{
-			x = x_c + i * cos(angle);
-			y = y_c + i * sin(angle);
-			if (x > 0 && y > 0 && x < w->map->w * MINIM_S && y < w->map->h *
-				MINIM_S && w->map->board[y / MINIM_S][x / MINIM_S] != 0)
-				break ;
-			if (x > 0 && x < w->map->w * MINIM_S && y > 0 && y < w->map->h
-				* MINIM_S)
-				put_pixel_img(w, x, y, 0x880055);
-		}
-		angle += 60.0 / (w->map->w * MINIM_S) / 180;
-	}
-}
-
-int				camera_mov(int x, int y, t_wolf3d *w)
-{
-	// int		dx;
-	// int		dy;
-	// double	hyp;
-	// double	cos_ang;
-	// double	angle;
-	//
-	// dx = x - w->xpos;
-	// dy = y - w->ypos;
-	// hyp = sqrt(pow(dx, 2) + pow(dy, 2));
-	// cos_ang = fabs(dx / hyp);
-	// angle = acos(cos_ang);
-	// if (dx < 0 && dy < 0)
-	// 	w->ang_s = angle + M_PI;
-	// if (dx > 0 && dy < 0)
-	// 	w->ang_s = -angle;
-	// if (dx < 0 && dy > 0)
-	// 	w->ang_s = -angle - M_PI;
-	// if (dx >= 0 && dy >= 0)
-	// 	w->ang_s = angle;
-	w->ang_s = atan2(y,x);
-	process(w);
-	return (0);
-}
-
-void			draw_circle(t_wolf3d *w, int x_c, int y_c)
+static void		draw_circle(t_wolf3d *w)
 {
 	float	angle;
-	float	i;
-	int		j;
-	float	tmp;
+	int		i;
 
-	j = 0;
 	angle = 0;
-	tmp = M_PI / 6.0;
 	while (angle <= 2.0 * M_PI)
 	{
 		i = -1;
-		if (angle > tmp && ++j)
-			tmp += M_PI / 6.0;
-		while (++i <= (float)MINIM_S / 3.0)
-			put_pixel_img(w, x_c + i * cos(angle), y_c + i * sin(angle),
-																	DARKBLUE);
+		while (++i <= (int)w->cam->radius)
+			put_pixel_img(w, w->cam->position.x + i * cos(angle),
+				w->cam->position.y + i * sin(angle), 0x00ff00);
 		angle += 0.005;
 	}
 }
 
-void			draw_minimap(t_wolf3d *w)
+void			draw_blocs(t_wolf3d *w)
 {
-	int			x;
-	int			y;
-	int			x_s;
-	int			y_s;
+	int i;
+	int j;
 
-	y = -1;
-	x_s = 1;
-	y_s = 1;
-	while (++y < w->map->h && (x = -1))
+	i = -1;
+	while (++i < w->map->h && (j = -1))
+		while (++j < w->map->w)
+			if (w->map->board[i][j])
+			{
+				if (!w->texture)
+					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
+					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 4]});
+				else
+					mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
+					[w->map->board[i][j] % 4]->ptr,
+												j * BLOC_SIZE, i * BLOC_SIZE);
+			}
+}
+
+void			draw_mmap(t_wolf3d *w)
+{
+	int i;
+
+	i = -1;
+	raycasting(w);
+	while (++i < w->width)
 	{
-		while (++x < w->map->w)
-		{
-			if (w->map->board[y][x] == 0)
-				draw_square(w, (t_point){.x = x_s, .y = y_s,
-					.color = 0xa9a9a9});
-			else
-				draw_square(w, (t_point){.x = x_s, .y = y_s,
-					.color = 0x00Fb00});
-			x_s += MINIM_S;
-		}
-		x_s = 1;
-		y_s += MINIM_S;
+/*		printf("coordinates of the point received x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);*/
+		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->
+			position.y, .color = w->cam->position.color}, (t_point){.x = (int)
+				w->cam->rays[i].x, .y = (int)w->cam->rays[i].y, .color =
+				w->cam->rays[i].color});
 	}
-	x = 1 + w->xpos * MINIM_S + MINIM_S / 2;
-	y = 1 + w->ypos * MINIM_S + MINIM_S / 2;
-	draw_circle(w, x, y);
-	draw_vision(w, x, y);
+	if (!w->texture)
+		draw_blocs(w);
+	draw_circle(w);
+	put_line(w, (t_point){.x = 0, .y = w->mini_h, .color = 0xffffff},
+				(t_point){.x = w->mini_w, .y = w->mini_h});
+	put_line(w, (t_point){.x = w->mini_w, .y = 0, .color = 0xffffff},
+				(t_point){.x = w->mini_w, .y = w->mini_h});
 }
