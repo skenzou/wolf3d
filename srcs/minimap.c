@@ -6,13 +6,13 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/15 18:27:37 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 08:50:11 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-t_camera		*camera_init(t_wolf3d *w)
+t_camera		*camera_init()
 {
 	t_camera		*cam;
 
@@ -23,7 +23,6 @@ t_camera		*camera_init(t_wolf3d *w)
 	cam->speedangle = 10.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;
-	cam->raylength = w->width;
 	cam->position.x = 128.0;
 	cam->position.y = 128.0;
 	cam->position.color = 0xff0000;

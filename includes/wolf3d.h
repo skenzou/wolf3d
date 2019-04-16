@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 08:37:43 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 08:50:23 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ typedef struct		s_camera
 	double			radius;
 	double			angle;
 	double			fov;
-	double			raylength;
 	double			speedmove;
 	double			speedangle;
 	t_vec2f			intersection;
@@ -162,7 +161,7 @@ double				ttan(double angle);
 ** MINIMAP.C
 */
 void				draw_mmap(t_wolf3d *w);
-t_camera			*camera_init(t_wolf3d *w);
+t_camera			*camera_init();
 void				draw_blocs(t_wolf3d *w);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/15 13:23:20 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 08:49:32 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 		left(w);
 	if (keycode == 2)
 		right(w);
-	(keycode == LEFTARROW) && (w->cam->angle -= w->cam->speedangle);
-	(keycode == RIGHTARROW) && (w->cam->angle += w->cam->speedangle);
+	(keycode == RIGHTARROW) && (w->cam->angle -= w->cam->speedangle);
+	(keycode == LEFTARROW) && (w->cam->angle += w->cam->speedangle);
 	(keycode == SPACE) && (w->texture = w->texture == 0 ? 1 : 0);
 	(w->cam->angle > 360) && (w->cam->angle = 0);
 	(w->cam->angle < 0) && (w->cam->angle = 360);
