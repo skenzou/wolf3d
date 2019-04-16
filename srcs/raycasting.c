@@ -6,31 +6,77 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 14:29:03 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:08:58 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+// void	draw_floor(t_wolf3d *w)
+// {
+// 	int y;
+// 	int offset;
+// 	int tex_y;
+// 	int x;
+//
+// 	x = w->mini_w;
+// 	while (x < WIDTH)
+// 	{
+// 		y = 0;
+// 		while (y < HEIGHT / 2)
+// 		{
+// 			tex_y = y * (64. / (HEIGHT / 2)) - 1;
+// 			if (tex_y <= 0)
+// 				tex_y = 1;
+// 			// printf("texy: %d\n", tex_y);
+// 			offset = 64 * 4 * ((x - w->mini_w) % 64) + tex_y  * 4;
+// 			// printf("offset: %d\n", offset);
+// 			ft_memcpy(w->img->data + 4 * WIDTH * (y + HEIGHT / 2) + x * 4,
+// 					w->textures[3]->data + offset, 4);
+// 			y++;
+// 		}
+// 		x++;
+// 	}
+// }
 
-void	draw_sky(t_wolf3d *w, int x, int y_end)
+// int 	fetch_floor(t_wolf3d *w, int h_seen, int i, int y)
+// {
+// 	int color;
+// 	int tex_y;
+// 	int tex_x;
+// 	int offset;
+//
+// 	tex_y = y * (500. / h_seen) -1;
+// 	tex_x = w->inter ? (int)w->cam->rays[i].y % 321 : (int)w->cam->rays[i].x % 321;
+// 	offset = 500 * 4 * tex_y + tex_x * 4;
+// 	ft_memcpy((void *)&color, w->textures[5]->data + offset, 4);
+// 	return (color);
+// }
+
+void	draw_sky(t_wolf3d *w)
 {
 	int y;
 	int offset;
 	int tex_y;
+	int x;
 
-	y = 0;
-	while (y < y_end)
+	x = w->mini_w;
+	while (x < WIDTH)
 	{
-		tex_y = y * (512. / y_end) - 1;
-		if (tex_y <= 0)
-			tex_y = 1;
-		// printf("texy: %d\n", tex_y);
-		offset = 512 * 4 * tex_y + (x % 512) * 4;
-		// printf("offset: %d\n", offset);
-		ft_memcpy(w->img->data + 4 * WIDTH * y + (x + w->mini_w) * 4,
-				w->textures[4]->data + offset, 4);
-		y++;
+		y = 0;
+		while (y < HEIGHT / 2)
+		{
+			tex_y = y * (512. / HEIGHT) - 1;
+			if (tex_y <= 0)
+				tex_y = 1;
+			// printf("texy: %d\n", tex_y);
+			offset = 512 * 4 * tex_y + ((x - w->mini_w) % 512) * 4;
+			// printf("offset: %d\n", offset);
+			ft_memcpy(w->img->data + 4 * WIDTH * y + x * 4,
+					w->textures[4]->data + offset, 4);
+			y++;
+		}
+		x++;
 	}
 }
 
@@ -66,10 +112,12 @@ static inline void		render(t_wolf3d *w, int i, double depth, double tab[])
 	// x = -1;
 	// while (++x < y + 151)
 	// 	put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
-	draw_sky(w, i, y + 151);
 	inc = 0;
 	while (++y < (CAM_H + (h_seen / 2)))
 		put_pixel_img(w, i + w->mini_w, y + 150, fetch_color(w, h_seen, i, inc++));
+	// draw_floor(w, y, i);
+	// h_seen = w->width - y;
+	// inc = 0;
 	while (++y < w->width)
 		put_pixel_img(w, i + w->mini_w, y + 150, GREY);
 }

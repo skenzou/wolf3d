@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 10:09:41 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:35:27 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static inline void		backward(t_wolf3d *w)
 	int nextx;
 	int nexty;
 
-	nextx = w->cam->position.x + tcos(w->cam->angle) * w->cam->speedmove;
+	nextx = w->cam->position.x - tcos(w->cam->angle) * w->cam->speedmove;
 	nexty = w->cam->position.y + tsin(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
@@ -34,7 +34,7 @@ static inline void		forward(t_wolf3d *w)
 	int nextx;
 	int nexty;
 
-	nextx = w->cam->position.x - tcos(w->cam->angle) * w->cam->speedmove;
+	nextx = w->cam->position.x + tcos(w->cam->angle) * w->cam->speedmove;
 	nexty = w->cam->position.y - tsin(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
@@ -52,7 +52,7 @@ static inline void 		left(t_wolf3d *w)
 	int	nexty;
 
 	nextx = w->cam->position.x + tsin(w->cam->angle) * w->cam->speedmove;
-	nexty = w->cam->position.y - tcos(w->cam->angle) * w->cam->speedmove;
+	nexty = w->cam->position.y + tcos(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)
@@ -68,7 +68,7 @@ static inline void 		right(t_wolf3d *w)
 	int	nexty;
 
 	nextx = w->cam->position.x - tsin(w->cam->angle) * w->cam->speedmove;
-	nexty = w->cam->position.y + tcos(w->cam->angle) * w->cam->speedmove;
+	nexty = w->cam->position.y - tcos(w->cam->angle) * w->cam->speedmove;
 	if (nexty / BLOC_SIZE < w->map->h && nextx / BLOC_SIZE < w->map->w &&
 		nexty >= 0 && nextx >= 0
 					&& w->map->board[nexty / BLOC_SIZE][nextx / BLOC_SIZE] == 0)

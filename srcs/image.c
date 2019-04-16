@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 08:49:39 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 14:57:53 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void		process(t_wolf3d *w)
 	if (w->img->ptr)
 		mlx_destroy_image(w->mlx_ptr, w->img->ptr);
 	w->img = create_image(w, NULL);
+	draw_sky(w);
 	draw_mmap(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
 	if (w->texture)

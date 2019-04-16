@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 10:42:16 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/16 14:56:45 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,6 @@ t_map				*create_map(int fd);
 ** RAYCASTING.c
 */
 void				raycasting(t_wolf3d *w);
+void				draw_sky(t_wolf3d *w);
 
 #endif
