@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 14:57:53 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:28:44 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void		process(t_wolf3d *w)
 	draw_sky(w);
 	draw_mmap(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
-	if (w->texture)
-		draw_blocs(w);
+	// if (w->texture)
+	// 	draw_blocs(w);
 }
 
 t_image			*create_image(t_wolf3d *w, char *path)

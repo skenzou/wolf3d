@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 14:56:45 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/17 12:58:26 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@
 # define H_M 			200
 # define W_M 			320
 # define BLOC_SIZE		64
-# define WIDTH			2300
+# define WIDTH			1400
 # define HEIGHT			1200
-# define WALL_H			1000.0
-# define CAM_H			(WALL_H / 2)
+# define WALL_H			4000.0
+# define CAM_H			(WALL_H / 8)
 # define CAM_DIST		50.0
 # define ORANGE			0xaf4e11
 # define PURPLE			0x751b91

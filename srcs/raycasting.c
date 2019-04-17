@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:08:58 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:31:58 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	draw_sky(t_wolf3d *w)
 	int tex_y;
 	int x;
 
-	x = w->mini_w;
+	x = 0;
 	while (x < WIDTH)
 	{
 		y = 0;
@@ -70,7 +70,7 @@ void	draw_sky(t_wolf3d *w)
 			if (tex_y <= 0)
 				tex_y = 1;
 			// printf("texy: %d\n", tex_y);
-			offset = 512 * 4 * tex_y + ((x - w->mini_w) % 512) * 4;
+			offset = 512 * 4 * tex_y + (x % 512) * 4;
 			// printf("offset: %d\n", offset);
 			ft_memcpy(w->img->data + 4 * WIDTH * y + x * 4,
 					w->textures[4]->data + offset, 4);
@@ -114,12 +114,12 @@ static inline void		render(t_wolf3d *w, int i, double depth, double tab[])
 	// 	put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
 	inc = 0;
 	while (++y < (CAM_H + (h_seen / 2)))
-		put_pixel_img(w, i + w->mini_w, y + 150, fetch_color(w, h_seen, i, inc++));
+		put_pixel_img(w, i, y + 150, fetch_color(w, h_seen, i, inc++));
 	// draw_floor(w, y, i);
 	// h_seen = w->width - y;
 	// inc = 0;
 	while (++y < w->width)
-		put_pixel_img(w, i + w->mini_w, y + 150, GREY);
+		put_pixel_img(w, i, y + 150, GREY);
 }
 
 static inline void 		inter_hor(t_wolf3d *w, int i, double angle, double tab[])

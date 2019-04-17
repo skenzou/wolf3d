@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/16 18:06:54 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:31:07 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->texture = 1;
 	w->mini_h = BLOC_SIZE * w->map->h;
 	w->mini_w = BLOC_SIZE * w->map->w;
-	w->width = WIDTH - w->mini_w;
-	w->height = HEIGHT - w->mini_h;
+	w->width = WIDTH;
+	w->height = HEIGHT;
 	w->cam = camera_init();
 	init_textures(w);
 	mlx_key_hook(w->win_ptr, &handle_key, w);
