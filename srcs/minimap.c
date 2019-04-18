@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 15:19:07 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:50:17 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ static void		draw_square(t_wolf3d *w, t_point start)
 	{
 		x = -1;
 		while (++x <= 32)
-			put_pixel_img(w, y + start.x, x + start.y, start.color);
+			mlx_pixel_put(w->mlx_ptr, w->win_ptr, x + start.x, y + start.y, start.color);
 	}
 }
 
-static void		draw_circle(t_wolf3d *w)
+void		draw_circle(t_wolf3d *w)
  {
  	float	angle;
  	 int		i;
@@ -54,8 +54,7 @@ static void		draw_circle(t_wolf3d *w)
  	{
  		i = -1;
  		while (++i <= (int)w->cam->radius)
- 			put_pixel_img(w, 144 + i * cos(angle),
- 				128 + i * sin(angle), 0xff0000);
+			mlx_pixel_put(w->mlx_ptr, w->win_ptr,  159 + i * cos(angle), 163 + i * sin(angle), 0x80ff0000);
  		angle += 0.005;
  	}
  }
@@ -70,92 +69,41 @@ void			draw_blocs(t_wolf3d *w)
 		while (++j < w->map->w)
 			if (w->map->board[i][j])
 			{
-				if (!w->texture)
+				// if (!w->texture)
 					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
 					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 4]});
-				else
-					mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
-					[w->map->board[i][j] % 4]->ptr,
-												j * BLOC_SIZE, i * BLOC_SIZE);
+				// else
+				// 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
+				// 	[w->map->board[i][j] % 4]->ptr,
+				// 								j * BLOC_SIZE, i * BLOC_SIZE);
 			}
 }
 
-void		launch_threads(t_wolf3d *w)
-{
-	pthread_attr_t	attr;
-	int				err;
-	int				i;
-
-	i = 0;
-	pthread_attr_init(&attr);
-	while (i < TNUM)
-	{
-		err = pthread_create(&(w->tids[i]), &attr, raycasting,
-															&w->tdata[i]);
-		if (err)
-		{
-			perror("thread error");
-			exit(1);
-		}
-		i++;
-	}
-	i = 0;
-	while (i < TNUM)
-		pthread_join(w->tids[i++], NULL);
-}
-
-
 void			draw_mmap(t_wolf3d *w)
 {
-	int i;
-
-	i = -1;
-	launch_threads(w);
-// 	while (++i < w->width)
-// 	{
-// /*		printf("coordinates of the point received x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);*/
-// 		put_line(w, (t_point){.x = (int)w->cam->position.x, .y = (int)w->cam->
-// 			position.y, .color = w->cam->position.color}, (t_point){.x = (int)
-// 				w->cam->rays[i].x, .y = (int)w->cam->rays[i].y, .color =
-// 				w->cam->rays[i].color});
-// 	}
-// 	if (!w->texture)
-// 		draw_blocs(w);
-	// draw_circle(w);
-	// put_line(w, (t_point){.x = 0, .y = w->mini_h, .color = 0xffffff},
-	// 			(t_point){.x = w->mini_w, .y = w->mini_h});
-	// put_line(w, (t_point){.x = w->mini_w, .y = 0, .color = 0xffffff},
-	// 			(t_point){.x = w->mini_w, .y = w->mini_h});
-	while (++i < 256)
-		put_pixel_img(w, i, 256, 0xffffff);
-	i = -1;
-	while (++i < 256)
-		put_pixel_img(w, 256, i, 0xffffff);
-	int		mapx;
-	int		mapy;
 	int		x;
 	int		y;
+	int		xoffset;
+	int		yoffset;
+	int		j;
+	int		i;
 
-	x = (int)w->cam->position.x / 64;
-	y = (int)w->cam->position.y / 64 - 1;
-	i = -1;
 	draw_circle(w);
-	while (++y < w->map->h && y < 5)
-		if (w->map->board[y][x])
-		{
-			mapx = 4 - x;
-			mapy = 4 - y;
-			draw_square(w, (t_point){.x = (x + mapx) * 32, .y = (mapy + y) * 32, .color = 0x00ff00});
-		}
-	y = (int)w->cam->position.y / 64;
-	while (x < w->map->w && x < 5)
+	yoffset = 0;
+	x = (int)floor(w->cam->position.x / 64) - 4;
+	y = (int)floor(w->cam->position.y / 64) - 4;
+	j = -1;
+	while (++j < 8 && (i = -1))
 	{
-		if (w->map->board[y][x])
+		xoffset = 0;
+		while(++i < 8)
 		{
-			mapx = 4 - x;
-			mapy = 4 - y;
-			draw_square(w, (t_point){.x = (x + mapx) * 32, .y = (mapy + y) * 32, .color = 0x00ff00});
+			if (x + i >= 0 && y + j >= 0 && y + j < w->map->h
+					&& x + i < w->map->w && w->map->board[y + j][x + i] != 0)
+				draw_square(w, (t_point){.x = xoffset + (i * 32),
+								.y = yoffset + (j * 32), .color = 0x8000FF00});
+			xoffset += 5;
 		}
-		x++;
+		yoffset += 5;
 	}
 }

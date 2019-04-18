@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 11:50:31 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:50:26 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,39 @@ int			put_pixel_img(t_wolf3d *w, int x, int y, int color)
 	return (1);
 }
 
+void		launch_threads(t_wolf3d *w)
+{
+	pthread_attr_t	attr;
+	int				err;
+	int				i;
+
+	i = 0;
+	pthread_attr_init(&attr);
+	while (i < TNUM)
+	{
+		err = pthread_create(&(w->tids[i]), &attr, raycasting,
+															&w->tdata[i]);
+		if (err)
+		{
+			perror("thread error");
+			exit(1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < TNUM)
+		pthread_join(w->tids[i++], NULL);
+}
+
 void		process(t_wolf3d *w)
 {
 	if (w->img->ptr)
 		mlx_destroy_image(w->mlx_ptr, w->img->ptr);
 	w->img = create_image(w, NULL);
 	draw_sky(w);
-	draw_mmap(w);
+	launch_threads(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
+	draw_mmap(w);
 	// if (w->texture)
 	// 	draw_blocs(w);
 }
