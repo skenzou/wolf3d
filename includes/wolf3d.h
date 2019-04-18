@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 16:51:55 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:30:20 by Mohamed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <pthread.h>
+# include <ApplicationServices/ApplicationServices.h>
 # define TNUM			32
 # define ESCAPE			53
 # define UPARROW		126

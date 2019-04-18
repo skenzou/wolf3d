@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 13:09:07 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 23:44:35 by Mohamed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,23 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 
 int						camera_mov(int x, int y, t_wolf3d *w)
 {
-	if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
-	{
-		w->cam->angle = atan2((double)x, (double) y);
-		w->cam->angle *= -3;
-		w->cam->angle *= 180 / M_PI;
-		while (w->cam->angle > 360)
-			w->cam->angle -= 360;
-		while (w->cam->angle < 0)
-			w->cam->angle += 360;
-		process(w);
-	}
-
-		// if (x > w->width / 2)
-		// 	w->cam->angle -= ((double)x / (w->width / 2)) * angle;
-		// else
-		// 	w->cam->angle += ((double)x / (w->width / 2)) * angle;
-		// (w->cam->angle > 360) && (w->cam->angle = 0);
-		// (w->cam->angle < 0) && (w->cam->angle = 360);
+	int32_t deltax;
+	int32_t deltay;
+	(void)x;
+	(void)y;
+	CGGetLastMouseDelta(&deltax, &deltay);
+	printf("delta: %d\n", *deltax);
+	// if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
+	// {
+	// 	w->cam->angle = atan2((double)x, (double) y);
+	// 	w->cam->angle *= -3;
+	// 	w->cam->angle *= 180 / M_PI;
+	// 	while (w->cam->angle > 360)
+	// 		w->cam->angle -= 360;
+	// 	while (w->cam->angle < 0)
+	// 		w->cam->angle += 360;
+	// 	process(w);
+	// }
 	return (1);
 }
 
