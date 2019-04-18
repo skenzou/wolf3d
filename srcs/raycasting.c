@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 15:25:43 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 20:11:40 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,21 +136,27 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 	a.x = (angle != 180.0 && angle < 359.97) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
 	w->cam->position.x + (w->cam->position.y - a.y) / -tangent;
 	a.x = (angle >= 359.94 || (angle >= 179.94 && angle < 180)) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
-	if (a.x < 0 || a.x >= w->mini_w)
-		a.x = (a.x < 0) ? 0 : w->mini_w - 1;
-	a.x = (angle > 90 && angle <= 270) ? ceil(a.x) : a.x;
-	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
+	if ((angle > 90 && angle <= 270 && (int)ceil(a.x) / 64 >= w->map->w) || a.x < 0 || a.x >= w->mini_w)
+		a.x = (a.x < 0) ? 0 : w->mini_w - 64;
+	while ((angle > 90 && angle <= 270 && w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0)
+		|| ((angle > 270 || angle <= 90) && w->map->board[(int)a.y / 64][(int)a.x / 64] == 0))
 	{
 		a.x += ((angle >= 90 && angle < 180) || angle >= 270) ? -o.x : o.x;
 		a.y += o.y;
-		if (a.x < 0 || a.x >=  w->mini_w)
-			a.x = (a.x < 0) ? 0 : w->mini_w - 1;
+		if ((angle > 90 && angle <= 270 && (int)ceil(a.x) / 64 >= w->map->w) || a.x < 0 || a.x >= w->mini_w)
+			a.x = (a.x < 0) ? 0 : w->mini_w - 64;
 		if (a.y < 0 || a.y >= w->mini_h)
 			break;
 	}
 	w->cam->interh[i].x = a.x;
 	w->cam->interh[i].y = a.y;
 }
+
+// angle < 180  (int)ceil(y) (int)ceil(x))  ||  angle >= 180 (int)y (int)ceil(x)    // vertical
+//
+// // horizontal
+// (angle > 270 || angle <= 90)   (int)y (int)x    ||
+// (angle > 90 && angle <= 270 (int)y (int)ceil(x)
 
 static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 {
@@ -165,16 +171,17 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 	o.y = (angle > 0 &&  angle < 180) ? -64 * tangent : 64 * tangent;
 	a.y = (angle != 270 && angle != 90) ? w->cam->position.y + (w->cam->position.x - a.x)
 	* tangent : w->cam->position.y + (w->cam->position.x - a.x) * -tangent;
-	if (a.y < 0 || a.y >=  w->mini_h)
+	if ((angle < 180 && (int)ceil(a.y) / 64 > w->map->h) || a.y < 0 || a.y >=  w->mini_h)
 		a.y = (a.y < 0) ? 0 : w->mini_h - 64;
-	a.y = (angle < 180) ? ceil(a.y) : a.y;
-	while (w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0)
+	// if ((int)ceil)
+	while ((angle < 180 && w->map->board[(int)ceil(a.y) / 64][(int)ceil(a.x) / 64] == 0)
+		|| (angle >= 180 && w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0))
 	{
 		a.y += ((angle > 90 && angle < 180) || angle > 270) ? -o.y : o.y;
 		a.x += o.x;
-		if (a.y < 0 || a.y >=  w->mini_h)
-			a.y = (a.y < 0) ? 0 : w->mini_h - 1;
-		if (a.x < 0 || a.x > w->mini_w - 1)
+		if ((angle < 180 && (int)ceil(a.y) / 64 > w->map->h) || a.y < 0 || a.y >=  w->mini_h)
+			a.y = (a.y < 0) ? 0 : w->mini_h - 64;
+		if ((int)ceil(a.x) / 64 > w->map->w || a.x < 0 || a.x > w->mini_w - 1)
 			break;
 	}
 	w->cam->interv[i].x = a.x;
