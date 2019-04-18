@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/17 11:31:58 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:42:12 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,10 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle, double tab[])
 	o.x = (angle < 90 || angle > 270) ? 64 / tangent : -64 / tangent;
 	a.x = (angle != 180.0 && angle < 359.97) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
 	w->cam->position.x + (w->cam->position.y - a.y) / -tangent;
-/*	a.x = ((angle >= 179.965197 && angle <= 180) && angle != 0) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;*/
+	a.x = (angle >= 359.94 || (angle >= 179.94 && angle < 180)) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
 	if (a.x < 0 || a.x >= w->mini_w)
 		a.x = (a.x < 0) ? 0 : w->mini_w - 1;
+	a.x = (angle > 90 && angle <= 270) ? ceil(a.x) : a.x;
 	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
 	{
 		a.x += ((angle >= 90 && angle < 180) || angle >= 270) ? -o.x : o.x;
@@ -165,8 +166,9 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle, double tab[])
 	a.y = (angle != 270 && angle != 90) ? w->cam->position.y + (w->cam->position.x - a.x)
 	* tangent : w->cam->position.y + (w->cam->position.x - a.x) * -tangent;
 	if (a.y < 0 || a.y >=  w->mini_h)
-		a.y = (a.y < 0) ? 0 : w->mini_h - 1;
-	while (w->map->board[(int)a.y / 64][(int)a.x / 64] == 0)
+		a.y = (a.y < 0) ? 0 : w->mini_h - 64;
+	a.y = (angle < 180) ? ceil(a.y) : a.y;
+	while (w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0)
 	{
 		a.y += ((angle > 90 && angle < 180) || angle > 270) ? -o.y : o.y;
 		a.x += o.x;
