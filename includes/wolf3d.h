@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/17 15:34:25 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:25:55 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,14 @@
 # define H_M 			200
 # define W_M 			320
 # define BLOC_SIZE		64
-# define WIDTH			1400
+# define WIDTH			1408
 # define HEIGHT			1200
-# define WALL_H			4000.0
-# define CAM_H			(WALL_H / 8)
+# define WALL_H			WIDTH
+# define CAM_H			500
+# define NORTH			0
+# define SOUTH			1
+# define EAST			2
+# define WEST			3
 # define CAM_DIST		50.0
 # define ORANGE			0xaf4e11
 # define PURPLE			0x751b91
@@ -109,6 +113,17 @@ typedef struct		s_map
 	int				h;
 }					t_map;
 
+typedef struct		s_thread_data
+{
+	int				y;
+	int				x;
+	int				y_end;
+	int				x_end;
+	char			inter;
+	int				direction;
+	struct s_wolf3d	*w;
+}					t_thread_data;
+
 typedef struct		s_wolf3d
 {
 	t_map			*map;
@@ -125,6 +140,11 @@ typedef struct		s_wolf3d
 	int				width;
 	int				height;
 	char			inter;
+	int				direction;
+	double			cos_table[WIDTH];
+	double			tan_table[WIDTH];
+	t_thread_data	tdata[TNUM];
+	pthread_t		tids[TNUM];
 }					t_wolf3d;
 
 /*
@@ -157,8 +177,8 @@ int					camera_mov(int x, int y, t_wolf3d *w);
 double				tcos(double angle);
 double				tsin(double angle);
 double				ttan(double angle);
-void				cos_lookuptable(t_wolf3d *w, double	tab[]);
-void				tan_lookuptable(t_wolf3d *w, double tab[]);
+void				cos_lookuptable(t_wolf3d *w, t_thread_data *d);
+void				tan_lookuptable(t_wolf3d *w, t_thread_data *d);
 
 /*
 ** MINIMAP.C
@@ -175,7 +195,7 @@ t_map				*create_map(int fd);
 /*
 ** RAYCASTING.c
 */
-void				raycasting(t_wolf3d *w);
+void				*raycasting(void *data);
 void				draw_sky(t_wolf3d *w);
 
 #endif

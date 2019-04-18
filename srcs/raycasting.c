@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 11:42:12 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:25:43 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	draw_sky(t_wolf3d *w)
 }
 
 
-int 	fetch_color(t_wolf3d *w, int h_seen, int i, int y)
+int 	fetch_color(t_thread_data *d, int h_seen, int i, int y)
 {
 	int color;
 	int tex_y;
@@ -89,32 +89,32 @@ int 	fetch_color(t_wolf3d *w, int h_seen, int i, int y)
 	int index;
 	int offset;
 
-	index = w->map->board
-		[(int)w->cam->rays[i].y / 64][(int)w->cam->rays[i].x / 64] % 4;
-	if (!w->texture)
-		return (w->colors[index]);
+	index = d->w->map->board
+		[(int)d->w->cam->rays[i].y / 64][(int)d->w->cam->rays[i].x / 64] % 4;
+	if (!d->w->texture)
+		return (d->w->colors[index]);
 	tex_y = y * (64. / h_seen) -1;
-	tex_x = w->inter ? (int)w->cam->rays[i].y % 64 : (int)w->cam->rays[i].x % 64;
+	tex_x = d->inter ? (int)d->w->cam->rays[i].y % 64 : (int)d->w->cam->rays[i].x % 64;
 	offset = 64 * 4 * tex_y + tex_x * 4;
-	ft_memcpy((void *)&color, w->textures[index]->data + offset, 4);
+	ft_memcpy((void *)&color, d->w->textures[d->direction]->data + offset, 4);
 	return (color);
 }
 
-static inline void		render(t_wolf3d *w, int i, double depth, double tab[])
+static inline void		render(t_wolf3d *w, int i, double depth, t_thread_data *d)
 {
 	int		h_seen;
 	int		y;
 	// int		x;
 	int		inc;
 
-	h_seen = CAM_DIST * WALL_H / (depth * tab[i]);
+	h_seen = CAM_DIST * WALL_H / (depth * w->cos_table[i]);
 	y = CAM_H - (h_seen / 2) - 1;
 	// x = -1;
 	// while (++x < y + 151)
 	// 	put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
 	inc = 0;
 	while (++y < (CAM_H + (h_seen / 2)))
-		put_pixel_img(w, i, y + 150, fetch_color(w, h_seen, i, inc++));
+		put_pixel_img(w, i, y + 150, fetch_color(d, h_seen, i, inc++));
 	// draw_floor(w, y, i);
 	// h_seen = w->width - y;
 	// inc = 0;
@@ -122,13 +122,13 @@ static inline void		render(t_wolf3d *w, int i, double depth, double tab[])
 		put_pixel_img(w, i, y + 150, GREY);
 }
 
-static inline void 		inter_hor(t_wolf3d *w, int i, double angle, double tab[])
+static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 {
 	t_vec2f	a; // intersection point
 	t_vec2f	o; // offset
 	double	tangent;
 
-	tangent = tab[i] + 0.001;
+	tangent = w->tan_table[i] + 0.001;
 	a.y = (angle <= 180) ? floor(w->cam->position.y / 64) *
 	64 - 1 : floor(w->cam->position.y / 64) * 64 + 64;
 	o.y = (angle < 180) ? -64 : 64;
@@ -152,13 +152,13 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle, double tab[])
 	w->cam->interh[i].y = a.y;
 }
 
-static inline void 		inter_ver(t_wolf3d *w, int i, double angle, double tab[])
+static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 {
 	t_vec2f	a; // intersection point
 	t_vec2f	o; // offset
 	double	tangent;
 
-	tangent = tab[i] + 0.001;
+	tangent = w->tan_table[i] + 0.001;
 	a.x = (angle >= 90 && angle < 270) ? floor(w->cam->position.x / 64) *
 	64 - 1 : floor(w->cam->position.x / 64) * 64 + 64;
 	o.x = (angle > 90 && angle < 270) ? -64 : 64;
@@ -181,7 +181,26 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle, double tab[])
 	w->cam->interv[i].y = a.y;
 }
 
-double					get_distowall(t_wolf3d *w, int i)
+void					check_direction(t_wolf3d *w, int i, t_thread_data *d)
+{
+	if (!d->inter)
+	{
+		if (w->cam->rays[i].y - w->cam->position.y >= 0)
+			d->direction = NORTH;
+		else
+			d->direction = SOUTH;
+	}
+	else
+	{
+		if (w->cam->rays[i].x - w->cam->position.x >= 0)
+			d->direction = WEST;
+		else
+			d->direction = EAST;
+	}
+
+}
+
+double					get_distowall(t_wolf3d *w, int i, t_thread_data *d)
 {
 	double		dist_hor;
 	double		dist_ver;
@@ -193,28 +212,32 @@ double					get_distowall(t_wolf3d *w, int i)
 	if (dist_hor < dist_ver)
 	{
 		w->cam->rays[i] = w->cam->interh[i];
-		w->inter = 0;
+		d->inter = 0;
+		check_direction(w, i, d);
 	}
 	else
 	{
 		w->cam->rays[i] = w->cam->interv[i];
-		w->inter = 1;
+		d->inter = 1;
+		check_direction(w, i, d);
 	}
 	return ((dist_hor > dist_ver) ? dist_ver : dist_hor);
 }
 
-void					raycasting(t_wolf3d *w)
+void					*raycasting(void *data)
 {
-	int			i;
-	double		angle;
-	double 		dist;
-	double		cos_table[w->width];
-	double		tan_table[w->width];
+	int				i;
+	double			angle;
+	double 			dist;
+	t_thread_data	*d;
+	t_wolf3d		*w;
 
-	i = -1;
-	cos_lookuptable(w, cos_table);
-	tan_lookuptable(w, tan_table);
-	while (++i < w->width)
+	d = (t_thread_data *)data;
+	w = d->w;
+	i = d->x;
+	cos_lookuptable(w, d);
+	tan_lookuptable(w, d);
+	while (i < d->x_end)
 	{
 		w->cam->rays[i].color = R_COLOR; // ray color (red)
 		angle = w->cam->angle + w->cam->fov / 2 - (i * w->cam->fov / w->width);
@@ -225,10 +248,12 @@ void					raycasting(t_wolf3d *w)
 /*		if (i >= 569 && i <= w->width / 3) //huge problem on 179.2 ...
 		{*/
 			//printf("current i = %d angle = %f\n", i, angle);
-			inter_ver(w, i, angle, tan_table);
-			inter_hor(w, i, angle, tan_table);
-			dist = get_distowall(w, i);
-			render(w, i, dist, cos_table);
+			inter_ver(w, i, angle);
+			inter_hor(w, i, angle);
+			dist = get_distowall(w, i, d);
+			render(w, i, dist, d);
 		//}
+		i++;
 	}
+	return (0);
 }

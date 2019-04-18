@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 11:54:01 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:19:07 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_camera		*camera_init()
 		return (NULL);
 	cam->radius = 5.0;
 	cam->angle = 180.0;
-	cam->speedangle = 2.0;
+	cam->speedangle = 5.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;
 	cam->position.x = 128.0;
@@ -80,12 +80,37 @@ void			draw_blocs(t_wolf3d *w)
 			}
 }
 
+void		launch_threads(t_wolf3d *w)
+{
+	pthread_attr_t	attr;
+	int				err;
+	int				i;
+
+	i = 0;
+	pthread_attr_init(&attr);
+	while (i < TNUM)
+	{
+		err = pthread_create(&(w->tids[i]), &attr, raycasting,
+															&w->tdata[i]);
+		if (err)
+		{
+			perror("thread error");
+			exit(1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < TNUM)
+		pthread_join(w->tids[i++], NULL);
+}
+
+
 void			draw_mmap(t_wolf3d *w)
 {
 	int i;
 
 	i = -1;
-	raycasting(w);
+	launch_threads(w);
 // 	while (++i < w->width)
 // 	{
 // /*		printf("coordinates of the point received x = %f, y = %f\n", w->cam->rays[i].x, w->cam->rays[i].y);*/

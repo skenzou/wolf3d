@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:18:44 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 15:37:44 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:25:50 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,28 @@ double			ttan(double angle)
 	return (tan(toradian(angle)));
 }
 
-void		cos_lookuptable(t_wolf3d *w, double	tab[])
+void		cos_lookuptable(t_wolf3d *w, t_thread_data *d)
 {
 	int			i;
 	double		angle;
 
-	i = -1;
-	while (++i < w->width)
+	i = d->x;
+	while (i < d->x_end)
 	{
 		angle = (w->cam->fov / 2) - (i * w->cam->fov / w->width);
-		tab[i] = tcos(angle);
+		w->cos_table[i++] = tcos(angle);
 	}
 }
 
-void		tan_lookuptable(t_wolf3d *w, double tab[])
+void		tan_lookuptable(t_wolf3d *w, t_thread_data *d)
 {
 	int			i;
 	double		angle;
 
-	i = -1;
-	while (++i < w->width)
+	i = d->x;
+	while (i < d->x_end)
 	{
 		angle = w->cam->angle + (w->cam->fov / 2) - (i * w->cam->fov / w->width);
-		tab[i] = ttan(angle);
+		w->tan_table[i++] = ttan(angle);
 	}
 }

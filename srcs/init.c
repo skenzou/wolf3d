@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 13:06:27 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/18 15:25:24 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@ static	void	init_textures(t_wolf3d *w)
 	w->colors[3] = GREY;
 }
 
+void		init_thread_data(t_wolf3d *w)
+{
+   int i;
+   int x_s;
+   int x_end;
+
+   i = 0;
+   x_end = WIDTH / TNUM;
+   x_s = 0;
+   while (i < TNUM)
+   {
+	   w->tdata[i++] = (t_thread_data){.x = x_s, .y = 0, .y_end = HEIGHT,
+		   .x_end = x_end, .w = w};
+	   x_s += (WIDTH / TNUM);
+	   x_end += (WIDTH / TNUM);
+   }
+}
+
+
 t_wolf3d		*init_wolf3d(int fd)
 {
 	t_wolf3d *w;
@@ -43,6 +62,7 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->width = WIDTH;
 	w->height = HEIGHT;
 	w->cam = camera_init();
+	init_thread_data(w);
 	init_textures(w);
 	//mlx_key_hook(w->win_ptr, &handle_key, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
