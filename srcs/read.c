@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 04:12:09 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/31 14:33:10 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 19:46:43 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,7 @@ static	int		check_line(char *str, int fd)
 		if (words[j][i])
 			end(ANSI_RED "map error", fd);
 	}
-	i = 0;
-	while (words[i])
-		free(words[i++]);
-	free(words[i]);
-	free(words);
+	ft_splitdel(words);
 	return (j);
 }
 
@@ -79,21 +75,35 @@ static	int		*create_row(char *str, int fd)
 	int		*row;
 	int		j;
 
-	row = (int *)malloc(sizeof(int) * (ft_count_words(str, ' ')));
+	row = (int *)ft_memalloc(sizeof(int) * (ft_count_words(str, ' ')) + 2);
 	if (!(words = ft_strsplit(str, ' ')) || !row)
 		end(ANSI_RED "malloc fail", fd);
 	j = 0;
+	row[0] = 1;
 	while (words[j])
 	{
-		row[j] = ft_atoi(words[j]);
+		row[j + 1] = ft_atoi(words[j]);
 		j++;
 	}
-	j = 0;
-	while (words[j])
-		free(words[j++]);
-	free(words[j]);
-	free(words);
+	row[j + 1] = 1;
+	ft_splitdel(words);
 	return (row);
+}
+
+void			add_edge(t_map *map)
+{
+	int i;
+	int linesize;
+
+	linesize = sizeof(int) * map->w;
+	map->board[0] = (int *)ft_memalloc(linesize);
+	map->board[0] == NULL ? exit(1) : 0;
+	i = 0;
+	while (i < map->w)
+		map->board[0][i++] = 1;
+	map->board[map->h] = (int *)ft_memalloc(linesize);
+	map->board[map->h] == NULL ? exit(1) : 0;
+	ft_memcpy((void *)map->board[map->h++], map->board[0], linesize);
 }
 
 t_map			*create_map(int fd)
@@ -107,19 +117,20 @@ t_map			*create_map(int fd)
 	begin = NULL;
 	lines = create_list(fd, &begin);
 	map = (t_map *)malloc(sizeof(t_map));
-	map ? map->board = (int **)malloc(sizeof(int *) * lines) : 0;
+	map ? map->board = (int **)malloc(sizeof(int *) * lines + 2) : 0;
 	if (!(list = begin) || !lines)
 		end(ANSI_RED "map error", fd);
 	if (!map || !(map->board))
 		end(ANSI_RED "malloc fail", fd);
-	map->w = ft_count_words((char *)list->content, ' ');
-	map->h = 0;
-	while (map->h < lines)
+	map->w = ft_count_words((char *)list->content, ' ') + 2;
+	map->h = 1;
+	while (map->h <= lines)
 	{
 		str = (char *)list->content;
 		map->board[(map->h)++] = create_row(str, fd);
 		list = list->next;
 	}
+	add_edge(map);
 	ft_lstdestroy(&begin);
 	return (map);
 }

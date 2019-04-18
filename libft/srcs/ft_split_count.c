@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_split_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/06 12:54:52 by midrissi          #+#    #+#             */
-/*   Updated: 2019/03/27 22:40:04 by midrissi         ###   ########.fr       */
+/*   Created: 2019/03/24 14:43:56 by midrissi          #+#    #+#             */
+/*   Updated: 2019/04/13 01:00:09 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int			ft_split_count(char **split)
 {
-	size_t	size;
-	int		i;
-	char	*fresh;
+	int i;
 
-	if (!s1 || !s2)
-		return (NULL);
-	size = ft_strlen(s1) + ft_strlen(s2) + 1;
-	fresh = (char *)malloc(sizeof(char) * size);
-	if (!fresh)
-		return (NULL);
 	i = 0;
-	while (s1[i])
+	if (split)
 	{
-		fresh[i] = s1[i];
-		i++;
+		while (split[i])
+			i++;
 	}
-	fresh[i] = '\0';
-	ft_strcat(fresh, s2);
-	return (fresh);
+	return (i);
 }

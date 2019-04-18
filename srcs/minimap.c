@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 18:50:17 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/18 19:48:45 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_camera		*camera_init()
 	cam->speedangle = 5.0;
 	cam->speedmove = 10.0;
 	cam->fov = 60.0;
-	cam->position.x = 128.0;
-	cam->position.y = 128.0;
+	cam->position.x = 256.0;
+	cam->position.y = 256.0;
 	cam->position.color = 0xff0000;
 	cam->pangle = 0.0;
 	return (cam);
@@ -40,21 +40,23 @@ static void		draw_square(t_wolf3d *w, t_point start)
 	{
 		x = -1;
 		while (++x <= 32)
-			mlx_pixel_put(w->mlx_ptr, w->win_ptr, x + start.x, y + start.y, start.color);
+			mlx_pixel_put(w->mlx_ptr, w->win_ptr, x + start.x,
+													y + start.y, start.color);
 	}
 }
 
 void		draw_circle(t_wolf3d *w)
  {
  	float	angle;
- 	 int		i;
+ 	int		i;
 
  	angle = 0;
  	while (angle <= 2.0 * M_PI)
  	{
  		i = -1;
  		while (++i <= (int)w->cam->radius)
-			mlx_pixel_put(w->mlx_ptr, w->win_ptr,  159 + i * cos(angle), 163 + i * sin(angle), 0x80ff0000);
+			mlx_pixel_put(w->mlx_ptr, w->win_ptr, 159 + i *
+								cos(angle), 163 + i * sin(angle), 0x80ff0000);
  		angle += 0.005;
  	}
  }

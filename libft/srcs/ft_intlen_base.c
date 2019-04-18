@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_intlen_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aben-azz <aben-azz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/04 14:41:45 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/12 03:12:39 by midrissi         ###   ########.fr       */
+/*   Created: 2019/04/06 12:31:04 by aben-azz          #+#    #+#             */
+/*   Updated: 2019/04/09 06:34:20 by Mohamed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int			ft_intlen_base(uintmax_t nbr, int base)
 {
-	size_t i;
+	int digits;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	digits = !nbr;
+	while (nbr)
+	{
+		digits++;
+		nbr /= base;
+	}
+	return (digits);
 }
