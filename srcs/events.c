@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 23:44:35 by Mohamed          ###   ########.fr       */
+/*   Updated: 2019/04/19 10:37:35 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ static inline void 		right(t_wolf3d *w)
 
 static inline void		player_movement(int keycode, t_wolf3d *w)
 {
-	if (keycode == UPARROW)
+	if (keycode == UPARROW || keycode == WKEY)
 		forward(w);
-	if (keycode == DOWNARROW)
+	if (keycode == DOWNARROW || keycode == SKEY)
 		backward(w);
 	if (keycode == 0)
 		right(w);
@@ -99,21 +99,20 @@ int						camera_mov(int x, int y, t_wolf3d *w)
 {
 	int32_t deltax;
 	int32_t deltay;
+
 	(void)x;
 	(void)y;
 	CGGetLastMouseDelta(&deltax, &deltay);
-	printf("delta: %d\n", *deltax);
-	// if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
-	// {
-	// 	w->cam->angle = atan2((double)x, (double) y);
-	// 	w->cam->angle *= -3;
-	// 	w->cam->angle *= 180 / M_PI;
-	// 	while (w->cam->angle > 360)
-	// 		w->cam->angle -= 360;
-	// 	while (w->cam->angle < 0)
-	// 		w->cam->angle += 360;
-	// 	process(w);
-	// }
+	CGDisplayHideCursor(kCGDirectMainDisplay);
+	if (deltax > 0)
+		w->cam->angle -= ((float)deltax / 32) * w->cam->speedangle;
+	if (deltax < 0)
+		w->cam->angle += ((float)deltax / -32) * w->cam->speedangle;
+	while (w->cam->angle > 360)
+		w->cam->angle -= 360;
+	while (w->cam->angle < 0)
+		w->cam->angle += 360;
+	process(w);
 	return (1);
 }
 

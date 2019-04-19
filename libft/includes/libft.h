@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 13:56:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/13 01:01:19 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 10:17:58 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # define CONV "diouxXcspfDOUb%"
 # define H 1
 # define HH	2
-# define L	3
+# define PRINTF_L	3
 # define LL	4
 # define LU	5
-# define Z	6
+# define PRINTF_Z	6
 # define J  7
 # define BUFF_SIZE 32
 # define FD_MAX OPEN_MAX
