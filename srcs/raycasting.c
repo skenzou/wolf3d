@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 13:01:50 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 19:36:52 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,9 @@ static inline void 		inter_hor(t_wolf3d *w, int i, double angle)
 	64 - 1 : floor(w->cam->position.y / 64) * 64 + 64;
 	o.y = (angle < 180) ? -64 : 64;
 	o.x = (angle < 90 || angle > 270) ? 64 / tangent : -64 / tangent;
-	a.x = (angle != 180.0 && angle < 359.97) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
+	a.x = (angle < 359.95) ? w->cam->position.x + (w->cam->position.y - a.y) / tangent :
 	w->cam->position.x + (w->cam->position.y - a.y) / -tangent;
-	a.x = (angle >= 359.94 || (angle >= 179.94 && angle < 180)) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
+	a.x = (angle >= 179.95 && angle <= 180) ? w->cam->position.x + (w->cam->position.y - a.y) / -tangent : a.x;
 	if ((angle > 90 && angle <= 270 && (int)ceil(a.x) / 64 >= w->map->w) || a.x < 0 || a.x >= w->mini_w)
 		a.x = (a.x < 0) ? 0 : w->mini_w - 64;
 	while ((angle > 90 && angle <= 270 && w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0)

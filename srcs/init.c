@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 14:51:17 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 19:27:10 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_camera		*camera_init()
 	cam->radius = 5.0;
 	cam->angle = 180.0;
 	cam->speedangle = 5.0;
-	cam->speedmove = 10.0;
+	cam->speedmove = 5.0;
 	cam->fov = 60.0;
 	cam->position.x = 256.0;
 	cam->position.y = 256.0;
