@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 04:12:09 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 19:54:13 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 14:49:02 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static	int		*create_row(char *str, int fd)
 	int		*row;
 	int		j;
 
-	row = (int *)ft_memalloc(sizeof(int) * (ft_count_words(str, ' ')) + 2);
+	row = (int *)ft_memalloc(sizeof(int) * (ft_count_words(str, ' ') + 2));
 	if (!(words = ft_strsplit(str, ' ')) || !row)
 		end(ANSI_RED "malloc fail", fd);
 	j = 0;
@@ -117,7 +117,7 @@ t_map			*create_map(int fd)
 	begin = NULL;
 	lines = create_list(fd, &begin);
 	map = (t_map *)malloc(sizeof(t_map));
-	map ? map->board = (int **)malloc(sizeof(int *) * lines + 2) : 0;
+	map ? map->board = (int **)malloc(sizeof(int *) * (lines + 2)) : 0;
 	if (!(list = begin) || !lines)
 		end(ANSI_RED "map error", fd);
 	if (!map || !(map->board))

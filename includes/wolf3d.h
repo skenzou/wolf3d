@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 13:23:04 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 14:50:30 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@
 # define H_M 			200
 # define W_M 			320
 # define BLOC_SIZE		64
-# define WIDTH			1408
-# define HEIGHT			1200
+# define WIDTH			1024
+# define HEIGHT			768
 # define WALL_H			WIDTH
 # define NORTH			0
 # define SOUTH			1
