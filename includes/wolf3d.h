@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 12:03:47 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:23:04 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_wolf3d			*init_wolf3d(int fd);
 */
 t_image				*create_image(t_wolf3d *w, char *path);
 int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
-void				process(t_wolf3d *w);
+int					process(t_wolf3d *w);
 
 /*
 ** DRAWLINE.C
@@ -171,7 +171,7 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 ** EVENTS.C
 */
 int					handle_mouse(int button, int x, int y, t_wolf3d *w);
-int					handle_key(int keycode, t_wolf3d *w);
+int					key_pressed(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
 
 /*

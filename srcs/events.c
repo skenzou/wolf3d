@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 12:10:02 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:22:13 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,13 @@ int						camera_mov(int x, int y, t_wolf3d *w)
 		w->cam->angle -= 360;
 	while (w->cam->angle < 0)
 		w->cam->angle += 360;
-	process(w);
 	return (1);
 }
 
-int						handle_key(int keycode, t_wolf3d *w)
+int						key_pressed(int keycode, t_wolf3d *w)
 {
 	player_movement(keycode, w);
 	keycode == ESCAPE ? exit(0) : 0;
-	process(w);
 	return (1);
 }
 

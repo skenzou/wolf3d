@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 18:50:26 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:20:58 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		launch_threads(t_wolf3d *w)
 		pthread_join(w->tids[i++], NULL);
 }
 
-void		process(t_wolf3d *w)
+int			process(t_wolf3d *w)
 {
 	if (w->img->ptr)
 		mlx_destroy_image(w->mlx_ptr, w->img->ptr);
@@ -59,6 +59,7 @@ void		process(t_wolf3d *w)
 	launch_threads(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
 	draw_mmap(w);
+	return (0);
 	// if (w->texture)
 	// 	draw_blocs(w);
 }

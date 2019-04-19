@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 12:05:13 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 13:01:50 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ static inline void 		inter_ver(t_wolf3d *w, int i, double angle)
 	* tangent : w->cam->position.y + (w->cam->position.x - a.x) * -tangent;
 	if ((angle < 180 && (int)ceil(a.y) / 64 > w->map->h) || a.y < 0 || a.y >=  w->mini_h)
 		a.y = (a.y < 0) ? 0 : w->mini_h - 64;
-	// if ((int)ceil)
 	while ((angle < 180 && w->map->board[(int)ceil(a.y) / 64][(int)ceil(a.x) / 64] == 0)
 		|| (angle >= 180 && w->map->board[(int)a.y / 64][(int)ceil(a.x) / 64] == 0))
 	{
