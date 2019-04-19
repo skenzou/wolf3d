@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 20:13:07 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 10:46:43 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	draw_sky(t_wolf3d *w)
 	while (x < WIDTH)
 	{
 		y = 0;
-		while (y < HEIGHT / 2)
+		while (y < 800)
 		{
 			tex_y = y * (512. / HEIGHT) - 1;
 			if (tex_y <= 0)

@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 15:25:24 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 10:39:00 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->cam = camera_init();
 	init_thread_data(w);
 	init_textures(w);
+	CGDisplayHideCursor(kCGDirectMainDisplay);
 	//mlx_key_hook(w->win_ptr, &handle_key, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
 	//mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
