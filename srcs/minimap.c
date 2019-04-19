@@ -6,29 +6,11 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 19:55:58 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:00:20 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-t_camera		*camera_init()
-{
-	t_camera		*cam;
-
-	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
-		return (NULL);
-	cam->radius = 5.0;
-	cam->angle = 180.0;
-	cam->speedangle = 5.0;
-	cam->speedmove = 10.0;
-	cam->fov = 60.0;
-	cam->position.x = 256.0;
-	cam->position.y = 256.0;
-	cam->position.color = 0xff0000;
-	cam->pangle = 0.0;
-	return (cam);
-}
 
 static void		draw_square(t_wolf3d *w, t_point start)
 {

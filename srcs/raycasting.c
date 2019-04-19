@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 10:46:43 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:05:13 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	draw_sky(t_wolf3d *w)
 	while (x < WIDTH)
 	{
 		y = 0;
-		while (y < 800)
+		while (y < HEIGHT)
 		{
 			tex_y = y * (512. / HEIGHT) - 1;
 			if (tex_y <= 0)
@@ -108,12 +108,12 @@ static inline void		render(t_wolf3d *w, int i, double depth, t_thread_data *d)
 	int		inc;
 
 	h_seen = CAM_DIST * WALL_H / (depth * w->cos_table[i]);
-	y = CAM_H - (h_seen / 2) - 1;
+	y = w->cam->height - (h_seen / 2) - 1;
 	// x = -1;
 	// while (++x < y + 151)
 	// 	put_pixel_img(w, i + w->mini_w, x, 0x0010ff);
 	inc = 0;
-	while (++y < (CAM_H + (h_seen / 2)))
+	while (++y < (w->cam->height + (h_seen / 2)))
 		put_pixel_img(w, i, y + 150, fetch_color(d, h_seen, i, inc++));
 	// draw_floor(w, y, i);
 	// h_seen = w->width - y;

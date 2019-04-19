@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 23:30:20 by Mohamed          ###   ########.fr       */
+/*   Updated: 2019/04/19 12:03:47 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@
 # define WIDTH			1408
 # define HEIGHT			1200
 # define WALL_H			WIDTH
-# define CAM_H			500
 # define NORTH			0
 # define SOUTH			1
 # define EAST			2
@@ -100,6 +99,7 @@ typedef struct		s_camera
 	double			fov;
 	double			speedmove;
 	double			speedangle;
+	int				height;
 	t_vec2f			intersection;
 	t_vec2f			position;
 	t_vec2f			interv[WIDTH];
@@ -146,6 +146,8 @@ typedef struct		s_wolf3d
 	double			tan_table[WIDTH];
 	t_thread_data	tdata[TNUM];
 	pthread_t		tids[TNUM];
+	char			forward;
+	char			backward;
 }					t_wolf3d;
 
 /*

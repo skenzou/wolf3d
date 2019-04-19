@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 10:39:00 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:06:54 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,25 @@ void		init_thread_data(t_wolf3d *w)
    }
 }
 
+t_camera		*camera_init()
+{
+	t_camera		*cam;
+
+	if (!(cam = (t_camera*)ft_memalloc(sizeof(*cam))))
+		return (NULL);
+	cam->radius = 5.0;
+	cam->angle = 180.0;
+	cam->speedangle = 5.0;
+	cam->speedmove = 10.0;
+	cam->fov = 60.0;
+	cam->position.x = 256.0;
+	cam->position.y = 256.0;
+	cam->position.color = 0xff0000;
+	cam->pangle = 0.0;
+	cam->height = 500;
+	return (cam);
+}
+
 
 t_wolf3d		*init_wolf3d(int fd)
 {
@@ -64,7 +83,6 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->cam = camera_init();
 	init_thread_data(w);
 	init_textures(w);
-	CGDisplayHideCursor(kCGDirectMainDisplay);
 	//mlx_key_hook(w->win_ptr, &handle_key, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
 	//mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
