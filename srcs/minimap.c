@@ -6,22 +6,22 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 12:00:20 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:14:39 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static void		draw_square(t_wolf3d *w, t_point start)
+static void		draw_square(t_wolf3d *w, t_point start, int square_size)
 {
 	int		y;
 	int		x;
 
 	y = -1;
-	while (++y <= 32)
+	while (++y <= square_size)
 	{
 		x = -1;
-		while (++x <= 32)
+		while (++x <= square_size)
 			mlx_pixel_put(w->mlx_ptr, w->win_ptr, x + start.x,
 													y + start.y, start.color);
 	}
@@ -43,25 +43,26 @@ void		draw_circle(t_wolf3d *w)
  	}
  }
 
-void			draw_blocs(t_wolf3d *w)
-{
-	int i;
-	int j;
+// void			draw_blocs(t_wolf3d *w)
+// {
+// 	int i;
+// 	int j;
+//
+// 	i = -1;
+// 	while (++i < w->map->h && (j = -1))
+// 		while (++j < w->map->w)
+// 			if (w->map->board[i][j])
+// 			{
+// 				// if (!w->texture)
+// 					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
+// 					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 4]});
+// 				// else
+// 				// 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
+// 				// 	[w->map->board[i][j] % 4]->ptr,
+// 				// 								j * BLOC_SIZE, i * BLOC_SIZE);
+// 			}
+// }
 
-	i = -1;
-	while (++i < w->map->h && (j = -1))
-		while (++j < w->map->w)
-			if (w->map->board[i][j])
-			{
-				// if (!w->texture)
-					draw_square(w, (t_point){.x = j * BLOC_SIZE, .y = i *
-					BLOC_SIZE, .color = w->colors[w->map->board[i][j] % 4]});
-				// else
-				// 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures
-				// 	[w->map->board[i][j] % 4]->ptr,
-				// 								j * BLOC_SIZE, i * BLOC_SIZE);
-			}
-}
 
 void			draw_mmap(t_wolf3d *w)
 {
@@ -85,7 +86,7 @@ void			draw_mmap(t_wolf3d *w)
 			if (x + i >= 0 && y + j >= 0 && y + j < w->map->h
 					&& x + i < w->map->w && w->map->board[y + j][x + i] != 0)
 				draw_square(w, (t_point){.x = xoffset + (i * 32),
-								.y = yoffset + (j * 32), .color = 0x8000FF00});
+							.y = yoffset + (j * 32), .color = 0x8000FF00}, 32);
 			xoffset += 5;
 		}
 		yoffset += 5;

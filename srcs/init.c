@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 19:27:10 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:36:59 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static	void	init_textures(t_wolf3d *w)
 	w->textures[3] = create_image(w, "textures/greystone.xpm");
 	w->textures[4] = create_image(w, "textures/sky.xpm");
 	w->textures[5] = create_image(w, "textures/metal.xpm");
+	w->textures[6] = create_image(w, "textures/mymenu.xpm");
 	w->colors[0] = ORANGE;
 	w->colors[1] = PURPLE;
 	w->colors[2] = BLUE;
@@ -44,6 +45,25 @@ void		init_thread_data(t_wolf3d *w)
    }
 }
 
+static void		place_player(t_wolf3d *w)
+{
+	int i;
+	int j;
+
+	j = -1;
+	while (++j < w->map->h && (i = -1))
+		while (++i < w->map->w)
+			if (!w->map->board[j][i])
+			{
+				w->cam->position.x = i * 64 + 20;
+				w->cam->position.y = j * 64 + 20;
+				return ;
+			}
+	ft_putendl_fd(ANSI_RED "Could not place the player because the map is full,\
+ please choose a valid map", 2);
+	exit(1);
+}
+
 t_camera		*camera_init()
 {
 	t_camera		*cam;
@@ -55,8 +75,6 @@ t_camera		*camera_init()
 	cam->speedangle = 5.0;
 	cam->speedmove = 5.0;
 	cam->fov = 60.0;
-	cam->position.x = 256.0;
-	cam->position.y = 256.0;
 	cam->position.color = 0xff0000;
 	cam->pangle = 0.0;
 	cam->height = 500;
@@ -81,11 +99,12 @@ t_wolf3d		*init_wolf3d(int fd)
 	w->width = WIDTH;
 	w->height = HEIGHT;
 	w->cam = camera_init();
+	place_player(w);
+	w->menu = 1;
 	init_thread_data(w);
 	init_textures(w);
-	//mlx_key_hook(w->win_ptr, &handle_key, w);
+	mlx_mouse_hook(w->win_ptr, &menu_event, w);
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
-	//mlx_mouse_hook(w->win_ptr, &handle_mouse, w);
 	mlx_hook(w->win_ptr, 2, 1L << 0, &key_pressed, w);
 	mlx_loop_hook(w->mlx_ptr, &process, w);
 	return (w);

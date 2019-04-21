@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 14:58:33 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:15:30 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ void		launch_threads(t_wolf3d *w)
 
 int			process(t_wolf3d *w)
 {
+	if (w->menu)
+	{
+		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->textures[6]->ptr, 0, 0);
+		return (0);
+	}
 	draw_sky(w);
 	launch_threads(w);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);

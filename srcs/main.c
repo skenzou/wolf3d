@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/18 19:47:20 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:37:46 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int				main(int argc, char **argv)
 		return (0);
 	}
 	w = init_wolf3d(fd);
-	process(w);
+	// print_map(w);
+	// printf("w: %d, h: %d\n", w->map->w, w->map->h);
 	mlx_loop(w->mlx_ptr);
 	return (0);
 }

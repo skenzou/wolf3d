@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 14:50:30 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:38:38 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct		s_wolf3d
 	void			*mlx_ptr;
 	void			*win_ptr;
 	char			texture;
-	t_image			*textures[6];
+	t_image			*textures[7];
 	int				colors[4];
 	int				mini_h;
 	int				mini_w;
@@ -148,6 +148,7 @@ typedef struct		s_wolf3d
 	pthread_t		tids[TNUM];
 	char			forward;
 	char			backward;
+	char			menu;
 }					t_wolf3d;
 
 /*
@@ -170,9 +171,9 @@ void				put_line(t_wolf3d *w, t_point p1, t_point p2);
 /*
 ** EVENTS.C
 */
-int					handle_mouse(int button, int x, int y, t_wolf3d *w);
 int					key_pressed(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
+int					menu_event(int b, int x, int y, t_wolf3d *w);
 
 /*
 ** UTILS.C
@@ -189,6 +190,7 @@ void				tan_lookuptable(t_wolf3d *w, t_thread_data *d);
 void				draw_mmap(t_wolf3d *w);
 t_camera			*camera_init();
 void				draw_blocs(t_wolf3d *w);
+void			draw_map(t_wolf3d *w);
 
 /*
 ** READ.C

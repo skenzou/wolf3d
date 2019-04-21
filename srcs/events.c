@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/19 19:37:36 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:13:23 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ static inline void 		right(t_wolf3d *w)
 
 static inline void		player_movement(int keycode, t_wolf3d *w)
 {
+	if (w->menu)
+		return ;
 	if (keycode == UPARROW || keycode == WKEY)
 		forward(w);
 	if (keycode == DOWNARROW || keycode == SKEY)
@@ -171,6 +173,20 @@ static inline void		player_movement(int keycode, t_wolf3d *w)
 	(w->cam->angle < 0) && (w->cam->angle = 360);
 }
 
+int				menu_event(int b, int x, int y, t_wolf3d *w)
+{
+	if (b != 1 || !w->menu)
+		return (0);
+	if (x > 277 && x < 767 && y < 437 && y > 360)
+	{
+		w->menu = 0;
+		CGDisplayHideCursor(kCGDirectMainDisplay);
+	}
+	if (x > 276 && x < 768 && y < 540 && y > 461)
+		exit(1);
+	return (1);
+}
+
 int						camera_mov(int x, int y, t_wolf3d *w)
 {
 	int32_t deltax;
@@ -179,7 +195,8 @@ int						camera_mov(int x, int y, t_wolf3d *w)
 	(void)x;
 	(void)y;
 	CGGetLastMouseDelta(&deltax, &deltay);
-	CGDisplayHideCursor(kCGDirectMainDisplay);
+	if (w->menu)
+		return (1);
 	if (deltax > 0)
 		w->cam->angle -= ((float)deltax / 32) * w->cam->speedangle;
 	if (deltax < 0)
@@ -197,16 +214,16 @@ int						camera_mov(int x, int y, t_wolf3d *w)
 
 int						key_pressed(int keycode, t_wolf3d *w)
 {
-	player_movement(keycode, w);
 	keycode == ESCAPE ? exit(0) : 0;
-	return (1);
-}
-
-int						handle_mouse(int button, int x, int y, t_wolf3d *w)
-{
-	(void)x;
-	(void)y;
-	(void)button;
-	(void)w;
+	if (keycode == 48)
+	{
+		w->menu = !w->menu;
+		if (w->menu)
+			CGDisplayShowCursor(kCGDirectMainDisplay);
+		else
+			CGDisplayHideCursor(kCGDirectMainDisplay);
+	}
+	if (!w->menu)
+		player_movement(keycode, w);
 	return (1);
 }
