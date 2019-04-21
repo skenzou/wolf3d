@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 19:44:20 by midrissi         ###   ########.fr       */
+/*   Created: 2019/04/21 19:34:33 by midrissi          #+#    #+#             */
+/*   Updated: 2019/04/21 19:35:31 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static void		check_error(int argc)
+void			cos_lookuptable(t_wolf3d *w, t_thread_data *d)
 {
-	if (argc != 2)
+	int			i;
+	double		angle;
+
+	i = d->x;
+	while (i < d->x_end)
 	{
-		ft_putendl_fd(ANSI_RED "usage: ./wolf3d <map>", 2);
-		exit(1);
+		angle = (w->cam->fov / 2) - (i * w->cam->fov / w->width);
+		w->cos_table[i++] = tcos(angle);
 	}
 }
 
-int				main(int argc, char **argv)
+void			tan_lookuptable(t_wolf3d *w, t_thread_data *d)
 {
-	t_wolf3d	*w;
-	int			fd;
+	int			i;
+	double		angle;
 
-	check_error(argc);
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
+	i = d->x;
+	while (i < d->x_end)
 	{
-		perror("error");
-		return (0);
+		angle = w->cam->angle + (w->cam->fov / 2) -
+												(i * w->cam->fov / w->width);
+		w->tan_table[i++] = ttan(angle);
 	}
-	w = init_wolf3d(fd);
-	mlx_loop(w->mlx_ptr);
-	return (0);
 }

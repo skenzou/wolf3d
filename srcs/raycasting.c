@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 18:05:45 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 20:45:23 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,8 @@ int 	fetch_color(t_thread_data *d, int h_seen, int i, int y)
 	int color;
 	int tex_y;
 	int tex_x;
-	int index;
 	int offset;
 
-	index = d->w->map->board
-		[(int)d->w->cam->rays[i].y / 64][(int)d->w->cam->rays[i].x / 64] % 4;
-	if (!d->w->texture)
-		return (d->w->colors[index]);
 	tex_y = y * (64. / h_seen) -1;
 	tex_x = d->inter ? (int)d->w->cam->rays[i].y % 64 : (int)d->w->cam->rays[i].x % 64;
 	offset = 64 * 4 * tex_y + tex_x * 4;

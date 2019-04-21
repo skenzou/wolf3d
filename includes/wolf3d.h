@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 18:12:03 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 20:45:03 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,7 @@ typedef struct		s_wolf3d
 	t_image			*img;
 	void			*mlx_ptr;
 	void			*win_ptr;
-	char			texture;
 	t_image			*textures[6];
-	int				colors[4];
 	int				mini_h;
 	int				mini_w;
 	int				width;
@@ -146,60 +144,55 @@ typedef struct		s_wolf3d
 	double			tan_table[WIDTH];
 	t_thread_data	tdata[TNUM];
 	pthread_t		tids[TNUM];
-	char			forward;
-	char			backward;
 	char			menu;
 }					t_wolf3d;
 
 /*
+** READ.C
+*/
+t_map				*create_map(int fd);
+/*
 ** INIT.C
 */
 t_wolf3d			*init_wolf3d(int fd);
-
 /*
-** IMAGE.c
+** REFRESH.C
 */
-t_image				*create_image(t_wolf3d *w, char *path);
-int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
-int					process(t_wolf3d *w);
-
+int					refresh(t_wolf3d *w);
 /*
-** DRAWLINE.C
+** COLLISION.C
 */
-void				put_line(t_wolf3d *w, t_point p1, t_point p2);
-
+t_vec2f				collision(t_wolf3d *w, t_vec2f old, t_vec2f new);
+/*
+** MINIMAP.C
+*/
+void				draw_mmap(t_wolf3d *w, int yoffset);
+/*
+** RAYCASTING.C
+*/
+void				*raycasting(void *data);
 /*
 ** EVENTS.C
 */
 int					key_pressed(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
 int					menu_event(int b, int x, int y, t_wolf3d *w);
-
+/*
+** IMAGE.C
+*/
+t_image				*create_image(t_wolf3d *w, char *path);
+int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
 /*
 ** UTILS.C
 */
 double				tcos(double angle);
 double				tsin(double angle);
 double				ttan(double angle);
+void				end(char *str, int fd);
+/*
+** UTILS2.C
+*/
 void				cos_lookuptable(t_wolf3d *w, t_thread_data *d);
 void				tan_lookuptable(t_wolf3d *w, t_thread_data *d);
-
-/*
-** MINIMAP.C
-*/
-void				draw_mmap(t_wolf3d *w);
-t_camera			*camera_init();
-void				draw_blocs(t_wolf3d *w);
-void			draw_map(t_wolf3d *w);
-
-/*
-** READ.C
-*/
-t_map				*create_map(int fd);
-
-/*
-** RAYCASTING.c
-*/
-void				*raycasting(void *data);
 
 #endif

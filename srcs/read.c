@@ -6,18 +6,11 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 04:12:09 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 10:02:56 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 19:33:47 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-static void		end(char *str, int fd)
-{
-	ft_putendl_fd(str, 2);
-	close(fd);
-	exit(1);
-}
 
 static	int		check_line(char *str, int fd)
 {
