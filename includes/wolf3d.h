@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 17:52:25 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 18:12:03 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct		s_wolf3d
 	void			*mlx_ptr;
 	void			*win_ptr;
 	char			texture;
-	t_image			*textures[7];
+	t_image			*textures[6];
 	int				colors[4];
 	int				mini_h;
 	int				mini_w;

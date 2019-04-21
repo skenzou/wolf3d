@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 18:02:58 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 19:02:13 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 static	void	init_textures(t_wolf3d *w)
 {
-	w->textures[0] = create_image(w, "textures/brick.xpm");
-	w->textures[1] = create_image(w, "textures/test.xpm");
-	w->textures[2] = create_image(w, "textures/bluestone.xpm");
+	w->textures[0] = create_image(w, "textures/brownbrick.xpm");
+	w->textures[1] = create_image(w, "textures/bluestone.xpm");
+	w->textures[2] = create_image(w, "textures/wood.xpm");
 	w->textures[3] = create_image(w, "textures/greystone.xpm");
 	w->textures[4] = create_image(w, "textures/sky.xpm");
-	w->textures[5] = create_image(w, "textures/metal.xpm");
-	w->textures[6] = create_image(w, "textures/mymenu.xpm");
+	w->textures[5] = create_image(w, "textures/menu.xpm");
 	w->colors[0] = ORANGE;
 	w->colors[1] = PURPLE;
 	w->colors[2] = BLUE;

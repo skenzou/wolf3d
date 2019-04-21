@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 13:13:23 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/21 18:51:34 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,12 @@ int				menu_event(int b, int x, int y, t_wolf3d *w)
 {
 	if (b != 1 || !w->menu)
 		return (0);
-	if (x > 277 && x < 767 && y < 437 && y > 360)
+	if (x > 288 && x < 776 && y > 462 && y < 535)
 	{
 		w->menu = 0;
 		CGDisplayHideCursor(kCGDirectMainDisplay);
 	}
-	if (x > 276 && x < 768 && y < 540 && y > 461)
+	if (x > 289 && x < 780 && y > 592 && y < 666)
 		exit(1);
 	return (1);
 }
