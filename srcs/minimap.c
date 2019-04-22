@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 15:02:54 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 18:38:28 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void		draw_circle(t_wolf3d *w)
 		i = -1;
 		while (++i <= (int)w->cam->radius)
 			put_pixel_img(w->minimap, 157 + i * cos(angle),
-											157 + i * sin(angle), 0xff0000);
+											157 + i * sin(angle), RED);
 		angle += 0.005;
 	}
 }

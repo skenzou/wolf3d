@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:44:15 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 18:54:54 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@
 # define PURPLE			0x751b91
 # define BLUE			0x081ae0
 # define GREY			0x687272
-# define R_COLOR		0xff0000
+# define RED			0xff0000
 
 typedef struct		s_image
 {
@@ -122,6 +122,7 @@ typedef struct		s_thread_data
 	int				x_end;
 	char			inter;
 	int				direction;
+	double			depth;
 	struct s_wolf3d	*w;
 }					t_thread_data;
 
@@ -172,6 +173,7 @@ void				draw_mmap(t_wolf3d *w, int yoffset);
 ** RAYCASTING.C
 */
 void				*raycasting(void *data);
+void				render(t_wolf3d *w, int i, double depth, t_thread_data *d);
 /*
 ** EVENTS.C
 */
