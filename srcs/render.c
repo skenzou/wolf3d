@@ -6,13 +6,13 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 17:38:24 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/04/22 20:31:02 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 00:21:23 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void			draw_sky(t_wolf3d *w, int x, int y_end)
+void			draw_sky(t_wolf3d *w, int x, int y_end, int angle)
 {
 	int y;
 	int offset;
@@ -25,7 +25,7 @@ void			draw_sky(t_wolf3d *w, int x, int y_end)
 		tex_y = y * (512. / HEIGHT) - 1;
 		if (tex_y <= 0)
 			tex_y = 1;
-		offset = 512 * 4 * tex_y + (x % 512) * 4;
+		offset = 512 * 4 * tex_y + (!angle ? 1 : angle % 512) * 4;
 		ft_memcpy(w->img->data + 4 * WIDTH * y + x * 4,
 					w->textures[4]->data + offset, 4);
 		y++;
@@ -63,7 +63,7 @@ static int		fetch_color(t_thread_data *d, int h_seen, int y, double depth)
 	return (apply_shading(d->w, color, intensity));
 }
 
-void			render(double depth, t_thread_data *d)
+void			render(double depth, t_thread_data *d, double angle)
 {
 	int		h_seen;
 	int		y;
@@ -71,13 +71,13 @@ void			render(double depth, t_thread_data *d)
 
 	h_seen = CAM_DIST * WALL_H / (depth * d->w->cos_table[d->i]);
 	y = d->w->cam->height - (h_seen / 2) - 1;
-	draw_sky(d->w, d->i, y + 152);
+	draw_sky(d->w, d->i, y + 152, (int)angle);
 	inc = 0;
 	while (++y < (d->w->cam->height + (h_seen / 2)))
 		put_pixel_img(d->w->img, d->i, y + 150,
 										fetch_color(d, h_seen, inc++, depth));
 	y--;
-	while (++y < d->w->height)
+	while (++y < HEIGHT)
 		put_pixel_img(d->w->img, d->i, y + 150,
 						apply_shading(d->w, GREY, 100. / (d->w->height - y)));
 }

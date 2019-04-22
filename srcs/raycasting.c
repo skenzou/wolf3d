@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 20:19:35 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 22:08:11 by Mohamed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void						*raycasting(void *data)
 		inter_ver(d, angle);
 		inter_hor(d, angle);
 		dist = get_distowall(d);
-		render(dist, d);
+		render(dist, d, angle);
 		d->i++;
 	}
 	return (0);

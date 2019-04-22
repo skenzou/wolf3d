@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 20:36:54 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 00:17:51 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,12 @@ t_vec2f				collision(t_wolf3d *w, t_vec2f old, t_vec2f new);
 /*
 ** MINIMAP.C
 */
-void				draw_mmap(t_wolf3d *w, int yoffset);
+void				draw_mmap(t_wolf3d *w, int yoffset, int xoffset);
 /*
 ** RAYCASTING.C
 */
 void				*raycasting(void *data);
-void				render(double depth, t_thread_data *d);
+void				render(double depth, t_thread_data *d, double angle);
 /*
 ** INTERSECTION.C
 */

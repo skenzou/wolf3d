@@ -6,13 +6,14 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 18:38:28 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/23 00:17:57 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static void		draw_square(t_wolf3d *w, t_point start, int square_size)
+static void		draw_square(t_wolf3d *w, t_point start,
+																							int square_size, t_point *center)
 {
 	int		y;
 	int		x;
@@ -22,7 +23,8 @@ static void		draw_square(t_wolf3d *w, t_point start, int square_size)
 	{
 		x = -1;
 		while (++x <= square_size)
-			put_pixel_img(w->minimap, x + start.x, y + start.y, start.color);
+			put_pixel_img(w->minimap, x + start.x - center->x,
+																					y + start.y - center->y, start.color);
 	}
 }
 
@@ -47,23 +49,31 @@ static void		draw_circle(t_wolf3d *w)
 	{
 		i = -1;
 		while (++i <= (int)w->cam->radius)
-			put_pixel_img(w->minimap, 157 + i * cos(angle),
-											157 + i * sin(angle), RED);
+			put_pixel_img(w->minimap, 139 + i * cos(angle),
+											139 + i * sin(angle), RED);
 		angle += 0.005;
 	}
 }
 
-void			draw_mmap(t_wolf3d *w, int yoffset)
+static void		init_center(t_wolf3d *w, t_point *center)
+{
+	center->x = (int)floor(w->cam->position.x) % 64;
+	center->y = (int)floor(w->cam->position.y) % 64;
+	center->x /= 2;
+	center->y /= 2;
+}
+
+void			draw_mmap(t_wolf3d *w, int yoffset, int xoffset)
 {
 	int		x;
 	int		y;
-	int		xoffset;
 	int		j;
 	int		i;
+	t_point center;
 
+	init_center(w, &center);
 	set_mmap_pixels(w);
 	draw_circle(w);
-	yoffset = 0;
 	x = (int)floor(w->cam->position.x / 64) - 4;
 	y = (int)floor(w->cam->position.y / 64) - 4;
 	j = -1;
@@ -75,7 +85,7 @@ void			draw_mmap(t_wolf3d *w, int yoffset)
 			if (x + i >= 0 && y + j >= 0 && y + j < w->map->h
 					&& x + i < w->map->w && w->map->board[y + j][x + i] != 0)
 				draw_square(w, (t_point){.x = xoffset + (i * 32),
-							.y = yoffset + (j * 32), .color = 0x6000FF00}, 32);
+							.y = yoffset + (j * 32), .color = 0x6000FF00}, 32, &center);
 			xoffset += 3;
 		}
 		yoffset += 3;
