@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 20:45:28 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:01:15 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static void			init_textures(t_wolf3d *w)
 {
-	w->textures[0] = create_image(w, "textures/eagle.xpm");
-	w->textures[1] = create_image(w, "textures/bluestone.xpm");
-	w->textures[2] = create_image(w, "textures/redbrick.xpm");
-	w->textures[3] = create_image(w, "textures/greystone.xpm");
-	w->textures[4] = create_image(w, "textures/sky.xpm");
-	w->textures[5] = create_image(w, "textures/menu.xpm");
+	w->textures[0] = create_image(w, "textures/eagle.xpm", 0, 0);
+	w->textures[1] = create_image(w, "textures/bluestone.xpm", 0, 0);
+	w->textures[2] = create_image(w, "textures/redbrick.xpm", 0, 0);
+	w->textures[3] = create_image(w, "textures/greystone.xpm", 0, 0);
+	w->textures[4] = create_image(w, "textures/sky.xpm", 0, 0);
+	w->textures[5] = create_image(w, "textures/menu.xpm", 0, 0);
 }
 
 static void			init_thread_data(t_wolf3d *w)
@@ -86,12 +86,13 @@ t_wolf3d			*init_wolf3d(int fd)
 		exit(1);
 	w->win_ptr = mlx_new_window(w->mlx_ptr, WIDTH, HEIGHT, "Wolf3d");
 	!w->win_ptr ? exit(1) : 0;
-	w->img = create_image(w, NULL);
+	w->img = create_image(w, NULL, WIDTH, HEIGHT);
 	w->mini_h = BLOC_SIZE * w->map->h;
 	w->mini_w = BLOC_SIZE * w->map->w;
 	w->width = WIDTH;
 	w->height = HEIGHT;
 	w->cam = camera_init();
+	w->minimap = create_image(w, NULL, 277, 277);
 	place_player(w);
 	w->menu = 1;
 	init_thread_data(w);

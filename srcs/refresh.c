@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 19:38:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 19:45:29 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:46:19 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ int					refresh(t_wolf3d *w)
 	launch_threads(w);
 	draw_mmap(w, 0);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
+	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->minimap->ptr, 0, 0);
 	return (0);
 }

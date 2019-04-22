@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 20:45:03 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:44:15 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct		s_wolf3d
 	int				mini_w;
 	int				width;
 	int				height;
+	t_image			*minimap;
 	char			inter;
 	int				direction;
 	double			cos_table[WIDTH];
@@ -180,8 +181,8 @@ int					menu_event(int b, int x, int y, t_wolf3d *w);
 /*
 ** IMAGE.C
 */
-t_image				*create_image(t_wolf3d *w, char *path);
-int					put_pixel_img(t_wolf3d *w, int x, int y, int color);
+t_image				*create_image(t_wolf3d *w, char *path, int width, int height);
+int					put_pixel_img(t_image *img, int x, int y, int color);
 /*
 ** UTILS.C
 */

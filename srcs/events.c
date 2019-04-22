@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 20:46:02 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:01:05 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int						camera_mov(int x, int y, t_wolf3d *w)
 		w->cam->angle += ((float)deltax / -32) * w->cam->speedangle;
 	if (deltay > 0 && w->cam->height > 15)
 		w->cam->height -= ((float)deltay / 32) * 100;
-	if (deltay < 0 && w->cam->height < 1800)
+	if (deltay < 0 && w->cam->height < 800)
 		w->cam->height += ((float)deltay / -32) * 100;
 	while (w->cam->angle > 360)
 		w->cam->angle -= 360;

@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 16:20:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 20:45:23 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:04:54 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,37 @@ void	draw_sky(t_wolf3d *w, int x, int y_end)
 	}
 }
 
-
-int 	fetch_color(t_thread_data *d, int h_seen, int i, int y)
+static    int    apply_shading(int color, double intensity)
 {
-	int color;
-	int tex_y;
-	int tex_x;
-	int offset;
+    int        red;
+    int        green;
+    int        blue;
 
-	tex_y = y * (64. / h_seen) -1;
-	tex_x = d->inter ? (int)d->w->cam->rays[i].y % 64 : (int)d->w->cam->rays[i].x % 64;
-	offset = 64 * 4 * tex_y + tex_x * 4;
-	ft_memcpy((void *)&color, d->w->textures[d->direction]->data + offset, 4);
-	return (color);
+    red = ((color >> 16) & 0xff) * intensity;
+    green = ((color >> 8) & 0xff) * intensity;
+    blue = ((color & 0xff) * intensity);
+
+    return ((red << 16) | (green << 8) | blue);
+}
+
+static int     fetch_color(t_thread_data *d, int h_seen, int i, int y, double depth)
+{
+    int color;
+    int tex_y;
+    int tex_x;
+    int offset;
+    double    intensity;
+
+    tex_y = y * (64. / h_seen) -1;
+    tex_x = d->inter ? (int)d->w->cam->rays[i].y % 64 : (int)d->w->cam->rays[i].x % 64;
+    offset = 64 * 4 * tex_y + tex_x * 4;
+    ft_memcpy((void *)&color, d->w->textures[d->direction]->data + offset, 4);
+    if (depth > 0 && depth < 350)
+        intensity = 1;
+    else
+        intensity = 0.25;
+    color = apply_shading(color, intensity);
+    return (color);
 }
 
 static inline void		render(t_wolf3d *w, int i, double depth, t_thread_data *d)
@@ -55,13 +73,13 @@ static inline void		render(t_wolf3d *w, int i, double depth, t_thread_data *d)
 
 	h_seen = CAM_DIST * WALL_H / (depth * w->cos_table[i]);
 	y = w->cam->height - (h_seen / 2) - 1;
-	draw_sky(w, i, y + 151);
+	draw_sky(w, i, y + 152);
 	inc = 0;
 	while (++y < (w->cam->height + (h_seen / 2)))
-		put_pixel_img(w, i, y + 150, fetch_color(d, h_seen, i, inc++));
+		put_pixel_img(w->img, i, y + 150, fetch_color(d, h_seen, i, inc++, depth));
 	y--;
 	while (++y < w->height)
-		put_pixel_img(w, i, y + 150, GREY);
+		put_pixel_img(w->img, i, y + 150, GREY);
 }
 
 static inline void 		inter_hor(t_wolf3d *w, int i, double angle)

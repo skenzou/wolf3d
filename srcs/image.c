@@ -6,27 +6,28 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/21 19:41:11 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 14:45:38 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int				put_pixel_img(t_wolf3d *w, int x, int y, int color)
+int				put_pixel_img(t_image *img, int x, int y, int color)
 {
 	int offset;
 
-	offset = ((x + y * WIDTH) * w->img->bpp);
-	if (x < WIDTH && x > 0 && y < HEIGHT && y > 0)
+	offset = ((x + y * img->width) * img->bpp);
+	if (x < img->width && x > 0 && y < img->height && y > 0)
 	{
-		w->img->data[offset] = color & 0xFF;
-		w->img->data[offset + 1] = (color >> 8) & 0xFF;
-		w->img->data[offset + 2] = (color >> 16) & 0xFF;
+		img->data[offset] = color & 0xFF;
+		img->data[offset + 1] = (color >> 8) & 0xFF;
+		img->data[offset + 2] = (color >> 16) & 0xFF;
+		img->data[offset + 3] = (color >> 24) & 0xFF;
 	}
 	return (1);
 }
 
-t_image			*create_image(t_wolf3d *w, char *path)
+t_image			*create_image(t_wolf3d *w, char *path, int width, int height)
 {
 	t_image		*img;
 
@@ -36,7 +37,11 @@ t_image			*create_image(t_wolf3d *w, char *path)
 		img->ptr =
 			mlx_xpm_file_to_image(w->mlx_ptr, path, &img->width, &img->height);
 	else
-		img->ptr = mlx_new_image(w->mlx_ptr, WIDTH, HEIGHT);
+	{
+		img->ptr = mlx_new_image(w->mlx_ptr, width, height);
+		img->width = width;
+		img->height = height;
+	}
 	if (!(img->ptr))
 		exit(1);
 	img->data = mlx_get_data_addr(img->ptr,
