@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 19:34:33 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 18:49:20 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/22 20:34:40 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ void			tan_lookuptable(t_wolf3d *w, t_thread_data *d)
 		w->tan_table[i++] = ttan(angle);
 	}
 }
-

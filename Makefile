@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/04/22 18:22:12 by rkamegne         ###   ########.fr        #
+#    Updated: 2019/04/22 20:15:58 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
 SRC_NAME = main.c read.c utils.c minimap.c events.c image.c raycasting.c init.c\
-			utils2.c refresh.c collision.c render.c
+			utils2.c refresh.c collision.c render.c intersection.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 INC_NAME = wolf3d.h
 INC_FPATH = ./includes/wolf3d.h

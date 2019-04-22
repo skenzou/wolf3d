@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:45:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 12:58:50 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/22 20:38:11 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void		check_error(int argc)
 
 int				main(int argc, char **argv)
 {
-	t_wolf3d	*w;
+	t_wolf3d	w;
 	int			fd;
 
 	check_error(argc);
@@ -33,7 +33,7 @@ int				main(int argc, char **argv)
 		perror("error");
 		return (0);
 	}
-	w = init_wolf3d(fd);
-	mlx_loop(w->mlx_ptr);
+	init_wolf3d(fd, &w);
+	mlx_loop(w.mlx_ptr);
 	return (0);
 }

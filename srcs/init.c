@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 18:49:30 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/22 20:38:35 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ static t_camera		*camera_init(void)
 	return (cam);
 }
 
-t_wolf3d			*init_wolf3d(int fd)
+void				init_wolf3d(int fd, t_wolf3d *w)
 {
-	t_wolf3d *w;
-
-	w = (t_wolf3d *)ft_memalloc(sizeof(t_wolf3d));
 	w->map = create_map(fd);
 	if (!(w->mlx_ptr = mlx_init()))
 		exit(1);
@@ -91,6 +88,7 @@ t_wolf3d			*init_wolf3d(int fd)
 	w->mini_w = BLOC_SIZE * w->map->w;
 	w->width = WIDTH;
 	w->height = HEIGHT;
+	w->nightmode = 1;
 	w->cam = camera_init();
 	w->minimap = create_image(w, NULL, 277, 277);
 	place_player(w);
@@ -101,5 +99,5 @@ t_wolf3d			*init_wolf3d(int fd)
 	mlx_hook(w->win_ptr, 6, 1L << 6, &camera_mov, w);
 	mlx_hook(w->win_ptr, 2, 1L << 0, &key_pressed, w);
 	mlx_loop_hook(w->mlx_ptr, &refresh, w);
-	return (w);
+	mlx_hook(w->win_ptr, 17, 1L << 17, &close_click, w);
 }

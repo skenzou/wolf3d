@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 17:38:24 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/04/22 18:34:34 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/22 20:31:02 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void		draw_sky(t_wolf3d *w, int x, int y_end)
+void			draw_sky(t_wolf3d *w, int x, int y_end)
 {
 	int y;
 	int offset;
@@ -32,19 +32,21 @@ void		draw_sky(t_wolf3d *w, int x, int y_end)
 	}
 }
 
-static	int	apply_shading(int color, double intensity)
+static int		apply_shading(t_wolf3d *w, int color, double intensity)
 {
 	int		red;
 	int		green;
 	int		blue;
 
+	if (intensity > 1 || !w->nightmode)
+		return (color);
 	red = ((color >> 16) & 0xff) * intensity;
 	green = ((color >> 8) & 0xff) * intensity;
 	blue = ((color & 0xff) * intensity);
 	return ((red << 16) | (green << 8) | blue);
 }
 
-static	int	fetch_color(t_thread_data *d, int h_seen, int i, int y)
+static int		fetch_color(t_thread_data *d, int h_seen, int y, double depth)
 {
 	int		color;
 	int		tex_y;
@@ -53,33 +55,29 @@ static	int	fetch_color(t_thread_data *d, int h_seen, int i, int y)
 	double	intensity;
 
 	tex_y = y * (64. / h_seen) - 1;
-	tex_x = d->inter ? (int)d->w->cam->rays[i].y % 64 :
-	(int)d->w->cam->rays[i].x % 64;
+	tex_x = d->inter ? (int)d->w->cam->rays[d->i].y % 64
+					: (int)d->w->cam->rays[d->i].x % 64;
 	offset = 64 * 4 * tex_y + tex_x * 4;
 	ft_memcpy((void *)&color, d->w->textures[d->direction]->data + offset, 4);
-	if (d->depth > 0 && d->depth < 350)
-		intensity = 1;
-	else
-		intensity = 0.25;
-	color = apply_shading(color, intensity);
-	return (color);
+	intensity = 50 / (!depth ? 1. : depth);
+	return (apply_shading(d->w, color, intensity));
 }
 
-void		render(t_wolf3d *w, int i, double depth, t_thread_data *d)
+void			render(double depth, t_thread_data *d)
 {
 	int		h_seen;
 	int		y;
 	int		inc;
 
-	h_seen = CAM_DIST * WALL_H / (depth * w->cos_table[i]);
-	y = w->cam->height - (h_seen / 2) - 1;
-	draw_sky(w, i, y + 152);
+	h_seen = CAM_DIST * WALL_H / (depth * d->w->cos_table[d->i]);
+	y = d->w->cam->height - (h_seen / 2) - 1;
+	draw_sky(d->w, d->i, y + 152);
 	inc = 0;
-	d->depth = depth;
-	while (++y < (w->cam->height + (h_seen / 2)))
-		put_pixel_img(w->img, i, y + 150, fetch_color(d, h_seen, i,
-					inc++));
+	while (++y < (d->w->cam->height + (h_seen / 2)))
+		put_pixel_img(d->w->img, d->i, y + 150,
+										fetch_color(d, h_seen, inc++, depth));
 	y--;
-	while (++y < w->height)
-		put_pixel_img(w->img, i, y + 150, GREY);
+	while (++y < d->w->height)
+		put_pixel_img(d->w->img, d->i, y + 150,
+						apply_shading(d->w, GREY, 100. / (d->w->height - y)));
 }

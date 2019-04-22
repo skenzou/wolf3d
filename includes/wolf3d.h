@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 18:54:54 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/22 20:36:54 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct		s_thread_data
 	int				x_end;
 	char			inter;
 	int				direction;
-	double			depth;
+	int				i;
 	struct s_wolf3d	*w;
 }					t_thread_data;
 
@@ -147,6 +147,7 @@ typedef struct		s_wolf3d
 	t_thread_data	tdata[TNUM];
 	pthread_t		tids[TNUM];
 	char			menu;
+	char			nightmode;
 }					t_wolf3d;
 
 /*
@@ -156,7 +157,7 @@ t_map				*create_map(int fd);
 /*
 ** INIT.C
 */
-t_wolf3d			*init_wolf3d(int fd);
+void				init_wolf3d(int fd, t_wolf3d *w);
 /*
 ** REFRESH.C
 */
@@ -173,17 +174,24 @@ void				draw_mmap(t_wolf3d *w, int yoffset);
 ** RAYCASTING.C
 */
 void				*raycasting(void *data);
-void				render(t_wolf3d *w, int i, double depth, t_thread_data *d);
+void				render(double depth, t_thread_data *d);
+/*
+** INTERSECTION.C
+*/
+void				inter_ver(t_thread_data *d, double angle);
+void				inter_hor(t_thread_data *d, double angle);
 /*
 ** EVENTS.C
 */
 int					key_pressed(int keycode, t_wolf3d *w);
 int					camera_mov(int x, int y, t_wolf3d *w);
 int					menu_event(int b, int x, int y, t_wolf3d *w);
+int					close_click(t_wolf3d *w);
 /*
 ** IMAGE.C
 */
-t_image				*create_image(t_wolf3d *w, char *path, int width, int height);
+t_image				*create_image(t_wolf3d *w, char *path, int width,
+																	int height);
 int					put_pixel_img(t_image *img, int x, int y, int color);
 /*
 ** UTILS.C
