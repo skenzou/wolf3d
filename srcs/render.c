@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 17:38:24 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/04/23 00:21:23 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 09:40:04 by Mohamed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ void			draw_sky(t_wolf3d *w, int x, int y_end, int angle)
 
 	y = 0;
 	y_end = y_end > HEIGHT ? HEIGHT : y_end;
+	if (angle > 180)
+		angle = 360 - angle;
 	while (y < y_end)
 	{
 		tex_y = y * (512. / HEIGHT) - 1;
 		if (tex_y <= 0)
 			tex_y = 1;
-		offset = 512 * 4 * tex_y + (!angle ? 1 : angle % 512) * 4;
+		offset = 512 * 4 * tex_y + (angle % 512) * 4;
 		ft_memcpy(w->img->data + 4 * WIDTH * y + x * 4,
 					w->textures[4]->data + offset, 4);
 		y++;
