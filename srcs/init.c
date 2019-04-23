@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 13:53:24 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:32:02 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static t_camera		*camera_init(void)
 	if (!(cam = (t_camera*)ft_memalloc(sizeof(t_camera))))
 		exit(1);
 	cam->radius = 5.0;
-	cam->angle = 180.0;
+	cam->angle = 360.0;
 	cam->speedangle = 5.0;
 	cam->speedmove = 5.0;
 	cam->fov = 60.0;
