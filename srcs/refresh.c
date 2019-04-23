@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 19:38:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 00:14:08 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 12:09:02 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,28 @@ static void			launch_threads(t_wolf3d *w)
 
 int					refresh(t_wolf3d *w)
 {
+	if (w->sleep && !(w->sleep = 0))
+		sleep(2);
 	if (w->menu)
 	{
-		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
+		if (!w->options)
+			mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
 													w->textures[5]->ptr, 0, 0);
+		else
+			mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
+												w->textures[6]->ptr, 0, 0);
 		return (0);
+	}
+	if (w->scary)
+	{
+		w->time++;
+		if (w->time % 1800 == 0)
+		{
+			mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
+													w->textures[7]->ptr, 0, 0);
+			w->sleep = 1;
+			return (0);
+		}
 	}
 	launch_threads(w);
 	draw_mmap(w, 0, 0);

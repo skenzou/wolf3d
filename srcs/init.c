@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 09:10:15 by Mohamed          ###   ########.fr       */
+/*   Updated: 2019/04/23 12:37:13 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void			init_textures(t_wolf3d *w)
 	w->textures[3] = create_image(w, "textures/greystone.xpm", 0, 0);
 	w->textures[4] = create_image(w, "textures/sky.xpm", 0, 0);
 	w->textures[5] = create_image(w, "textures/menu.xpm", 0, 0);
+	w->textures[6] = create_image(w, "textures/options.xpm", 0, 0);
+	w->textures[7] = create_image(w, "textures/xD.xpm", 0, 0);
 }
 
 static void			init_thread_data(t_wolf3d *w)
@@ -93,6 +95,11 @@ void				init_wolf3d(int fd, t_wolf3d *w)
 	w->minimap = create_image(w, NULL, 277, 277);
 	place_player(w);
 	w->menu = 1;
+	w->scary = 0;
+	w->sleep = 0;
+	w->options = 0;
+	w->texturelight = 50;
+	w->floorlight = 100.;
 	init_thread_data(w);
 	init_textures(w);
 	mlx_mouse_hook(w->win_ptr, &menu_event, w);

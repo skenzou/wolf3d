@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:23:36 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 00:04:21 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 12:34:54 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,46 @@ int						menu_event(int b, int x, int y, t_wolf3d *w)
 {
 	if (b != 1 || !w->menu)
 		return (0);
-	if (x > 288 && x < 776 && y > 462 && y < 535)
+	if (!w->options)
 	{
-		w->menu = 0;
-		CGDisplayHideCursor(kCGDirectMainDisplay);
+		if (x > 280 && x < 770 && y > 321 && y < 398)
+		{
+			w->menu = 0;
+			CGDisplayHideCursor(kCGDirectMainDisplay);
+		}
+		if (x > 280 && x < 770 && y > 423 && y < 501)
+		{
+			w->options = 1;
+			return (1);
+		}
+		if (x > 280 && x < 770 && y > 523 && y < 600)
+			exit(1);
 	}
-	if (x > 82 && x < 160 && y > 464 && y < 538)
-		w->nightmode = !w->nightmode;
-	if (x > 289 && x < 780 && y > 592 && y < 666)
-		exit(1);
+	else
+	{
+		if (x > 286 && x < 763 && y > 313 && y < 387)
+		{
+			w->scary = 0;
+			w->nightmode = 1;
+			w->texturelight = 50;
+			w->floorlight = 100.;
+		}
+		if (x > 286 && x < 763 && y > 412 && y < 482)
+		{
+			w->nightmode = 0;
+			w->scary = 0;
+		}
+		if (x > 286 && x < 763 && y > 513 && y < 584)
+		{
+			w->time = 0;
+			w->scary = 1;
+			w->nightmode = 1;
+			w->texturelight = 10;
+			w->floorlight = 30.;
+		}
+		if (x > 34 && x < 206 && y > 671 && y < 715)
+			w->options = 0;
+	}
 	return (1);
 }
 
@@ -84,6 +115,7 @@ int						key_pressed(int keycode, t_wolf3d *w)
 	keycode == ESCAPE ? exit(0) : 0;
 	if (keycode == 48)
 	{
+		w->options = 0;
 		w->menu = !w->menu;
 		if (w->menu)
 			CGDisplayShowCursor(kCGDirectMainDisplay);

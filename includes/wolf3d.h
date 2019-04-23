@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 09:40:39 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 00:17:51 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 12:21:28 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct		s_wolf3d
 	t_image			*img;
 	void			*mlx_ptr;
 	void			*win_ptr;
-	t_image			*textures[6];
+	t_image			*textures[8];
 	int				mini_h;
 	int				mini_w;
 	int				width;
@@ -148,6 +148,13 @@ typedef struct		s_wolf3d
 	pthread_t		tids[TNUM];
 	char			menu;
 	char			nightmode;
+	unsigned long	time;
+	unsigned long	limit;
+	char			scary;
+	char			sleep;
+	char			options;
+	int				texturelight;
+	double			floorlight;
 }					t_wolf3d;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 17:38:24 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/04/23 09:40:04 by Mohamed          ###   ########.fr       */
+/*   Updated: 2019/04/23 12:24:15 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int		fetch_color(t_thread_data *d, int h_seen, int y, double depth)
 					: (int)d->w->cam->rays[d->i].x % 64;
 	offset = 64 * 4 * tex_y + tex_x * 4;
 	ft_memcpy((void *)&color, d->w->textures[d->direction]->data + offset, 4);
-	intensity = 50 / (!depth ? 1. : depth);
+	intensity = d->w->texturelight / (!depth ? 1. : depth);
 	return (apply_shading(d->w, color, intensity));
 }
 
@@ -81,5 +81,5 @@ void			render(double depth, t_thread_data *d, double angle)
 	y--;
 	while (++y < HEIGHT)
 		put_pixel_img(d->w->img, d->i, y + 150,
-						apply_shading(d->w, GREY, 100. / (d->w->height - y)));
+			apply_shading(d->w, GREY, d->w->floorlight / (d->w->height - y)));
 }

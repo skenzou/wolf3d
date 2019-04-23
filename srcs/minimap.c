@@ -6,14 +6,14 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:29:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 00:17:57 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 10:34:18 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
 static void		draw_square(t_wolf3d *w, t_point start,
-																							int square_size, t_point *center)
+											int square_size, t_point *center)
 {
 	int		y;
 	int		x;
@@ -24,7 +24,7 @@ static void		draw_square(t_wolf3d *w, t_point start,
 		x = -1;
 		while (++x <= square_size)
 			put_pixel_img(w->minimap, x + start.x - center->x,
-																					y + start.y - center->y, start.color);
+										y + start.y - center->y, start.color);
 	}
 }
 
@@ -85,7 +85,7 @@ void			draw_mmap(t_wolf3d *w, int yoffset, int xoffset)
 			if (x + i >= 0 && y + j >= 0 && y + j < w->map->h
 					&& x + i < w->map->w && w->map->board[y + j][x + i] != 0)
 				draw_square(w, (t_point){.x = xoffset + (i * 32),
-							.y = yoffset + (j * 32), .color = 0x6000FF00}, 32, &center);
+					.y = yoffset + (j * 32), .color = 0x6000FF00}, 32, &center);
 			xoffset += 3;
 		}
 		yoffset += 3;
