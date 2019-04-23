@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 14:26:08 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 14:45:38 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 13:48:40 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int				put_pixel_img(t_image *img, int x, int y, int color)
 	int offset;
 
 	offset = ((x + y * img->width) * img->bpp);
-	if (x < img->width && x > 0 && y < img->height && y > 0)
+	if (x < img->width && x >= 0 && y < img->height && y >= 0)
 	{
 		img->data[offset] = color & 0xFF;
 		img->data[offset + 1] = (color >> 8) & 0xFF;

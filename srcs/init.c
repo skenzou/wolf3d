@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 21:15:23 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 12:37:13 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 13:53:24 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void			init_textures(t_wolf3d *w)
 	w->textures[5] = create_image(w, "textures/menu.xpm", 0, 0);
 	w->textures[6] = create_image(w, "textures/options.xpm", 0, 0);
 	w->textures[7] = create_image(w, "textures/xD.xpm", 0, 0);
+	w->img = create_image(w, NULL, WIDTH, HEIGHT);
+	w->minimap = create_image(w, NULL, 277, 277);
 }
 
 static void			init_thread_data(t_wolf3d *w)
@@ -85,14 +87,12 @@ void				init_wolf3d(int fd, t_wolf3d *w)
 		exit(1);
 	w->win_ptr = mlx_new_window(w->mlx_ptr, WIDTH, HEIGHT, "Wolf3d");
 	!w->win_ptr ? exit(1) : 0;
-	w->img = create_image(w, NULL, WIDTH, HEIGHT);
 	w->mini_h = BLOC_SIZE * w->map->h;
 	w->mini_w = BLOC_SIZE * w->map->w;
 	w->width = WIDTH;
 	w->height = HEIGHT;
 	w->nightmode = 1;
 	w->cam = camera_init();
-	w->minimap = create_image(w, NULL, 277, 277);
 	place_player(w);
 	w->menu = 1;
 	w->scary = 0;

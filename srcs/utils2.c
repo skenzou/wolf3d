@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 19:34:33 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/22 20:34:40 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 13:54:27 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void			tan_lookuptable(t_wolf3d *w, t_thread_data *d)
 												(i * w->cam->fov / w->width);
 		w->tan_table[i++] = ttan(angle);
 	}
+}
+
+int				close_click(t_wolf3d *w)
+{
+	(void)w;
+	exit(0);
+	return (0);
 }

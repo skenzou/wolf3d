@@ -6,7 +6,7 @@
 /*   By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/21 19:38:43 by midrissi          #+#    #+#             */
-/*   Updated: 2019/04/23 12:09:02 by midrissi         ###   ########.fr       */
+/*   Updated: 2019/04/23 13:57:28 by midrissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,24 @@ static void			launch_threads(t_wolf3d *w)
 		pthread_join(w->tids[i++], NULL);
 }
 
+static int			display_menu(t_wolf3d *w)
+{
+	if (!w->options)
+		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
+												w->textures[5]->ptr, 0, 0);
+	else
+		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
+											w->textures[6]->ptr, 0, 0);
+	return (0);
+}
+
 int					refresh(t_wolf3d *w)
 {
 	if (w->sleep && !(w->sleep = 0))
 		sleep(2);
+	display_menu(w);
 	if (w->menu)
-	{
-		if (!w->options)
-			mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
-													w->textures[5]->ptr, 0, 0);
-		else
-			mlx_put_image_to_window(w->mlx_ptr, w->win_ptr,
-												w->textures[6]->ptr, 0, 0);
-		return (0);
-	}
+		return (display_menu(w));
 	if (w->scary)
 	{
 		w->time++;
@@ -64,6 +68,7 @@ int					refresh(t_wolf3d *w)
 	launch_threads(w);
 	draw_mmap(w, 0, 0);
 	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->img->ptr, 0, 0);
-	mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->minimap->ptr, 0, 0);
+	if (!w->scary)
+		mlx_put_image_to_window(w->mlx_ptr, w->win_ptr, w->minimap->ptr, 0, 0);
 	return (0);
 }
