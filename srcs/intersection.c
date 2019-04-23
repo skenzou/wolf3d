@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/22 18:49:38 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/04/23 14:48:38 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/04/23 15:08:01 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static inline void			init_hor(t_thread_data *d,
 	64 - 1 : floor(d->w->cam->position.y / 64) * 64 + 64;
 	o->y = (angle < 180) ? -64 : 64;
 	o->x = (angle < 90 || angle > 270) ? 64 / tangent : -64 / tangent;
-	a->x = (angle < 359.95 && angle < 360) ? d->w->cam->position.x +
+	a->x = (angle < 359.95) ? d->w->cam->position.x +
 	(d->w->cam->position.y - a->y) / tangent
 	: d->w->cam->position.x + (d->w->cam->position.y - a->y) / -tangent;
 	a->x = (angle >= 179.95 && angle <= 180) ? d->w->cam->position.x +
