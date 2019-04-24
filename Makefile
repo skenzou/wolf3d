@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/04/22 20:15:58 by midrissi         ###   ########.fr        #
+#    Updated: 2019/04/24 16:19:24 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,13 @@ cc = gcc
 C_FLAGS = -Wall -Wextra -Werror -pthread -Ofast
 
 MLX_PATH = ./minilibx
+MLX_NAME = libmlx.a
 MLX_LINK = -L $(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
 MLX_INC = -I $(MLX_PATH)
 
 OBJ_PATH = ./obj/
 LFT_PATH = ./libft/
+LFT_NAME = libft.a
 INC_PATH = ./includes
 SRC_PATH = ./srcs/
 
@@ -62,18 +64,18 @@ LONGEST			=	$(shell echo $(notdir $(SRC)) | tr " " "\n" | awk ' { if (\
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 
-all: $(LIBFT_PATH)$(LIBFT_NAME) $(NAME)
+all: $(LFT_PATH)$(LFT_NAME) $(MLX_PATH)$(MLX_NAME) $(NAME)
 
-$(LIBFT_PATH)$(LIBFT_NAME):
-	@$(MAKE) -C $(LIBFT_PATH);
+$(LFT_PATH)$(LFT_NAME):
+	@$(MAKE) -C $(LFT_PATH);
 
-$(NAME): $(LIBFT_PATH)$(LIBFT_NAME) $(OBJ)
-		@echo
-		@make -C $(LFT_PATH)
-		@make -C $(MLX_PATH)
+$(MLX_PATH)$(MLX_NAME):
+		@$(MAKE) -C $(MLX_PATH);
+
+$(NAME): $(OBJ)
 		@$(CC) -o $(NAME) $(MLX_LINK) -L $(LFT_PATH) -lft $^ -o $@
-		@printf "$(_BOLD)$(_RED)./wolf3d is ready for use\n$(_END)"
-		@printf "$(_BOLD)$(_CYAN)\n\nusage: ./wolf3d <map>\n$(_END)"
+		@printf "$(_BOLD)$(_RED)./wolf3d is ready for use\n\n$(_END)"
+		@printf "$(_BOLD)$(_CYAN)usage: ./wolf3d <map>\n$(_END)"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC_FPATH)
 		@mkdir -p $(OBJ_PATH) 2> /dev/null || true
