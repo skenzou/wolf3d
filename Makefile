@@ -6,7 +6,7 @@
 #    By: midrissi <midrissi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/03 09:24:41 by midrissi          #+#    #+#              #
-#    Updated: 2019/04/24 16:19:24 by midrissi         ###   ########.fr        #
+#    Updated: 2019/04/24 16:39:02 by midrissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ LONGEST			=	$(shell echo $(notdir $(SRC)) | tr " " "\n" | awk ' { if (\
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 
-all: $(LFT_PATH)$(LFT_NAME) $(MLX_PATH)$(MLX_NAME) $(NAME)
+all: $(MLX_PATH)$(MLX_NAME) $(LFT_PATH)$(LFT_NAME) $(NAME)
 
 $(LFT_PATH)$(LFT_NAME):
 	@$(MAKE) -C $(LFT_PATH);
