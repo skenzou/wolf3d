@@ -23,7 +23,7 @@ $> ./wolf3d maps/good/bigmap
 $> ./wolf3d maps/good/map1
 $> ...
 ```
--maps are stored in the folder maps/good
+- maps are stored in the folder maps/good
 
 ## KEYBINDS
 - You can either move the camera with the mouse like an fps or you can move it with left and right arrow
